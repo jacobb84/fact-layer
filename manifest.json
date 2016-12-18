@@ -1,0 +1,30 @@
+{
+  "manifest_version": 2,
+  "name": "Fact Layer",
+  "version": "1.2",
+  "description": "Fact checking resource to help navigate the internet.",
+  "icons": {
+    "48": "icons/fact-layer.png",
+    "96": "icons/fact-layer-2x.png"
+  },
+  "permissions": [
+    "tabs",
+	"storage",
+	"*://factlayer.referata.com/*",
+	"webRequest"
+	
+  ],
+
+  "browser_action": {
+    "default_icon": "icons/noinfo_38.png",
+    "default_title": "Fact Layer",
+	"default_popup": "popup/popup.html"
+  },
+  "options_ui": {
+    "page": "options.html"
+  },
+  "background": {
+    "scripts": ["jquery.min.js","background.js"]
+  }
+
+}

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Bootstrap Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/jquery-ui.min.css">
+  <link rel="stylesheet" href="popup.css">
+  <script src="../jquery.min.js"></script>
+  <script src="js/jquery-ui.min.js"></script>
+</head>
+<body>
+
+<div class="container" id="mainContainer">
+
+  <h2 class="title"></h2>
+  <div id="DescWell" class="well"></div>
+  <div class="row" id="biasRow">
+  <button class="btn btn-block btn-flat btn-default left-text" id="btnBias" style="white-space: inherit ! important;"><span class="glyphicon glyphicon-education" style="margin-right:10px;"></span><span id="biasSpan"></span><span class="pull-right"><span class="glyphicon glyphicon-triangle-right"></span></span></button>
+  </div>
+  <div class="row" id="factRow">
+  <button class="btn btn-block btn-flat btn-default left-text" id="btnFacts" style="white-space: inherit ! important;"><span class="glyphicon glyphicon-education" style="margin-right:10px;"></span><span id="factsSpan">Fact Check</span><span class="pull-right"><span class="glyphicon glyphicon-triangle-right"></span></span></button>
+  </div>
+</div>
+<div class="container" id="biasContainer" style="display:none;">
+<div class="row">
+<button class="btn btn-block btn-flat btn-default left-text btnBack" style="white-space: inherit ! important;"><span class="glyphicon glyphicon-triangle-left" style="margin-right:10px;"></span> Back</button>
+</div>
+<table class="table table-bordered" id="biasSourceTable">
+<thead>
+<tr>
+	<th>Source</th>
+	<th>Rating</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+</div>
+<div class="container" id="factContainer" style="display:none;">
+<div class="row">
+<button class="btn btn-block btn-flat btn-default left-text btnBack"  style="white-space: inherit ! important;"><span class="glyphicon glyphicon-triangle-left" style="margin-right:10px;"></span> Back</button>
+</div>
+<div class="well">
+Relevent Fact Checks
+</div>
+<h4>== Refuted By ==</h4>
+<div class="row" id="factListRefutedRow">
+
+</div>
+<h4>== Supported By ==</h4>
+<div class="row" id="factListSupportedRow">
+
+</div>
+</div>
+<div class="container" id="factSourceContainer" style="display:none;">
+<div class="row">
+<button class="btn btn-block btn-flat btn-default left-text btnBack"  style="white-space: inherit ! important;"><span class="glyphicon glyphicon-triangle-left" style="margin-right:10px;"></span> Back</button>
+</div>
+<table class="table table-bordered" id="factSourceTable">
+<thead>
+<tr>
+	<th>Source</th>
+	<th>Title</th>
+	<th>Rating</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+</div>
+<div class="container" id="submitFactContainer" style="display:none;">
+<div class="row">
+<button class="btn btn-block btn-flat btn-default left-text btnBack"  style="white-space: inherit ! important;"><span class="glyphicon glyphicon-triangle-left" style="margin-right:10px;"></span> Back</button>
+</div>
+<div id="submitFactWell" class="well">
+	Looks like this page doesn't have any facts associated with it. Go ahead and submit one if it's needed!
+</div>
+<div class="alert" role="alert" style="display:none">
+	
+</div>
+<div class="form-group">
+<input id="factCollection" class="form-control" placeholder="Fact Check Collection Name" />
+</div>
+<div class="form-group">
+<label class="radio-inline"><input type="radio" id="supportedBy" name="factAgreement"> Supported By</label>
+<label class="radio-inline"><input type="radio" id="refutedBy" name="factAgreement"> Refuted By</label>
+</div>
+<div class="form-group">
+<button class="btn btn-flat btn-primary" id="btnSubmitFact">Submit</button>
+</div>
+</div>
+<script src="popup.js"></script>
+</body>
+</html>
