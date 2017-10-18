@@ -1,0 +1,13 @@
+C:\Users\jacobb\source\repos\FactLayer\FactLayer.Import\bin\Debug\FactLayer.Import.exe.config
+C:\Users\jacobb\source\repos\FactLayer\FactLayer.Import\bin\Debug\FactLayer.Import.exe
+C:\Users\jacobb\source\repos\FactLayer\FactLayer.Import\bin\Debug\FactLayer.Import.pdb
+C:\Users\jacobb\source\repos\FactLayer\FactLayer.Import\bin\Debug\HtmlAgilityPack.CssSelectors.dll
+C:\Users\jacobb\source\repos\FactLayer\FactLayer.Import\bin\Debug\HtmlAgilityPack.dll
+C:\Users\jacobb\source\repos\FactLayer\FactLayer.Import\bin\Debug\Newtonsoft.Json.dll
+C:\Users\jacobb\source\repos\FactLayer\FactLayer.Import\bin\Debug\HtmlAgilityPack.xml
+C:\Users\jacobb\source\repos\FactLayer\FactLayer.Import\bin\Debug\HtmlAgilityPack.CssSelectors.pdb
+C:\Users\jacobb\source\repos\FactLayer\FactLayer.Import\bin\Debug\Newtonsoft.Json.xml
+C:\Users\jacobb\source\repos\FactLayer\FactLayer.Import\obj\Debug\FactLayer.Import.csprojResolveAssemblyReference.cache
+C:\Users\jacobb\source\repos\FactLayer\FactLayer.Import\obj\Debug\FactLayer.Import.csproj.CoreCompileInputs.cache
+C:\Users\jacobb\source\repos\FactLayer\FactLayer.Import\obj\Debug\FactLayer.Import.exe
+C:\Users\jacobb\source\repos\FactLayer\FactLayer.Import\obj\Debug\FactLayer.Import.pdb
