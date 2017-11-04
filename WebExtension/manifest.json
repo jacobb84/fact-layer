@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "Fact Layer",
-  "version": "1.3.0.3",
+  "version": "1.3.0.8",
   "description": "Fact checking resource to help navigate the internet.",
   "icons": {
     "48": "icons/fact-layer.png",
@@ -11,13 +11,12 @@
     "tabs",
 	"storage",
 	"*://factlayer.azurewebsites.net/*",
-	"*://factlayer.local/*",
 	"webRequest"
 	
   ],
 
   "browser_action": {
-    "default_icon": "icons/noinfo_38.png",
+    "default_icon":  "icons/unknown_default.png",
     "default_title": "Fact Layer",
 	"default_popup": "popup/popup.html"
   },
@@ -25,12 +24,12 @@
     "page": "options.html"
   },
   "background": {
-    "scripts": ["jquery.min.js","background.js"]
+    "scripts": ["libs/jquery.min.js", "background.js"]
   },
   "content_scripts": [
     {
       "matches": ["*://*.reddit.com/*"],
-      "js": ["jquery.min.js", "site_js/reddit.js"],
+      "js": ["libs/jquery.min.js", "site_js/reddit.js"],
 	  "css": ["site_css/reddit.css"]
     }
   ],

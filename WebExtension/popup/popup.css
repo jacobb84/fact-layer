@@ -11,7 +11,7 @@ body {
   height: inherit;
 }
 
-.container {
+div.container {
   overflow: auto;
   width: 100%;
   height: 445px;
@@ -33,8 +33,9 @@ input, textarea {
 	border-radius:0px;
 }
 
-div.row div
-{
-	border: 1px solid #000000;
+div.fact-row {
+	padding:5px;
+	margin-bottom:5px;
+	background-color:#DDDDDD;
 }
 

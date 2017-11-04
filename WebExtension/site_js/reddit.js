@@ -1,93 +1,21 @@
-var isChrome = false;
 //Handle chrome
 if (typeof browser === 'undefined') {
     browser = chrome;
-	isChrome = true;
 }
 
 if (browser)
 {
-	var aliasDomains = 
-[
-	{
-	  "alias": "apnews.com",
-	  "host": "ap.org"
-	},
-	{
-	  "alias": "bbc.co.uk",
-	  "host": "bbc.com"
-	}
-]
+	$("span.domain").each(function(index, obj) {
+		var domain = $(obj).find("a").html();
 
-	browser.storage.local.get(["websites"], onGotItems);
-
-	function onGotItems(item) {
-		var websites = item.websites;
-	  	$("span.domain").each(function(index, obj) {
-			var domain = obj.innerHTML;
-			var aliasDomain = aliasDomains.filter(function (newsSource) {
-				return domain.indexOf(newsSource.alias)  != -1;
-			})[0];
-			
-			if (aliasDomain)
+		browser.runtime.sendMessage({command: "getWebsite", domain: domain}, function(response) {
+			if (response != null && response.websiteResult != null)
 			{
-				domain = aliasDomain.host;
-			}
-			
-			var websiteResult = websites.filter(function (newsSource) {
-				return domain.indexOf(newsSource.Domain) != -1;
-			})[0];
-			
-			if (websiteResult != null)
-			{
-				$(obj).parents("div.thing").addClass(getCSS(websiteResult.Bias, websiteResult.OrganizationType));
-				$(obj).attr("title", getBiasText(websiteResult.Bias, websiteResult.OrganizationType));
+				$(obj).parents("div.thing").addClass(getCSS(response.overallBias, response.websiteResult.OrganizationType));
+				$(obj).attr("title", response.websiteResult.Name + " - " + response.biasText);
 			}
 		});
-	}
-}
-
-function getBiasText(bias, orgType) {
-
-	if (orgType == 4)
-	{
-		return "Satire";
-	}
-	else if (orgType == 5)
-	{
-		return "Fake";
-	}
-	
-	if (bias == -3)
-	{
-		return "Extreme Left";
-	}
-	else if (bias == -2)
-	{
-		return "Left";
-	}
-	else if (bias == -1)
-	{
-		return "Left-Center";
-	}
-	else if (bias == 0)
-	{
-		return "Center";
-	}
-	else if (bias == 1)
-	{
-		return "Right-Center";
-	}
-	else if (bias == 2)
-	{
-		return "Right";
-	} 
-	else if (bias == 3)
-	{
-		return "Extreme Right";
-	}
-	  
-  	return "Unknown";
+	});
 }
 
 function getCSS(bias, orgType)
