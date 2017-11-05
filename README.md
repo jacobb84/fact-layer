@@ -24,10 +24,13 @@ This project was born out of my annoyance with having to constantly Google artic
 ## FAQs ##
 
 _Where do you get the information?_
+
 **I try to use as many unbiased sources as possible. Currently they include AllSides, Media Bias / Fact Check, Real or Satire, The Fake News Codex, TV News Check, Charity Navigator, and Wikipedia. Also, any information the plugin displays includes links to the specific article it's sourcing.**
 
 _How do you store the information and is it dynamic?_
-**In a series of json files. The plugin takes the approach of ad blockers in that it will periodically request updated information to stay current in site information and fact checks. Once downloaded it's stored in the local browser storage.
+
+**In a series of json files. The plugin takes the approach of ad blockers in that it will periodically request updated information to stay current in site information and fact checks. Once downloaded it's stored in the local browser storage.**
 
 _Do you have any editorial input?_
-**Very little, by design. There's certain situations where I need to make judgement calls on how to interpret the data, but it's kept to a minimum. One example of that is how I deal with sources disagreeing on the rating of a site. I give some ratings more weight then others, to determine which icon to show in the toolbar. 
+
+**Very little, by design. There's certain situations where I need to make judgement calls on how to interpret the data, but it's kept to a minimum. One example of that is how I deal with sources disagreeing on the rating of a site. I give some ratings more weight then others, to determine which icon to show in the toolbar.**
