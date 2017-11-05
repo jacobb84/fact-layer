@@ -16,6 +16,7 @@ namespace FactLayer.Import.Models
         Satire = 4,
         Fake = 5,
         NonProfit = 6,
-        FactChecker = 7
+        FactChecker = 7,
+        HateGroup = 8
     }
 }

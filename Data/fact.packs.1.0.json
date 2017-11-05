@@ -1,0 +1,168 @@
+[
+	{
+		"ID" : "9405C176BFF3433FB9D78BCD6454FF6A",
+		"Claim" : "John McCain Started a Fire Aboard the USS Forrestal that Killed 134 People.",
+		"Rating" : "False",
+		"Sources": [
+			{
+				"Organization" : "Snopes",
+				"URL" : "https://www.snopes.com/john-mccain-fire-uss-forrestal/",
+				"ClaimType" : "3",
+				"ClaimValue" : "0"
+			},
+			{
+				"Organization" : "FactCheck.org",
+				"URL" : "http://www.factcheck.org/2008/09/mccains-plane-crashes/",
+				"ClaimType" : "3",
+				"ClaimValue" : "0"
+			},
+			{
+				"Organization" : "PolitiFact",
+				"URL" : "http://www.politifact.com/punditfact/statements/2017/aug/07/blog-posting/posts-blame-john-mccain-deadly-1967-fire-aboard-us/",
+				"ClaimType" : "3",
+				"ClaimValue" : "0"
+			},
+			{
+				"Organization" : "TruthOrFiction.com",
+				"URL" : "https://www.truthorfiction.com/john-mccain-started-forrestal-fire/",
+				"ClaimType" : "3",
+				"ClaimValue" : "0"
+			}
+		]
+	},
+	{
+		"ID" : "3665C690651F4FB699679BAE6866DA55",
+		"Claim" : "Flight Crew Takes A Knee And Walks Out On NFL Team.",
+		"Rating" : "False",
+		"Sources": [
+			{
+				"Organization" : "Snopes",
+				"URL" : "https://www.snopes.com/flight-crew-takes-knee/",
+				"ClaimType" : "3",
+				"ClaimValue" : "0"
+			},
+			{
+				"Organization" : "PolitiFact",
+				"URL" : "http://www.politifact.com/truth-o-meter/statements/2017/oct/03/blog-posting/fake-news-flight-crew-did-not-take-knee-and-strand/",
+				"ClaimType" : "3",
+				"ClaimValue" : "0"
+			},
+			{
+				"Organization" : "TruthOrFiction.com",
+				"URL" : "https://www.truthorfiction.com/flight-crew-takes-knee-strands-new-orleans-saints-runway/",
+				"ClaimType" : "3",
+				"ClaimValue" : "0"
+			}
+		]
+	},
+	{
+		"ID" : "B989C423179E4636BAE17966F17DE1B0",
+		"Claim" : "58 Papers Published in 2017 Say Global Warming is a Myth.",
+		"Rating" : "False",
+		"Sources": [
+			{
+				"Organization" : "Snopes",
+				"URL" : "https://www.snopes.com/scientific-papers-global-warming-myth/",
+				"ClaimType" : "3",
+				"ClaimValue" : "0"
+			},
+			{
+				"Organization" : "Climate Feedback",
+				"URL" : "https://climatefeedback.org/evaluation/breitbart-misrepresents-research-58-scientific-papers-falsely-claim-disprove-human-caused-global-warming-james-delingpole/",
+				"ClaimType" : "3",
+				"ClaimValue" : "0"
+			}
+		]
+	},
+	{
+		"ID" : "AF354BF2D34D4391A4A4AFEF807ED620",
+		"Claim" : "400 Papers Published in 2017 Say Global Warming is a Myth.",
+		"Rating" : "False",
+		"Sources": [
+			{
+				"Organization" : "Snopes",
+				"URL" : "https://www.snopes.com/400-papers-published-in-2017-prove-that-global-warming-is-myth/",
+				"ClaimType" : "3",
+				"ClaimValue" : "0"
+			}
+		]
+	},
+	{
+		"ID" : "CE0E9276CC804759828DAE7EBF9D0489",
+		"Claim" : "Climate Models Have Overestimated Global Warming.",
+		"Rating" : "False",
+		"Sources": [
+			{
+				"Organization" : "Climate Feedback",
+				"URL" : "https://climatefeedback.org/evaluation/daily-wire-article-misunderstands-study-carbon-budget-along-fox-news-telegraph-daily-mail-breitbart-james-barrett/",
+				"ClaimType" : "3",
+				"ClaimValue" : "0"
+			}
+		]
+	},
+	{
+		"ID" : "805A12CE18F24EF9B7763EC1433D582D",
+		"Claim" : "WHO: United States Among Least Polluting Nations on the Planet.",
+		"Rating" : "False",
+		"Sources": [
+			{
+				"Organization" : "Climate Feedback",
+				"URL" : "https://climatefeedback.org/evaluation/playing-semantics-misleading-breitbart-article-downplays-us-contribution-to-climate-change/",
+				"ClaimType" : "3",
+				"ClaimValue" : "0"
+			}
+		]
+	},
+	{
+		"ID" : "DB36580F6C2149B9A13C2DBB2F183EBA",
+		"Claim" : "Earth Has Not Warmed For Past 19 Years.",
+		"Rating" : "False",
+		"Sources": [
+			{
+				"Organization" : "Climate Feedback",
+				"URL" : "https://climatefeedback.org/evaluation/global-quackery-earth-not-warmed-past-19-years-new-study-finds-joseph-curl-the-daily-wire/",
+				"ClaimType" : "3",
+				"ClaimValue" : "0"
+			}
+		]
+	},
+	{
+		"ID" : "922C915BA7114156AC80EBF191422363",
+		"Claim" : "Ocean Acidification isn't real.",
+		"Rating" : "False",
+		"Sources": [
+			{
+				"Organization" : "Climate Feedback",
+				"URL" : "https://climatefeedback.org/evaluation/ocean-acidification-yet-another-wobbly-pillar-climate-alarmism-james-delingpole-the-spectator/",
+				"ClaimType" : "3",
+				"ClaimValue" : "0"
+			}
+		]
+	},
+	{
+		"ID" : "85301D55CD8C4B9A8B03C4F62B435663",
+		"Claim" : "Scientists warn of ‘global climate emergency’ over shifting jet stream",
+		"Rating" : "False",
+		"Sources": [
+			{
+				"Organization" : "Climate Feedback",
+				"URL" : "https://climatefeedback.org/evaluation/climate-change-emergency-jet-stream-shift-warning-global-warming-extreme-weather-gabriel-samuels-the-independent/",
+				"ClaimType" : "3",
+				"ClaimValue" : "0"
+			}
+		]
+	},
+	{
+		"ID" : "CCD1F87B065640778B3886C2820B62B4",
+		"Claim" : "DoD Plans Solar-Storm-Based National Blackout Drill During Antifa Protests In November",
+		"Rating" : "False",
+		"Sources": [
+			{
+				"Organization" : "Snopes",
+				"URL" : "https://www.snopes.com/dod-drill-coincide-november-demonstrations/",
+				"ClaimType" : "3",
+				"ClaimValue" : "0"
+			}
+		]
+	}
+]

@@ -1,0 +1,78 @@
+[
+	{
+	  "alias": "apnews.com",
+	  "host": "ap.org"
+	},	
+	{
+	  "alias": "hosted.ap.org",
+	  "host": "ap.org"
+	},
+	{
+	  "alias": "bbc.co.uk",
+	  "host": "bbc.com"
+	},
+	{
+	  "alias": ".cnn.com",
+	  "host": "cnn.com"
+	},
+	{
+	  "alias": "beta.theglobeandmail.com",
+	  "host": "theglobeandmail.com"
+	},
+	{
+	  "alias": ".wikipedia.org",
+	  "host": "wikipedia.org"
+	},
+	{
+		"alias":"ac2news.com",
+		"host":"againstcronycapitalism.org"
+	},
+	{
+		"alias":"politicalblindspot.news",
+		"host":"alternativemediasyndicate.net"
+	},
+	{
+	  "alias": ".reuters.com",
+	  "host": "reuters.com"
+	},
+	{
+	  "alias": "huffingtonpost.ca",
+	  "host": "huffingtonpost.com"
+	},
+	{
+	  "alias": "naturalnewsblogs.com",
+	  "host": "naturalnews.com"
+	},
+	{
+	  "alias": ".vice.com",
+	  "host": "vice.com"
+	},
+	{
+	  "alias": "cdn.defenseone.com",
+	  "host": "defenseone.com"
+	},
+	{
+	  "alias": "static.theintercept.com",
+	  "host": "theintercept.com"
+	},
+	{
+	  "alias": "dailym.ai",
+	  "host": "dailymail.co.uk"
+	},
+	{
+	  "alias": "mobile.wnd.com",
+	  "host": "wnd.com"
+	},
+	{
+	  "alias": "ibtimes.co.uk",
+	  "host": "ibtimes.com"
+	},
+	{
+	  "alias": "graphics.chicagotribune.com",
+	  "host": "chicagotribune.com"
+	},
+	{
+	  "alias": "work.qz.com",
+	  "host": "qz.com"
+	}
+]

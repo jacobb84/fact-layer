@@ -30,17 +30,21 @@ namespace FactLayer.Import
                 var domainLink = doc.QuerySelectorAll("div.entry-content p a[target=_blank]").Where(s => s.InnerHtml == s.Attributes["href"].Value).FirstOrDefault();
                 if (domainLink != null)
                 {
-                    var domain = ExtractDomainNameFromURL(domainLink.Attributes["href"].Value).Replace("www.", "");
+                    var domain = ExtractDomainNameFromURL(domainLink.Attributes["href"].Value);
+                    if (IgnoreUrl(domain))
+                    {
+                        return null;
+                    }
                     if (_sites.Any(s => s.Domain.Equals(domain)))
                     {
                         var site = _sites.Where(s => s.Domain.Equals(domain)).Single();
                         site.OrganizationType = OrgType.Satire;
-                        if (!site.Sources.Any(s => s.Organization == "Media Bias / Fact Check" && s.ClaimType == SourceClaimType.OrgType))
+                        if (!site.Sources.Any(s => s.Organization == SourceOrganization.MBFC && s.ClaimType == SourceClaimType.Veracity))
                         {
                             var source = new Source();
-                            source.Organization = "Media Bias / Fact Check";
+                            source.Organization = SourceOrganization.MBFC;
                             source.URL = url;
-                            source.ClaimType = SourceClaimType.OrgType;
+                            source.ClaimType = SourceClaimType.Veracity;
                             source.ClaimValue = (int)OrgType.Satire;
                             site.Sources.Add(source);
                             Console.WriteLine("Added Source for " + site.Name);
@@ -60,14 +64,13 @@ namespace FactLayer.Import
                             if (notes.FirstOrDefault().QuerySelectorAll("a").Any(s => s.Attributes["href"].Value.Contains("wikipedia")))
                             {
                                 var wikiUrl = notes.FirstOrDefault().QuerySelectorAll("a").Where(s => s.Attributes["href"].Value.Contains("wikipedia")).FirstOrDefault().Attributes["href"].Value;
-                                site.Description = GetWikipediaDescription(wikiUrl);
                                 site.Wikipedia = wikiUrl;
                             }
                         }
                         var source = new Source();
-                        source.Organization = "Media Bias / Fact Check";
+                        source.Organization = SourceOrganization.MBFC;
                         source.URL = url;
-                        source.ClaimType = SourceClaimType.OrgType;
+                        source.ClaimType = SourceClaimType.Veracity;
                         source.ClaimValue = (int)OrgType.Satire;
                         site.Sources.Add(source);
                         Console.WriteLine("Loaded " + site.Name);

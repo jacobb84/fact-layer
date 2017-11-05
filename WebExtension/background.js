@@ -10,40 +10,24 @@ var factPacksVersion = "1.0";
 var regOrgSiteVersion = "1.0";
 var currentTab;
 var manifest = browser.runtime.getManifest();
-var websites =[];
-var regexWebsites =[];
-var aliasDomains = [];
-var factMappings = [];
-var factPacks = [];
 var currentTabUrl = "";
 var currentWebsite = null;
 var currentArticle = null;
 
-function binarySearch(array, key) {
-    var lo = 0,
-        hi = array.length - 1,
-        mid,
-        element;
-    while (lo <= hi) {
-        mid = ((lo + hi) >> 1);
-        element = array[mid];
-
-        if (element.Domain.localeCompare(key) == -1) {
-            lo = mid + 1;
-        } else if (element.Domain.localeCompare(key) == 1) {
-            hi = mid - 1;
-        } else {
-            return element;
-        }
-    }
-    return null;
+var storage = function FactLayerStorage()
+{
+	this.websites =[];
+	this.regexWebsites =[];
+	this.aliases = [];
+	this.factMappings = [];
+	this.factPacks = [];
 }
 
 function getWebsite(domain)
 {
 	domain = domain.replace(/^(www|amp|m|mobile)\./g, "");
 	//See if this is an alias
-	var aliasDomain = aliasDomains.find(function (newsSource) {
+	var aliasDomain = storage.aliases.find(function (newsSource) {
 		return domain.endsWith(newsSource.alias);
 	});
 	
@@ -53,182 +37,75 @@ function getWebsite(domain)
 		domain = aliasDomain.host;
 	}
 	
-	return binarySearch(websites, domain);
+	return FactLayerUtilities.binarySearch(storage.websites, domain);
+}
+
+function updateStorageIfNeeded(browserStorage, storageUpdated, storageProperty, globalUpdateFunction)
+{
+	if (browserStorage != null && storageUpdated != null) 
+	{
+		var tomorrow = new Date(storageUpdated);
+		tomorrow.setDate(tomorrow.getDate() + 1);
+
+		if (new Date() < tomorrow) {
+			storage[storageProperty] = browserStorage;
+		} else {
+			globalUpdateFunction();
+		}
+		
+	} else {
+	  globalUpdateFunction();
+	}
+}
+
+function getJsonFile(url, storageProperty)
+{
+	storage[storageProperty] = [];
+	var api = url+"?cachebust="+new Date().getTime();
+	$.ajax({
+		url: api,
+		type: 'GET',
+		success: function (returndata) {
+			storage[storageProperty] = returndata;
+			var browserStorage = {};
+			browserStorage[storageProperty] = returndata;
+			browserStorage[storageProperty+"Updated"] = new Date();
+			browser.storage.local.set(browserStorage);
+		}
+	});
 }
 
 function getSitePages()
 {
-	websites = [];
-	var api = "http://factlayer.azurewebsites.net/org_sites."+orgSiteVersion+".json?cachebust="+new Date().getTime();
-	$.ajax({
-		url: api,
-		type: 'GET',
-		success: function (returndata) {
-			websites = returndata;
-			browser.storage.local.set({
-			  websites: websites,
-			  websitesUpdated: new Date()
-			});
-		}
-	});
+	getJsonFile("http://factlayer.azurewebsites.net/org_sites."+orgSiteVersion+".json", "websites");
 }
 
 function getRegexSitePages()
 {
-	console.log("get site pages");
-	regexWebsites = [];
-	var api = "http://factlayer.azurewebsites.net/org.sites.regex."+regOrgSiteVersion+".json?cachebust="+new Date().getTime();
-	console.log(api);
-	$.ajax({
-		url: api,
-		type: 'GET',
-		success: function (returndata) {
-			console.log(returndata);
-			regexWebsites = returndata;
-			browser.storage.local.set({
-			  regexWebsites: regexWebsites,
-			  regexWebsitesUpdated: new Date()
-			});
-		}
-	});
+	getJsonFile("http://factlayer.azurewebsites.net/org.sites.regex."+regOrgSiteVersion+".json", "regexWebsites");
 }
 
 function getAliases()
 {
-	aliasDomains = [];
-	var api = "http://factlayer.azurewebsites.net/aliases."+aliasVersion+".json?cachebust="+new Date().getTime();
-	$.ajax({
-		url: api,
-		type: 'GET',
-		success: function (returndata) {
-			aliasDomains = returndata;
-			browser.storage.local.set({
-			  aliases: aliasDomains,
-			  aliasesUpdated: new Date()
-			});
-		}
-	});
+	getJsonFile("http://factlayer.azurewebsites.net/aliases."+aliasVersion+".json", "aliases");
 }
 
 function getFactMappings()
 {
-	
-	factMappings = [];
-	var api = "http://factlayer.azurewebsites.net/fact.mappings."+factMappingsVersion+".json?cachebust="+new Date().getTime();
-	console.log(api);
-	$.ajax({
-		url: api,
-		type: 'GET',
-		success: function (returndata) {
-			
-			factMappings = returndata;
-			browser.storage.local.set({
-			  factMappings: factMappings,
-			  factMappingsUpdated: new Date()
-			});
-		}
-	});
+	getJsonFile("http://factlayer.azurewebsites.net/fact.mappings."+factMappingsVersion+".json", "factMappings");
 }
 
 function getFactPacks()
 {
-	factPacks = [];
-	var api = "http://factlayer.azurewebsites.net/fact.packs."+factPacksVersion+".json?cachebust="+new Date().getTime();
-	$.ajax({
-		url: api,
-		type: 'GET',
-		success: function (returndata) {
-			factPacks = returndata;
-			browser.storage.local.set({
-			  factPacks: factPacks,
-			  factPacksUpdated: new Date()
-			});
-		}
-	});
+	getJsonFile("http://factlayer.azurewebsites.net/fact.packs."+factPacksVersion+".json", "factPacks");
 }
 
-function getIconImage(orgType)
-{
-	if (orgType == 0 || orgType == 2)
-	{
-		return "news";
-	} 
-	else if (orgType == 1)
-	{
-		return "thinktank";
-	}
-	else if (orgType == 3)
-	{
-		return "activist";
-	}
-	else if (orgType == 4)
-	{
-		return "satire";
-	}
-	else if (orgType == 5)
-	{
-		return "fake";
-	} 
-	else if (orgType == 6)
-	{
-		return "nonprofit";
-	}
-	else if (orgType == 7)
-	{
-		return "factcheck";
-	} 
-	else if (orgType == 8)
-	{
-		return "hategroup";
-	}
-	else {
-		return "unknown";
-	}
-}
 /*
  * Updates the browserAction icon to reflect the information of the current page.
  */
 function updateIcon(bias, orgType) {
-	var iconColor = "#808080";
-	var iconImage = getIconImage(orgType);
-	
-	if (bias == -3)
-	{
-		iconColor = "#0026FF";
-	}
-	else if (bias == -2)
-	{
-		iconColor = "#2E65A1";
-	}
-	else if (bias == -1)
-	{
-		iconColor = "#9DC8EB";
-	}
-	else if (bias == 0)
-	{
-		iconColor = "#9766A0";
-	}
-	else if (bias == 1)
-	{
-		iconColor = "#CB9A98";
-	}
-	else if (bias == 2)
-	{
-		iconColor = "#CB2127";
-	}
-	else if (bias == 3)
-	{
-		iconColor = "#FF0000";
-	}
-	
-	if (orgType == 4)
-	{
-		iconColor = "#007F0E"; //We want satire to stand out a bit and the bias doesn't matter
-	}
-	else if (orgType == 5 || orgType == 8)
-	{
-		iconColor = "#000000"; //We want fake news / hate groups to stand out a bit and the bias doesn't matter
-	} 
+	var iconColor = FactLayerUtilities.getIconColor(bias, orgType);
+	var iconImage = FactLayerUtilities.getIconImage(orgType);
 	
 	var img = new Image();
 	var canvas = document.createElement("canvas");
@@ -247,167 +124,20 @@ function updateIcon(bias, orgType) {
 	};
 }
 
-function getSourceOrgName(sourceOrgId)
-{
-	if (sourceOrgId ==  0)
-	{
-		return "AllSides";
-	} 
-	else if (sourceOrgId == 1)
-	{
-		return "Media Bias / Fact Check";	
-	}
-	else if (sourceOrgId == 2)
-	{
-		return "Real or Satire";
-	}
-	else if (sourceOrgId == 3)
-	{
-		return "Charity Navigator";
-	}
-	else if (sourceOrgId == 4)
-	{
-		return "The Fake News Codex";
-	}
-	else if (sourceOrgId == 5)
-	{
-		return "Duke Reporters' Lab";
-	}
-	else if (sourceOrgId == 6)
-	{
-		return "TVNewsCheck";
-	}
-}
-
-function getOverallBias(sources)
-{
-	if (sources.length > 0)
-	{
-		var biasSources = sources.filter(function (src) {
-			return src.ClaimType == 0;
-		});
-		//Get the average
-		var totalBias = 0;
-		var len = biasSources.length;
-		for (var i = 0; i < len; i++) {
-			var source = biasSources[i];
-			totalBias += source.ClaimValue;
-		}
-		
-		if (totalBias < 0)
-		{
-			return Math.floor(totalBias / len);
-		} else
-		{
-			return Math.ceil(totalBias / len);
-		}
-	} else
-	{
-		//Return Unknown
-		return -2147483648;
-	}
-}
-
-function getBiasText(bias) {
-
-	if (bias == -3)
-	{
-		return "Extreme Left";
-	}
-	else if (bias == -2)
-	{
-		return "Left";
-	}
-	else if (bias == -1)
-	{
-		return "Left-Center";
-	}
-	else if (bias == 0)
-	{
-		return "Center";
-	}
-	else if (bias == 1)
-	{
-		return "Right-Center";
-	}
-	else if (bias == 2)
-	{
-		return "Right";
-	} 
-	else if (bias == 3)
-	{
-		return "Extreme Right";
-	}
-  
-  	return "Unknown";
-}
-
 function getIconText(bias, orgType) {
 
-	if (orgType == 4)
+	if (orgType == 4 || orgType == 5 || orgType == 8)
 	{
-		return "Satire";
-	}
-	else if (orgType == 5)
-	{
-		return "Fake";
-	} 
-	else if (orgType == 5)
-	{
-		return "Hate Group";
+		return FactLayerUtilities.getOrgTypeText(orgType);
 	}
 	  
-  	return getBiasText(bias);
-}
-
-function getOrgType(orgType)
-{
-	if (orgType == 0)
-	{
-		return "News / Media";
-	} 
-	else if (orgType == 1)
-	{
-		return "Think Tank";
-	} 
-	else if (orgType == 2)
-	{
-		return "Blog";
-	} 
-	else if (orgType == 3)
-	{
-		return "Activist Organization";
-	} 
-	else if (orgType == 4)
-	{
-		return "Satire";
-	} 
-	else if (orgType == 5)
-	{
-		return "Fake News / Extremely Unreliable";
-	} 
-	else if (orgType == 6)
-	{
-		return "Non-Profit / Charity";
-	} 
-	else if (orgType == 7)
-	{
-		return "Fact-Checker / Reference Site";
-	} 
-	else if (orgType == 8)
-	{
-		return "Hate Group";
-	} 
-	else 
-	{
-		return "Unknown / Other";
-	}
+  	return FactLayerUtilities.getBiasText(bias);
 }
 
 function getRegexWebsite(domain)
 {
 	domain = domain.replace(/^(www|amp|m|mobile)\./g, "");
-	var websiteResult = regexWebsites.find(function (site) {
+	var websiteResult = storage.regexWebsites.find(function (site) {
 		var regex = new RegExp(site.Domain, 'gi');
 		var isMatch = regex.test(domain);
 		return isMatch;
@@ -447,7 +177,7 @@ function updateActiveTab(tabId, changeInfo, tabInfo) {
 		if (websiteResult != null)
 		{
 			currentWebsite = websiteResult;
-			var totalBias = getOverallBias(websiteResult.Sources);
+			var totalBias = FactLayerUtilities.getOverallBias(websiteResult.Sources);
 			browser.browserAction.setTitle({
 				title: getIconText(totalBias, websiteResult.OrganizationType),
 				tabId: currentTab.id
@@ -455,7 +185,7 @@ function updateActiveTab(tabId, changeInfo, tabInfo) {
 			updateIcon(totalBias, websiteResult.OrganizationType);
 			browser.browserAction.enable(currentTab.id);
 			
-			var factResultDomain = factMappings.find(function (mapping) {
+			var factResultDomain = storage.factMappings.find(function (mapping) {
 				return mapping.Domain == websiteResult.Domain;
 			});
 			
@@ -489,6 +219,7 @@ function updateActiveTab(tabId, changeInfo, tabInfo) {
 	
   browser.tabs.query({active: true, currentWindow: true}, updateTab);
 }
+
 browser.storage.local.get(["regexWebsites","regexWebsitesUpdated", "websites","websitesUpdated", "installedVersion", "aliases", "aliasesUpdated", "factMappings", "factMappingsUpdated", "factPacks", "factPacksUpdated"], onGotItems);
 
 // listen to tab URL changes
@@ -509,84 +240,17 @@ function onGotItems(item) {
 		  installedVersion: manifest.version
 		});
   } else { 
-	  if (item.websites != null && item.websitesUpdated != null) 
-	  {
-			var tomorrow = new Date(item.websitesUpdated);
-			tomorrow.setDate(tomorrow.getDate() + 1);
-
-	        if (new Date() < tomorrow) {
-				websites = item.websites;
-			} else {
-				getSitePages();
-			}
-			
-	  } else {
-		  getSitePages();
-	  }
 	  
-	  if (item.aliases != null && item.aliasesUpdated != null) 
-	  {
-			var tomorrow = new Date(item.aliasesUpdated);
-			tomorrow.setDate(tomorrow.getDate() + 1);
-
-	        if (new Date() < tomorrow) {
-				aliasDomains = item.aliases;
-			} else {
-				getAliases();
-			}
-			
-	  } else {
-		  getAliases();
-	  }		
-	  
-	  if (item.factMappings != null && item.factMappingsUpdated != null) 
-	  {
-			var tomorrow = new Date(item.factMappingsUpdated);
-			tomorrow.setDate(tomorrow.getDate() + 1);
-
-	        if (new Date() < tomorrow) {
-				factMappings = item.factMappings;
-			} else {
-				getFactMappings();
-			}
-			
-	  } else {
-		  getFactMappings();
-	  }	
-	  
-	  if (item.factPacks != null && item.factPacksUpdated != null) 
-	  {
-			var tomorrow = new Date(item.factPacksUpdated);
-			tomorrow.setDate(tomorrow.getDate() + 1);
-
-	        if (new Date() < tomorrow) {
-				factPacks = item.factPacks;
-			} else {
-				getFactPacks();
-			}
-			
-	  } else {
-		  getFactPacks();
-	  }	
-	  
-	  if (item.regexWebsites != null && item.regexWebsitesUpdated != null) 
-	  {
-			var tomorrow = new Date(item.regexWebsitesUpdated);
-			tomorrow.setDate(tomorrow.getDate() + 1);
-
-	        if (new Date() < tomorrow) {
-				regexWebsites = item.regexWebsites;
-			} else {
-				getRegexSitePages();
-			}
-			
-	  } else {
-		  getRegexSitePages();
-	  }	
-	  
+	  updateStorageIfNeeded(item.websites, item.websitesUpdated, "websites", getSitePages);
+	  updateStorageIfNeeded(item.aliases, item.aliasesUpdated, "aliases", getAliases);
+	  updateStorageIfNeeded(item.factMappings, item.factMappingsUpdated, "factMappings", getFactMappings);
+	  updateStorageIfNeeded(item.factPacks, item.factPacksUpdated, "factPacks", getSitePages);
+	  updateStorageIfNeeded(item.regexWebsites, item.regexWebsitesUpdated, "regexWebsites", getRegexSitePages);
+	  	  
 	  //Be sure to get latest version of website objects if we just upgraded
 	  if (item.installedVersion == null || item.installedVersion != manifest.version)
 	  {
+		 browser.storage.local.clear();
 		 getSitePages();
 		 getAliases();
 		 getFactMappings();
@@ -607,13 +271,31 @@ browser.runtime.onMessage.addListener(
   function(request, sender, sendResponse) {
 	  if (request.command == "getWebsite")
 	  {
-		  var websiteResult = getWebsite(request.domain);
+		  var domain = request.domain;
+		  if (!request.domain.startsWith("http"))
+		  {
+			  domain = "http://"+request.domain;
+		  }
+		  
+		  var websiteResult = null;
 		  var biasText = "Unknown";
 		  var overallBias = -2147483648;
-		  if (websiteResult != null)
+		  
+		  try
 		  {
-			  overallBias = getOverallBias(websiteResult.Sources);
-			  biasText = getIconText(overallBias, websiteResult.OrganizationType);
+			  var managedUrl = new URL(domain);
+
+			  websiteResult = getWebsite(managedUrl.hostname);
+			  biasText = "Unknown";
+			  overallBias = -2147483648;
+			  if (websiteResult != null)
+			  {
+				  overallBias = FactLayerUtilities.getOverallBias(websiteResult.Sources);
+				  biasText = getIconText(overallBias, websiteResult.OrganizationType);
+			  }
+		  } catch(ex)
+		  {
+			  console.log(ex);
 		  }
 		  sendResponse({websiteResult: websiteResult, biasText: biasText, overallBias: overallBias});
 	  }

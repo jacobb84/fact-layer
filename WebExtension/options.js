@@ -9,10 +9,10 @@ if (browser)
 	document.addEventListener('DOMContentLoaded', function () {
 	    var bg = browser.extension.getBackgroundPage();
 		
-		$("#WebsiteCount").html(bg.websites.length);
-		$("#AliasesCount").html(bg.aliasDomains.length);
-		$("#FactMappingsCount").html(bg.factMappings.length);
-		$("#FactPacksCount").html(bg.factPacks.length);
+		$("#WebsiteCount").html(bg.storage.websites.length);
+		$("#AliasesCount").html(bg.storage.aliases.length);
+		$("#FactMappingsCount").html(bg.storage.factMappings.length);
+		$("#FactPacksCount").html(bg.storage.factPacks.length);
 		browser.storage.local.get(["websitesUpdated", "aliasesUpdated", "factMappingsUpdated", "factPacksUpdated"], onGotItems);
 
 		
@@ -34,7 +34,7 @@ if (browser)
 			bg.getFactMappings();
 			bg.getFactPacks();
 			bg.getFactPacks();
-			getRegexSitePages();
+			bg.getRegexSitePages();
 			var target = document.getElementsByTagName('body')[0];
 			var spinner = new Spinner().spin(target);
 			$("#WebsiteCount").html("");
@@ -46,15 +46,15 @@ if (browser)
 			$("#FactPacksCount").html("");
 			$("#FactPacksUpdated").html("");
 			var backgroundCheck = setInterval(function() {
-				if (bg.websites.length != 0 && bg.aliasDomains.length != 0 && bg.factMappings.length != 0 && bg.factPacks.length != 0)
+				if (bg.storage.websites.length != 0 && bg.storage.aliases.length != 0 && bg.storage.factMappings.length != 0 && bg.storage.factPacks.length != 0)
 				{
-					$("#WebsiteCount").html(bg.websites.length);
+					$("#WebsiteCount").html(bg.storage.websites.length);
 					$("#WebsiteUpdated").html(getFormattedDate(new Date()));
-					$("#AliasesCount").html(bg.aliasDomains.length);
+					$("#AliasesCount").html(bg.storage.aliases.length);
 					$("#AliasesUpdated").html(getFormattedDate(new Date()));
-					$("#FactMappingsCount").html(bg.factMappings.length);
+					$("#FactMappingsCount").html(bg.storage.factMappings.length);
 					$("#FactMappingsUpdated").html(getFormattedDate(new Date()));
-					$("#FactPacksCount").html(bg.factPacks.length);
+					$("#FactPacksCount").html(bg.storage.factPacks.length);
 					$("#FactPacksUpdated").html(getFormattedDate(new Date()));
 					spinner.stop();
 					clearInterval(backgroundCheck);

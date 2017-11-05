@@ -8,7 +8,7 @@ namespace FactLayer.Import.Models
 {
     public class Source
     {
-        public string Organization { get; set; }
+        public SourceOrganization Organization { get; set; }
         public string URL { get; set; }
         public SourceClaimType ClaimType { get; set; }
         public int ClaimValue { get; set; }

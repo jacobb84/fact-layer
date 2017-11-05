@@ -17,8 +17,14 @@ namespace FactLayer.Import
     {
         private static OrganizationSite LoadSite(string url)
         {
+            if (url == "/news-source/test-source")
+            {
+                return null;
+            }
+
             var doc = new HtmlAgilityPack.HtmlDocument();
-            var request = WebRequest.Create("https://www.allsides.com"+url);
+            var request = (HttpWebRequest)WebRequest.Create("https://www.allsides.com" +url);
+
             var response = (HttpWebResponse)request.GetResponse();
             string html;
             using (var sr = new StreamReader(response.GetResponseStream()))
@@ -30,19 +36,32 @@ namespace FactLayer.Import
             var siteInfo = doc.QuerySelectorAll("a.www").LastOrDefault();
             if (siteInfo != null)
             {
-                var domain = ExtractDomainNameFromURL(siteInfo.Attributes["href"].Value).Replace("www.", "");
+                var domain = "";
+                //Override for weird format
+                if (url == "/news-source/suspend-belief-podcast")
+                {
+                    domain = "suspendbeliefpodcast.com";
+                } else
+                {
+                    domain = ExtractDomainNameFromURL(siteInfo.Attributes["href"].Value);
+                }
+                
+                if (IgnoreUrl(domain))
+                {
+                    return null;
+                }
                 if (_sites.Any(s => s.Domain.Equals(domain)))
                 {
                     var site = _sites.Where(s => s.Domain.Equals(domain)).Single();
-                    if (site.Sources.Any(s => s.Organization == "AllSides" && s.ClaimType == SourceClaimType.Bias))
+                    if (site.Sources.Any(s => s.Organization == SourceOrganization.AllSides && s.ClaimType == SourceClaimType.Bias))
                     {
-                        var source = site.Sources.Where(s => s.Organization == "AllSides" && s.ClaimType == SourceClaimType.Bias).Single();
+                        var source = site.Sources.Where(s => s.Organization == SourceOrganization.AllSides && s.ClaimType == SourceClaimType.Bias).Single();
                         source.ClaimValue = (int)GetBias(doc.QuerySelector("span.bias-value").InnerHtml.ToLower());
                     } else
                     {
 
                         var source = new Source();
-                        source.Organization = "AllSides";
+                        source.Organization = SourceOrganization.AllSides;
                         source.URL = "https://www.allsides.com" + url;
                         source.ClaimType = SourceClaimType.Bias;
                         source.ClaimValue = (int)GetBias(doc.QuerySelector("span.bias-value").InnerHtml.ToLower());
@@ -57,7 +76,7 @@ namespace FactLayer.Import
                 {
                     var site = new OrganizationSite();
                     site.Name = HttpUtility.HtmlDecode(doc.QuerySelector("div.source-info-horizontal h1").InnerText);
-                    site.Domain = ExtractDomainNameFromURL(siteInfo.Attributes["href"].Value).Replace("www.", "");
+                    site.Domain = ExtractDomainNameFromURL(siteInfo.Attributes["href"].Value);
                     site.OrganizationType = OrgType.NewsMedia;
 
                     if (doc.QuerySelector("a.wikipedia") != null && doc.QuerySelector("a.wikipedia").Attributes["href"].Value.Contains("wikipedia"))
@@ -68,7 +87,7 @@ namespace FactLayer.Import
                     }
 
                     var source = new Source();
-                    source.Organization = "AllSides";
+                    source.Organization = SourceOrganization.AllSides;
                     source.URL = "https://www.allsides.com" + url;
                     source.ClaimType = SourceClaimType.Bias;
                     source.ClaimValue = (int)GetBias(doc.QuerySelector("span.bias-value").InnerHtml.ToLower());
@@ -153,6 +172,7 @@ namespace FactLayer.Import
             ServicePointManager.Expect100Continue = true;
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
             Import(0);
+            //LoadSite("/news-source/fox-news");
             return _sites;
         }
     }

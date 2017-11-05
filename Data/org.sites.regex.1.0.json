@@ -1,0 +1,10 @@
+[
+   {
+      "OrganizationType":5,
+      "Name":"Fake Local News",
+      "Wikipedia":null,
+      "Description":"This site has been automatically flagged as fake news. Based on its URL, it's attempting to present itself as a local news outlet for the purposes of spreading fake news.",
+      "Domain":"^((k|w)(\\w){2,3}|actionnews|now|newsdaily|newsnow|channel)(\\d{1,2})\\-?((k|w)(\\w){2,3}|channel|news)?\\.(com|net|org|tv|news)$",
+	  "Sources": []
+   }
+]

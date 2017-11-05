@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using FactLayer.Import.Models;
 using HtmlAgilityPack;
-using System.Net;
-using System.Configuration;
+using System;
+using System.Collections.Generic;
 using System.IO;
-using FactLayer.Import.Models;
+using System.Linq;
+using System.Net;
 using System.Web;
-using System.Text.RegularExpressions;
 
 namespace FactLayer.Import
 {
@@ -60,22 +56,32 @@ namespace FactLayer.Import
                     html = sr.ReadToEnd();
                 }
                 doc.LoadHtml(html);
-                var domainLink = doc.QuerySelectorAll("div.entry-content p a[target=_blank]").Where(s => s.InnerHtml == s.Attributes["href"].Value).FirstOrDefault();
+                var siteName = HttpUtility.HtmlDecode(doc.QuerySelector("h1.page-title").InnerHtml);
+                var domainLink = doc.QuerySelectorAll("div.entry-content p a[target=_blank]").Where(s => s.Attributes["href"] != null && s.InnerHtml.Trim() == s.Attributes["href"].Value.Trim()).FirstOrDefault();
+                if (domainLink == null)
+                {
+                    domainLink = doc.QuerySelectorAll("div.entry-content p a").Where(s => s.InnerHtml == siteName || (s.Attributes["href"] != null && s.InnerHtml.Trim() == s.Attributes["href"].Value.Trim())).FirstOrDefault();
+                    Console.WriteLine("Attempting match with secondary lookup");
+                }
                 if (domainLink != null)
                 {
-                    var domain = ExtractDomainNameFromURL(domainLink.Attributes["href"].Value).Replace("www.", "");
+                    var domain = ExtractDomainNameFromURL(domainLink.Attributes["href"].Value);
+                    if (IgnoreUrl(domain))
+                    {
+                        return null;
+                    }
                     if (_sites.Any(s => s.Domain.Equals(domain)))
                     {
                         var site = _sites.Where(s => s.Domain.Equals(domain)).Single();
-                        if (site.Sources.Any(s => s.Organization == "Media Bias / Fact Check" && s.ClaimType == SourceClaimType.Bias))
+                        if (site.Sources.Any(s => s.Organization == SourceOrganization.MBFC && s.ClaimType == SourceClaimType.Bias))
                         {
-                            var source = site.Sources.Where(s => s.Organization == "Media Bias / Fact Check" && s.ClaimType == SourceClaimType.Bias).Single();
+                            var source = site.Sources.Where(s => s.Organization == SourceOrganization.MBFC && s.ClaimType == SourceClaimType.Bias).Single();
                             source.ClaimValue = (int)GetBias(doc.QuerySelector("h1 img").Attributes["src"].Value);
                             Console.WriteLine("Updating Source for " + site.Name);
                         } else
                         {
                             var source = new Source();
-                            source.Organization = "Media Bias / Fact Check";
+                            source.Organization = SourceOrganization.MBFC;
                             source.URL = url;
                             source.ClaimType = SourceClaimType.Bias;
                             source.ClaimValue = (int)GetBias(doc.QuerySelector("h1 img").Attributes["src"].Value);
@@ -88,7 +94,7 @@ namespace FactLayer.Import
                     else
                     {
                         var site = new OrganizationSite();
-                        site.Name = HttpUtility.HtmlDecode(doc.QuerySelector("h1.page-title").InnerHtml);
+                        site.Name = siteName;
                         site.Domain = domain;
                         var notes = doc.QuerySelectorAll("div.entry-content p").Where(s => s.InnerText.Trim().ToLower().StartsWith("notes:"));
                         if (notes.Count() > 0)
@@ -97,13 +103,12 @@ namespace FactLayer.Import
                             if (notes.FirstOrDefault().QuerySelectorAll("a").Any(s => s.Attributes["href"].Value.Contains("wikipedia")))
                             {
                                 var wikiUrl = notes.FirstOrDefault().QuerySelectorAll("a").Where(s => s.Attributes["href"].Value.Contains("wikipedia")).FirstOrDefault().Attributes["href"].Value;
-                                site.Description = GetWikipediaDescription(wikiUrl);
                                 site.Wikipedia = wikiUrl;
                             }
                         }
                         
                         var source = new Source();
-                        source.Organization = "Media Bias / Fact Check";
+                        source.Organization = SourceOrganization.MBFC;
                         source.URL = url;
                         source.ClaimType = SourceClaimType.Bias;
                         source.ClaimValue = (int)GetBias(doc.QuerySelector("h1 img").Attributes["src"].Value);
@@ -137,7 +142,7 @@ namespace FactLayer.Import
             {
                 return Bias.Center;
             }
-            else if (bias.Contains("extremeright") || bias.Contains("right11.png") || bias.Contains("right02.png") || bias.Contains("right03.png") || bias.Contains("right011.png"))
+            else if (bias.Contains("extremeright") || bias.Contains("right11.png") || bias.Contains("right02.png") || bias.Contains("right03.png") || bias.Contains("right01.png") || bias.Contains("right011.png"))
             {
                 return Bias.ExtremeRight;
             }
@@ -196,6 +201,12 @@ namespace FactLayer.Import
             Import("https://mediabiasfactcheck.com/center/");
             Import("https://mediabiasfactcheck.com/right-center/");
             Import("https://mediabiasfactcheck.com/right/");
+            //Sites not listed in the index
+            var site = LoadSite("https://mediabiasfactcheck.com/the-register-uk/");
+            if (site != null && !_sites.Contains(site))
+            {
+                _sites.Add(site);
+            }
             return _sites;
         }
     }

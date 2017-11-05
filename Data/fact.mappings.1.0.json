@@ -1,0 +1,269 @@
+[
+	{
+		"Domain" : "dailykos.com",
+		"Pages" : [
+			{
+				"Path" : "/stories/2008/9/12/596595/-",
+				"RefutedBy" : [
+					"9405C176BFF3433FB9D78BCD6454FF6A"
+				]
+			}
+		]
+	},
+	{
+		"Domain" : "redstatewatcher.com",
+		"Pages" : [
+			{
+				"Path" : "/article.asp?id=100757",
+				"RefutedBy" : [
+					"3665C690651F4FB699679BAE6866DA55"
+				]
+			}
+		]
+	},
+	{
+		"Domain" : "breitbart.com",
+		"Pages" : [
+			{
+				"Path" : "/big-government/2017/06/06/delingpole-global-warming-is-myth-58-scientific-papers-2017/",
+				"RefutedBy" : [
+					"B989C423179E4636BAE17966F17DE1B0"
+				]
+			},
+			{
+				"Path" : "/big-government/2017/10/24/delingpole-now-400-scientific-papers-in-2017-say-global-warming-is-a-myth/",
+				"RefutedBy" : [
+					"AF354BF2D34D4391A4A4AFEF807ED620",
+					"B989C423179E4636BAE17966F17DE1B0"
+				]
+			},
+			{
+				"Path" : "/big-government/2017/06/05/who-united-states-among-least-polluting-nations-on-the-planet/",
+				"RefutedBy" : [
+					"805A12CE18F24EF9B7763EC1433D582D"
+				]
+			},
+			{
+				"Path" : "/london/2016/08/29/ocean-acidification-your-chance-to-help-kill-this-crooked-scam-once-and-for-all/",
+				"RefutedBy" : [
+					"922C915BA7114156AC80EBF191422363"
+				]
+			},
+			{
+				"Path" : "/london/2016/08/30/ok-everyone-your-chance-to-salt-the-slug-of-ocean-acidification/",
+				"RefutedBy" : [
+					"922C915BA7114156AC80EBF191422363"
+				]
+			}
+			
+		]
+	},
+	{
+		"Domain" : "infowars.com",
+		"Pages" : [
+			{
+				"Path" : "/global-warming-is-a-myth-say-58-scientific-papers-in-2017/",
+				"RefutedBy" : [
+					"B989C423179E4636BAE17966F17DE1B0"
+				]
+			}
+		]
+	},
+	{
+		"Domain" : "investmentwatchblog.com",
+		"Pages" : [
+			{
+				"Path" : "/58-scientific-peer-reviewed-papers-in-2017-say-global-warming-a-myth/",
+				"RefutedBy" : [
+					"B989C423179E4636BAE17966F17DE1B0"
+				]
+			}
+		]
+	},
+	{
+		"Domain" : "prisonplanet.com",
+		"Pages" : [
+			{
+				"Path" : "/global-warming-is-a-myth-say-58-scientific-papers-in-2017.html",
+				"RefutedBy" : [
+					"B989C423179E4636BAE17966F17DE1B0"
+				]
+			}
+		]
+	},
+	{
+		"Domain" : "wattsupwiththat.com",
+		"Pages" : [
+			{
+				"Path" : "/2017/10/25/so-far-this-year-400-scientific-papers-debunk-climate-change-alarm/",
+				"RefutedBy" : [
+					"AF354BF2D34D4391A4A4AFEF807ED620",
+					"B989C423179E4636BAE17966F17DE1B0"
+				]
+			},
+			{
+				"Path" : "/2017/01/08/ocean-acifidication-failure-uea-prof-complains-government-failed-to-shut-down-press-freedom/comment-page-1/",
+				"RefutedBy" : [
+					"922C915BA7114156AC80EBF191422363"
+				]
+			}
+		]
+	},
+	{
+		"Domain" : "rightwingnews.com",
+		"Pages" : [
+			{
+				"Path" : "/climate-change/now-400-scientific-papers-2017-say-global-warming-myth/",
+				"RefutedBy" : [
+					"AF354BF2D34D4391A4A4AFEF807ED620",
+					"B989C423179E4636BAE17966F17DE1B0"
+				]
+			}
+		]
+	},
+	{
+		"Domain" : "yournewswire.com",
+		"Pages" : [
+			{
+				"Path" : "/scientific-paperes-global-warming-false/",
+				"RefutedBy" : [
+					"AF354BF2D34D4391A4A4AFEF807ED620",
+					"B989C423179E4636BAE17966F17DE1B0"
+				]
+			}
+		]
+	},
+	{
+		"Domain" : "dailywire.com",
+		"Pages" : [
+			{
+				"Path" : "/news/21275/climate-scientists-climate-models-have-james-barrett",
+				"RefutedBy" : [
+					"CE0E9276CC804759828DAE7EBF9D0489"
+				]
+			},
+			{
+				"Path" : "/news/16154/global-quackery-earth-has-not-warmed-past-19-years-joseph-curl",
+				"RefutedBy" : [
+					"DB36580F6C2149B9A13C2DBB2F183EBA"
+				]
+			}
+		]
+	},
+	{
+		"Domain" : "telegraph.co.uk",
+		"Pages" : [
+			{
+				"Path" : "/science/2017/09/18/immediacy-threat-climate-change-exaggerated-faulty-models/",
+				"RefutedBy" : [
+					"CE0E9276CC804759828DAE7EBF9D0489"
+				]
+			}
+		]
+	},
+	{
+		"Domain" : "godlikeproductions.com",
+		"Pages" : [
+			{
+				"Path" : "/forum1/message3544990/pg1",
+				"RefutedBy" : [
+					"805A12CE18F24EF9B7763EC1433D582D"
+				]
+			}
+		]
+	},
+	{
+		"Domain" : "spectator.co.uk",
+		"Pages" : [
+			{
+				"Path" : "/2016/04/ocean-acidification-yet-another-wobbly-pillar-of-climate-alarmism/",
+				"RefutedBy" : [
+					"922C915BA7114156AC80EBF191422363"
+				]
+			}
+		]
+	},
+	{
+		"Domain" : "independent.co.uk",
+		"Pages" : [
+			{
+				"Path" : "/news/science/climate-change-emergency-jet-stream-shift-warning-global-warning-extreme-weather-a7111661.html",
+				"RefutedBy" : [
+					"85301D55CD8C4B9A8B03C4F62B435663"
+				]
+			},
+			{
+				"Path" : "/news/science/jet-stream-crossing-equator-global-climate-emergency-dismissed-debunked-a7113241.html",
+				"RefutedBy" : [
+					"85301D55CD8C4B9A8B03C4F62B435663"
+				]
+			}
+		]
+	},
+	{
+		"Domain" : "msn.com",
+		"Pages" : [
+			{
+				"Path" : "/en-us/weather/topstories/scientists-warn-of-global-climate-emergency-over-jet-stream-shift/ar-AAhOtVR",
+				"RefutedBy" : [
+					"85301D55CD8C4B9A8B03C4F62B435663"
+				]
+			}
+		]
+	},
+	{
+		"Domain" : "express.co.uk",
+		"Pages" : [
+			{
+				"Path" : "/news/science/685077/GLOBAL-WEATHER-EMERGENCY-Jet-stream-shift-from-north-to-south-threatens-food-supplies",
+				"RefutedBy" : [
+					"85301D55CD8C4B9A8B03C4F62B435663"
+				]
+			}
+		]
+	},
+	{
+		"Domain" : "dailystar.co.uk",
+		"Pages" : [
+			{
+				"Path" : "/news/latest-news/526988/Climate-change-emergency-end-of-the-world-crisis-scientist-environment",
+				"RefutedBy" : [
+					"85301D55CD8C4B9A8B03C4F62B435663"
+				]
+			}
+		]
+	},
+	{
+		"Domain" : "beforeitsnews.com",
+		"Pages" : [
+			{
+				"Path" : "/alternative/2016/07/global-emergency-climate-chaos-jet-stream-shift-threatens-food-supplies-are-we-heeding-the-warnings-video-3379633.html",
+				"RefutedBy" : [
+					"85301D55CD8C4B9A8B03C4F62B435663"
+				]
+			}
+		]
+	},
+	{
+		"Domain" : "zerohedge.com",
+		"Pages" : [
+			{
+				"Path" : "/news/2017-10-26/dod-plans-solar-storm-based-national-blackout-drill-during-antifa-protests-november",
+				"RefutedBy" : [
+					"CCD1F87B065640778B3886C2820B62B4"
+				]
+			}
+		]
+	},
+	{
+		"Domain" : "stormfront.org",
+		"Pages" : [
+			{
+				"Path" : "/forum/t1229217/",
+				"RefutedBy" : [
+					"CCD1F87B065640778B3886C2820B62B4"
+				]
+			}
+		]
+	}
+]

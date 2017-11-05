@@ -15,7 +15,7 @@ namespace FactLayer.Import.Models
         public OrgType OrganizationType { get; set; }
         public string Name { get; set; }
         public string Wikipedia { get; set; }
-        public Bias Bias
+       /* public Bias Bias
         {
             get
             {
@@ -28,13 +28,19 @@ namespace FactLayer.Import.Models
                         totalBias += source.ClaimValue;
                     }
 
-                    return (Bias)Math.Ceiling(totalBias / Sources.Count(s => s.ClaimType == SourceClaimType.Bias));
+                    if (totalBias < 0)
+                    {
+                        return (Bias)Math.Floor(totalBias / Sources.Count(s => s.ClaimType == SourceClaimType.Bias));
+                    } else
+                    {
+                        return (Bias)Math.Ceiling(totalBias / Sources.Count(s => s.ClaimType == SourceClaimType.Bias));
+                    }
                 } else
                 {
                     return Bias.Unknown;
                 }
             }
-        }
+        }*/
         public string Description { get; set; }
         public string Domain { get; set; }
         public List<Source> Sources { get; set; }

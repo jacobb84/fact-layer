@@ -12,7 +12,7 @@ using System.Web;
 
 namespace FactLayer.Import
 {
-    public static class RealOrSatireImporter
+    public class RealOrSatireImporter : BaseImporter
     {
         private static List<OrganizationSite> _sites;
         public static void Import(int currentPage)
@@ -30,18 +30,22 @@ namespace FactLayer.Import
             var rows = doc.DocumentNode.QuerySelectorAll("#primary article:not(.category-real)");
             foreach(var row in rows)
             {
-                var domain = row.QuerySelector("h2.entry-title").InnerText;
+                var domain = ExtractDomainNameFromURL(row.QuerySelector("h2.entry-title").InnerText);
+                if (IgnoreUrl(domain))
+                {
+                    continue;
+                }
                 if (_sites.Any(s => s.Domain.Equals(domain)))
                 {
                     var site = _sites.Where(s => s.Domain.Equals(domain)).Single();
                     site.OrganizationType = OrgType.Satire;
 
-                    if (!site.Sources.Any(s => s.Organization == "Real or Satire" && s.ClaimType == SourceClaimType.OrgType))
+                    if (!site.Sources.Any(s => s.Organization == SourceOrganization.RealOrSatire && s.ClaimType == SourceClaimType.Veracity))
                     {
                         var source = new Source();
-                        source.Organization = "Real or Satire";
+                        source.Organization = SourceOrganization.RealOrSatire;
                         source.URL = row.QuerySelector("h2.entry-title a").Attributes["href"].Value;
-                        source.ClaimType = SourceClaimType.OrgType;
+                        source.ClaimType = SourceClaimType.Veracity;
                         source.ClaimValue = (int)OrgType.Satire;
                         site.Sources.Add(source);
                     }
@@ -53,9 +57,9 @@ namespace FactLayer.Import
                     site.OrganizationType = OrgType.Satire;
                     
                     var source = new Source();
-                    source.Organization = "Real or Satire";
+                    source.Organization = SourceOrganization.RealOrSatire;
                     source.URL = row.QuerySelector("h2.entry-title a").Attributes["href"].Value;
-                    source.ClaimType = SourceClaimType.OrgType;
+                    source.ClaimType = SourceClaimType.Veracity;
                     source.ClaimValue = (int)OrgType.Satire;
                     site.Sources.Add(source);
 

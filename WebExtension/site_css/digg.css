@@ -1,0 +1,55 @@
+span.bias.digg-story__metadata-source
+{
+	padding: 3px 5px;
+	color: #FFFFFF;
+	border-radius: 5px;
+}
+
+span.bias.digg-story__metadata-source a {
+	color: #FFFFFF;
+}
+
+span.bias-extreme-left.digg-story__metadata-source
+{
+	background-color:#0026FF;
+}
+
+span.bias-left.digg-story__metadata-source
+{
+	background-color:#2E65A1;
+}
+
+span.bias-left-center.digg-story__metadata-source
+{
+	background-color:#9DC8EB;
+}
+
+span.bias-center.digg-story__metadata-source
+{
+	background-color:#9766A0;
+}
+
+span.bias-right-center.digg-story__metadata-source
+{
+	background-color:#CB9A98;
+}
+
+span.bias-right.digg-story__metadata-source
+{
+	background-color:#CB2127;
+}
+
+span.bias-extreme-right.digg-story__metadata-source
+{
+	background-color:#FF0000;
+}
+
+span.bias-satire.digg-story__metadata-source
+{
+	background-color:#007F0E;
+}
+
+span.bias-fake.digg-story__metadata-source
+{
+	background-color:#000000;
+}

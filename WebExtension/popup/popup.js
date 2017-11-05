@@ -17,13 +17,20 @@ function getSourcesByType(type)
 	  var src = sources[i];
 	  if (src.ClaimType == 0)
 	  {
-		  $('#sourceTable tbody').append('<tr><td><a target="_blank" href="'+src.URL+'">'+bg.getSourceOrgName(src.Organization)+'</a></td><td>'+bg.getBiasText(src.ClaimValue)+'</td></tr>');
+		  $('#sourceTable tbody').append('<tr><td><a target="_blank" href="'+src.URL+'">'+bg.FactLayerUtilities.getSourceOrgName(src.Organization)+'</a></td><td>'+bg.FactLayerUtilities.getBiasText(src.ClaimValue)+'</td></tr>');
 	  }
 	  else if (src.ClaimType == 1 || src.ClaimType == 4)
 	  {
-		  $('#sourceTable tbody').append('<tr><td><a target="_blank" href="'+src.URL+'">'+bg.getSourceOrgName(src.Organization)+'</a></td><td>'+bg.getOrgType(src.ClaimValue)+'</td></tr>');
+		  $('#sourceTable tbody').append('<tr><td><a target="_blank" href="'+src.URL+'">'+bg.FactLayerUtilities.getSourceOrgName(src.Organization)+'</a></td><td>'+bg.FactLayerUtilities.getOrgTypeText(src.ClaimValue)+'</td></tr>');
 	  }
 	}
+	
+	$("#sourceTable tbody a").on("click", function(e)
+	{
+		setTimeout(function() {
+			window.close();
+		},1);
+	});
 }
 
 $("#btnBias, #btnVeracity, #btnOrgType").on("click", function (e) {
@@ -44,7 +51,7 @@ $("#btnFacts").on("click", function (e) {
 	}
 	
 	$("#factListRefutedRows div.fact-row").each(function(index, obj) {
-		var factPack = bg.factPacks.filter(function (pack) {
+		var factPack = bg.storage.factPacks.filter(function (pack) {
 				return pack.ID == $(obj).data("id");
 			})[0];
 		var factSourceButton = $(this).find("button");
@@ -90,10 +97,7 @@ function updateActiveTab(tabs) {
 	  
     if (tabs[0]) {
 		currentTab = tabs[0];
-		$('#biasSourceTable tbody').empty();
-		$('#veracitySourceTable tbody').empty();
-	
-			
+
 		if (currentWebsite != null)
 		{
 			$("#sourceRow").show();
@@ -108,10 +112,10 @@ function updateActiveTab(tabs) {
 				$("#DescWell").html("Sorry, no description is available for this site.");
 			}
 			$(".title").html(currentWebsite.Name);
-			$(".orgType").html(bg.getOrgType(currentWebsite.OrganizationType));
-			$("#siteTypeIcon").attr("src", '../icons/' + bg.getIconImage(currentWebsite.OrganizationType) + '.png');
-			$("#biasSpan").html("Bias: "+bg.getBiasText(bg.getOverallBias(currentWebsite.Sources)));
-			$("#veracitySpan").html("Veracity: "+bg.getOrgType(currentWebsite.OrganizationType));
+			$(".orgType").html(bg.FactLayerUtilities.getOrgTypeText(currentWebsite.OrganizationType));
+			$("#siteTypeIcon").attr("src", '../icons/' + bg.FactLayerUtilities.getIconImage(currentWebsite.OrganizationType) + '.png');
+			$("#biasSpan").html("Bias: "+bg.FactLayerUtilities.getBiasText(bg.FactLayerUtilities.getOverallBias(currentWebsite.Sources)));
+			$("#veracitySpan").html("Veracity: "+bg.FactLayerUtilities.getOrgTypeText(currentWebsite.OrganizationType));
 			
 			for (var i = 0, len = currentWebsite.Sources.length; i < len; i++) {
 			  var src = currentWebsite.Sources[i];
@@ -125,7 +129,7 @@ function updateActiveTab(tabs) {
 			  }
 			  else if (src.ClaimType == 4)
 			  {
-				  $("#orgTypeSpan").html("Organization: "+bg.getOrgType(src.ClaimValue));
+				  $("#orgTypeSpan").html("Organization: "+bg.FactLayerUtilities.getOrgTypeText(src.ClaimValue));
 				  $('#btnOrgType').show();
 			  }
 			  else if (src.ClaimType == 2)
@@ -148,7 +152,7 @@ function updateActiveTab(tabs) {
 				$('#btnFacts').show();
 			}
 			
-			$("#biasSourceTable tbody a, #btnCharity, #veracitySourceTable tbody a, #DescWell a").on("click", function(e)
+			$("#DescWell a").on("click", function(e)
 			{
 				setTimeout(function() {
 					window.close();
