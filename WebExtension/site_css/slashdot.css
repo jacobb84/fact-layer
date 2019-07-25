@@ -1,0 +1,59 @@
+a.bias
+{
+	padding: 3px 5px;
+	border-radius: 5px;
+	overflow:visible;
+	margin-bottom: 5px;
+	color: #FFFFFF !important;
+	font-weight: bold !important;
+}
+
+a.bias-extreme-left
+{
+	background-color:#0026FF;
+}
+
+a.bias-left
+{
+	background-color:#2E65A1;
+}
+
+a.bias-left-center
+{
+	background-color:#9DC8EB;
+}
+
+a.bias-center
+{
+	background-color:#9766A0;
+}
+
+a.bias-right-center
+{
+	background-color:#CB9A98;
+}
+
+a.bias-right
+{
+	background-color:#CB2127;
+}
+
+a.bias-extreme-right
+{
+	background-color:#FF0000;
+}
+
+a.bias-satire
+{
+	background-color:#007F0E;
+}
+
+a.bias-fake
+{
+	background-color:#000000;
+}
+
+a.bias-unknown
+{
+	background-color:#CCCCCC;
+}

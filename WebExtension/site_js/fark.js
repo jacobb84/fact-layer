@@ -5,13 +5,13 @@ if (typeof browser === 'undefined') {
 
 if (browser)
 {
-	$("span.domain").each(function(index, obj) {
-		var domain = $(obj).find("a").html();
+	$("div.URLHover a.outbound_link").each(function(index, obj) {
+		var domain = $(obj).html();
 
 		browser.runtime.sendMessage({command: "getWebsite", domain: domain}, function(response) {
 			if (response != null && response.websiteResult != null)
 			{
-				$(obj).parents("div.thing").addClass(getCSS(response.overallBias, response.websiteResult.OrganizationType));
+				$(obj).addClass(getCSS(response.overallBias, response.websiteResult.OrganizationType));
 				$(obj).attr("title", response.websiteResult.Name + " | " + response.biasText);
 			}
 		});

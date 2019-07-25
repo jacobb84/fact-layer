@@ -3,7 +3,7 @@ if (typeof browser === 'undefined') {
     browser = chrome;
 }
 
-var orgSiteVersion = "1.1";
+var orgSiteVersion = "1.2";
 var aliasVersion = "1.0";
 var factMappingsVersion = "1.0";
 var factPacksVersion = "1.0";
@@ -21,6 +21,7 @@ var storage = function FactLayerStorage()
 	this.aliases = [];
 	this.factMappings = [];
 	this.factPacks = [];
+	this.timestamps = {};
 }
 
 function getWebsite(domain)
@@ -40,17 +41,32 @@ function getWebsite(domain)
 	return FactLayerUtilities.binarySearch(storage.websites, domain);
 }
 
-function updateStorageIfNeeded(browserStorage, storageUpdated, storageProperty, globalUpdateFunction)
+function updateTimestampsIfNeeded(browserStorage, storageUpdated)
 {
 	if (browserStorage != null && storageUpdated != null) 
 	{
 		var tomorrow = new Date(storageUpdated);
 		tomorrow.setDate(tomorrow.getDate() + 1);
 
-		if (new Date() < tomorrow) {
-			storage[storageProperty] = browserStorage;
+		if (storageUpdated < tomorrow) {
+			storage.timestamps = browserStorage;
 		} else {
+			getTimestamps();
+		}
+		
+	} else {
+	  getTimestamps();
+	}
+}
+
+function updateStorageIfNeeded(browserStorage, storageUpdated, storageProperty, globalUpdateFunction)
+{
+	if (browserStorage != null && storageUpdated != null) 
+	{
+		if (storageUpdated < storage.timestamps[storageProperty]) {
 			globalUpdateFunction();
+		} else {
+			storage[storageProperty] = browserStorage;
 		}
 		
 	} else {
@@ -69,7 +85,25 @@ function getJsonFile(url, storageProperty)
 			storage[storageProperty] = returndata;
 			var browserStorage = {};
 			browserStorage[storageProperty] = returndata;
-			browserStorage[storageProperty+"Updated"] = new Date();
+			browserStorage[storageProperty+"Updated"] = storage.timestamps[storageProperty];
+			browser.storage.local.set(browserStorage);
+		}
+	});
+}
+
+function getTimestamps()
+{
+	console.log('fetching timestamps');
+	storage.timestamps = {};
+	var api = "http://factlayer.azurewebsites.net/timestamps.json?cachebust="+new Date().getTime();
+	$.ajax({
+		url: api,
+		type: 'GET',
+		success: function (returndata) {
+			storage.timestamps = returndata;
+			var browserStorage = {};
+			browserStorage["timestamps"] = returndata;
+			browserStorage["timestampsUpdated"] = new Date();
 			browser.storage.local.set(browserStorage);
 		}
 	});
@@ -126,7 +160,7 @@ function updateIcon(bias, orgType) {
 
 function getIconText(bias, orgType) {
 
-	if (orgType == 4 || orgType == 5 || orgType == 8)
+	if (orgType == 4 || orgType == 5 || orgType == 8 || orgType == 9)
 	{
 		return FactLayerUtilities.getOrgTypeText(orgType);
 	}
@@ -220,7 +254,7 @@ function updateActiveTab(tabId, changeInfo, tabInfo) {
   browser.tabs.query({active: true, currentWindow: true}, updateTab);
 }
 
-browser.storage.local.get(["regexWebsites","regexWebsitesUpdated", "websites","websitesUpdated", "installedVersion", "aliases", "aliasesUpdated", "factMappings", "factMappingsUpdated", "factPacks", "factPacksUpdated"], onGotItems);
+browser.storage.local.get(["regexWebsites","regexWebsitesUpdated", "websites","websitesUpdated", "installedVersion", "aliases", "aliasesUpdated", "factMappings", "factMappingsUpdated", "factPacks", "factPacksUpdated", "timestamps", "timestampsUpdated"], onGotItems);
 
 // listen to tab URL changes
 browser.tabs.onUpdated.addListener(updateActiveTab);
@@ -231,6 +265,7 @@ browser.tabs.onActivated.addListener(updateActiveTab);
 function onGotItems(item) {
   if (item != null && $.isEmptyObject(item) || item.length === 0)
   {
+	  getTimestamps();
 	  getSitePages();
 	  getAliases();
 	  getFactMappings();
@@ -240,17 +275,18 @@ function onGotItems(item) {
 		  installedVersion: manifest.version
 		});
   } else { 
-	  
+	  updateTimestampsIfNeeded(item.timestamps, item.timestampsUpdated);
 	  updateStorageIfNeeded(item.websites, item.websitesUpdated, "websites", getSitePages);
 	  updateStorageIfNeeded(item.aliases, item.aliasesUpdated, "aliases", getAliases);
 	  updateStorageIfNeeded(item.factMappings, item.factMappingsUpdated, "factMappings", getFactMappings);
-	  updateStorageIfNeeded(item.factPacks, item.factPacksUpdated, "factPacks", getSitePages);
+	  updateStorageIfNeeded(item.factPacks, item.factPacksUpdated, "factPacks", getFactPacks);
 	  updateStorageIfNeeded(item.regexWebsites, item.regexWebsitesUpdated, "regexWebsites", getRegexSitePages);
 	  	  
 	  //Be sure to get latest version of website objects if we just upgraded
 	  if (item.installedVersion == null || item.installedVersion != manifest.version)
 	  {
 		 browser.storage.local.clear();
+		 getTimestamps();
 		 getSitePages();
 		 getAliases();
 		 getFactMappings();

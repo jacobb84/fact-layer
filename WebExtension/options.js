@@ -9,10 +9,34 @@ if (browser)
 	document.addEventListener('DOMContentLoaded', function () {
 	    var bg = browser.extension.getBackgroundPage();
 		
-		$("#WebsiteCount").html(bg.storage.websites.length);
-		$("#AliasesCount").html(bg.storage.aliases.length);
-		$("#FactMappingsCount").html(bg.storage.factMappings.length);
-		$("#FactPacksCount").html(bg.storage.factPacks.length);
+		if (bg.storage.websites != null)
+		{
+			$("#WebsiteCount").html(bg.storage.websites.length);
+		} else {
+			$("#WebsiteCount").html(0);
+		}
+		
+		if (bg.storage.aliases != null)
+		{
+			$("#AliasesCount").html(bg.storage.aliases.length);
+		} else {
+			$("#AliasesCount").html(0);
+		}
+		
+		if (bg.storage.factMappings != null)
+		{
+			$("#FactMappingsCount").html(bg.storage.factMappings.length);
+		} else {
+			$("#FactMappingsCount").html(0);
+		}
+		
+		if (bg.storage.factPacks != null)
+		{
+			$("#FactPacksCount").html(bg.storage.factPacks.length);
+		} else {
+			$("#FactPacksCount").html(0);
+		}
+		
 		browser.storage.local.get(["websitesUpdated", "aliasesUpdated", "factMappingsUpdated", "factPacksUpdated"], onGotItems);
 
 		
@@ -29,6 +53,7 @@ if (browser)
 		}		
 		
 		$("#btnRefreshDatabase").on("click", function() {;
+			bg.getTimestamps();
 			bg.getSitePages();
 			bg.getAliases();
 			bg.getFactMappings();
@@ -49,13 +74,13 @@ if (browser)
 				if (bg.storage.websites.length != 0 && bg.storage.aliases.length != 0 && bg.storage.factMappings.length != 0 && bg.storage.factPacks.length != 0)
 				{
 					$("#WebsiteCount").html(bg.storage.websites.length);
-					$("#WebsiteUpdated").html(getFormattedDate(new Date()));
+					$("#WebsiteUpdated").html(getFormattedDate(bg.storage.timestamps.websites));
 					$("#AliasesCount").html(bg.storage.aliases.length);
-					$("#AliasesUpdated").html(getFormattedDate(new Date()));
+					$("#AliasesUpdated").html(getFormattedDate(bg.storage.timestamps.aliases));
 					$("#FactMappingsCount").html(bg.storage.factMappings.length);
-					$("#FactMappingsUpdated").html(getFormattedDate(new Date()));
+					$("#FactMappingsUpdated").html(getFormattedDate(bg.storage.timestamps.factMappings));
 					$("#FactPacksCount").html(bg.storage.factPacks.length);
-					$("#FactPacksUpdated").html(getFormattedDate(new Date()));
+					$("#FactPacksUpdated").html(getFormattedDate(bg.storage.timestamps.factPacks));
 					spinner.stop();
 					clearInterval(backgroundCheck);
 				}

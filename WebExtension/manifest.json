@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "Fact Layer",
-  "version": "1.4.0.0",
+  "version": "1.5.0.0",
   "description": "Fact checking resource to help navigate the internet.",
   "icons": {
     "48": "icons/fact-layer.png",
@@ -29,13 +29,23 @@
   "content_scripts": [
     {
       "matches": ["*://*.reddit.com/*"],
-      "js": ["libs/jquery.min.js", "site_js/reddit.js"],
+      "js": ["libs/jquery.min.js", "site_js/site.utilities.js", "site_js/reddit.js"],
 	  "css": ["site_css/reddit.css"]
     },
 	{
       "matches": ["*://digg.com/*"],
-      "js": ["libs/jquery.min.js", "site_js/digg.js"],
+      "js": ["libs/jquery.min.js", "site_js/site.utilities.js", "site_js/digg.js"],
 	  "css": ["site_css/digg.css"]
+    },
+	{
+      "matches": ["*://*.fark.com/*"],
+      "js": ["libs/jquery.min.js", "site_js/site.utilities.js", "site_js/fark.js"],
+	  "css": ["site_css/fark.css"]
+    },
+	{
+      "matches": ["*://*.slashdot.org/*", "*://slashdot.org/*"],
+      "js": ["libs/jquery.min.js", "site_js/site.utilities.js", "site_js/slashdot.js"],
+	  "css": ["site_css/slashdot.css"]
     }
   ],
   "applications": {

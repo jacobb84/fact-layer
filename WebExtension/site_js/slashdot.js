@@ -5,13 +5,15 @@ if (typeof browser === 'undefined') {
 
 if (browser)
 {
-	$("span.domain").each(function(index, obj) {
-		var domain = $(obj).find("a").html();
-
+	$("a.story-sourcelnk").each(function(index, obj) {
+		var domain = $(obj).attr("href");
 		browser.runtime.sendMessage({command: "getWebsite", domain: domain}, function(response) {
 			if (response != null && response.websiteResult != null)
 			{
-				$(obj).parents("div.thing").addClass(getCSS(response.overallBias, response.websiteResult.OrganizationType));
+				console.log("sss");
+				var span = $(obj).parents("span.extlnk");
+				console.log(span);
+				$(obj).addClass(getCSS(response.overallBias, response.websiteResult.OrganizationType));
 				$(obj).attr("title", response.websiteResult.Name + " | " + response.biasText);
 			}
 		});

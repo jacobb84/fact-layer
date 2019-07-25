@@ -60,7 +60,7 @@ FactLayerUtilities.getOrgTypeText = function (orgType)
 	} 
 	else if (orgType == 5)
 	{
-		return "Fake News / Extremely Unreliable";
+		return "Fake News";
 	} 
 	else if (orgType == 6)
 	{
@@ -73,6 +73,14 @@ FactLayerUtilities.getOrgTypeText = function (orgType)
 	else if (orgType == 8)
 	{
 		return "Hate Group";
+	} 
+	else if (orgType == 9)
+	{
+		return "Extremely Unreliable";
+	} 
+	else if (orgType == 10)
+	{
+		return "Clickbait";
 	} 
 	else 
 	{
@@ -109,6 +117,10 @@ FactLayerUtilities.getSourceOrgName = function(sourceOrgId)
 	else if (sourceOrgId == 6)
 	{
 		return "TVNewsCheck";
+	}
+	else if (sourceOrgId == 7)
+	{
+		return "OpenSources";
 	}
 }
 
@@ -159,7 +171,7 @@ FactLayerUtilities.getIconImage = function(orgType)
 	{
 		return "satire";
 	}
-	else if (orgType == 5)
+	else if (orgType == 5 || orgType == 9)
 	{
 		return "fake";
 	} 
@@ -175,6 +187,10 @@ FactLayerUtilities.getIconImage = function(orgType)
 	{
 		return "hategroup";
 	}
+	else if (orgType == 10)
+	{
+		return "clickbait";
+	}
 	else {
 		return "unknown";
 	}
@@ -186,10 +202,11 @@ FactLayerUtilities.getIconColor = function(bias, orgType)
 	{
 		return "#007F0E"; //We want satire to stand out a bit and the bias doesn't matter
 	}
-	else if (orgType == 5 || orgType == 8)
+	else if (orgType == 5 || orgType == 8 || orgType == 9)
 	{
 		return "#000000"; //We want fake news / hate groups to stand out a bit and the bias doesn't matter
 	} 
+	
 	
 	if (bias == -3)
 	{

@@ -1,55 +1,60 @@
-span.bias.digg-story__metadata-source
+span.bias.digg-story__metadata-source, a.bias.digg-story__related-link__source-link
 {
 	padding: 3px 5px;
 	color: #FFFFFF;
 	border-radius: 5px;
 }
 
-span.bias.digg-story__metadata-source a {
+span.bias.digg-story__metadata-source a, a.bias.digg-story__related-link__source-link {
 	color: #FFFFFF;
 }
 
-span.bias-extreme-left.digg-story__metadata-source
+span.bias-extreme-left.digg-story__metadata-source, a.bias-extreme-left.digg-story__related-link__source-link
 {
 	background-color:#0026FF;
 }
 
-span.bias-left.digg-story__metadata-source
+span.bias-left.digg-story__metadata-source, a.bias-left.digg-story__related-link__source-link
 {
 	background-color:#2E65A1;
 }
 
-span.bias-left-center.digg-story__metadata-source
+span.bias-left-center.digg-story__metadata-source, a.bias-left-center.digg-story__related-link__source-link
 {
 	background-color:#9DC8EB;
 }
 
-span.bias-center.digg-story__metadata-source
+span.bias-center.digg-story__metadata-source, a.bias-center.digg-story__related-link__source-link
 {
 	background-color:#9766A0;
 }
 
-span.bias-right-center.digg-story__metadata-source
+span.bias-right-center.digg-story__metadata-source, a.bias-right-center.digg-story__related-link__source-link
 {
 	background-color:#CB9A98;
 }
 
-span.bias-right.digg-story__metadata-source
+span.bias-right.digg-story__metadata-source, a.bias-right.digg-story__related-link__source-link
 {
 	background-color:#CB2127;
 }
 
-span.bias-extreme-right.digg-story__metadata-source
+span.bias-extreme-right.digg-story__metadata-source, a.bias-extreme-right.digg-story__related-link__source-link
 {
 	background-color:#FF0000;
 }
 
-span.bias-satire.digg-story__metadata-source
+span.bias-satire.digg-story__metadata-source, a.bias-satire.digg-story__related-link__source-link
 {
 	background-color:#007F0E;
 }
 
-span.bias-fake.digg-story__metadata-source
+span.bias-fake.digg-story__metadata-source, a.bias-fake.digg-story__related-link__source-link
 {
 	background-color:#000000;
+}
+
+span.bias-unknown.digg-story__metadata-source, a.bias-unknown.digg-story__related-link__source-link
+{
+	background-color:#CCCCCC;
 }

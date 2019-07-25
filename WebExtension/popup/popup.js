@@ -60,7 +60,7 @@ $("#btnFacts").on("click", function (e) {
 		$(factSourceButton).on("click", function () {
 			$('#factSourceTable tbody').empty();
 			factPack.Sources.forEach(function(src) {				  
-				$('#factSourceTable tbody').append('<tr><td><a target="_blank" href="'+src.URL+'">'+src.Organization+'</a></td><td>' + (src.ClaimValue == "0" ? "False" : "True") +'</td></tr>');
+				$('#factSourceTable tbody').append('<tr><td><a target="_blank" href="'+src.URL+'">'+src.Organization+'</a></td><td>' + getSourceClaimText(src.ClaimValue) +'</td></tr>');
 			});
 			
 			$("#factSourceTable tbody a").on("click", function(e)
@@ -172,6 +172,36 @@ function updateActiveTab(tabs) {
 
 
 
+}
+
+function getSourceClaimText(claimId)
+{
+	if (claimId == 0)
+	{
+		return "False";
+	}
+	else if (claimId == 1)
+	{
+		return "True";
+	}
+	else if (claimId == 2)
+	{
+		return "Unproven";
+	}
+	else if (claimId == 3)
+	{
+		return "Mixture";
+	}
+	else if (claimId == 4)
+	{
+		return "Miscaptioned";
+	}
+	else if (claimId == 5)
+	{
+		return "Mostly False";
+	}
+	
+	return "N/A";
 }
 
 if (browser)
