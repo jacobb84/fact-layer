@@ -74,5 +74,13 @@
 	{
 	  "alias": "work.qz.com",
 	  "host": "qz.com"
-	}
+	},
+	{
+	  "alias" : "thelastlineofdefense.online",
+	  "host" : "thelastlineofdefense.org"
+	 },
+	{
+	  "alias" : "nnettle.com",
+	  "host" : "neonnettle.com"
+	 }
 ]

@@ -164,5 +164,126 @@
 				"ClaimValue" : "0"
 			}
 		]
+	},
+	{
+		"ID" : "5A4D733E8CDB4AA394CC5F890D817353",
+		"Claim" : "'Melbourne Antifa' Claimed Responsibility for the Vegas Massacre",
+		"Rating" : "False",
+		"Sources": [
+			{
+				"Organization" : "Snopes",
+				"URL" : "https://www.snopes.com/did-melbourne-antifa-claim-responsibility-for-the-vegas-massacre/",
+				"ClaimType" : "3",
+				"ClaimValue" : "0"
+			},
+			{
+				"Organization" : "PolitiFact",
+				"URL" : "http://www.politifact.com/truth-o-meter/article/2017/oct/02/hoaxes-fake-news-about-las-vegas-massacre/",
+				"ClaimType" : "3",
+				"ClaimValue" : "0"
+			}
+		]
+	},
+	{
+		"ID" : "0897CE46255A4C3394D3A1EBB1BB21B3",
+		"Claim" : "Counterprotesters at 'Unite the Right' rally in Chartlottesville were 'paid to make choas'",
+		"Rating" : "False",
+		"Sources": [
+			{
+				"Organization" : "FactCheck.org",
+				"URL" : "http://www.factcheck.org/2017/08/counterprotesters-paid-charlottesville/",
+				"ClaimType" : "3",
+				"ClaimValue" : "0"
+			},
+			{
+				"Organization" : "PolitiFact",
+				"URL" : "http://www.politifact.com/punditfact/statements/2017/aug/18/blog-posting/blog-posts-wrongly-say-theres-proof-democrats-hire/",
+				"ClaimType" : "3",
+				"ClaimValue" : "0"
+			},
+			{
+				"Organization" : "Snopes",
+				"URL" : "https://www.snopes.com/crowds-on-demand/",
+				"ClaimType" : "3",
+				"ClaimValue" : "2"
+			}
+		]
+	},
+	{
+		"ID" : "981E5832DB7E49D2AD4A21845624DE05",
+		"Claim" : "NASA Confirms Earth Will Experience 15 Days Of Darkness In November",
+		"Rating" : "False",
+		"Sources": [
+			{
+				"Organization" : "FactCheck.org",
+				"URL" : "http://www.factcheck.org/2017/08/earth-wont-go-dark-days/",
+				"ClaimType" : "3",
+				"ClaimValue" : "0"
+			},
+			{
+				"Organization" : "Snopes",
+				"URL" : "https://www.snopes.com/15-days-darkness-november/",
+				"ClaimType" : "3",
+				"ClaimValue" : "0"
+			}
+		]
+	},
+	{
+		"ID" : "3FDC28E4ADA14F00942E1007AABF27CD",
+		"Claim" : "Trump Dumps Entire Box of Fish Food into Koi Pond",
+		"Rating" : "Misleading",
+		"Sources": [
+			{
+				"Organization" : "Politifact",
+				"URL" : "http://www.politifact.com/truth-o-meter/article/2017/nov/06/donald-trump-and-fish-food-dump-how-early-reports-/",
+				"ClaimType" : "3",
+				"ClaimValue" : "-1"
+			},
+			{
+				"Organization" : "Snopes",
+				"URL" : "https://www.snopes.com/did-trump-impatiently-dump-fish-food-in-japanese-koi-pond/",
+				"ClaimType" : "3",
+				"ClaimValue" : "4"
+			}
+		]
+	},
+	{
+		"ID" : "5D393284AAAA48D89D3DC6BD9B3065F7",
+		"Claim" : "CNN Staged a Hurricane Harvey Rescue Video",
+		"Rating" : "False",
+		"Sources": [
+			{
+				"Organization" : "Snopes",
+				"URL" : "https://www.snopes.com/cnn-staged-hurricane-harvey-rescue-video/",
+				"ClaimType" : "3",
+				"ClaimValue" : "0"
+			}
+		]
+	},
+	{
+		"ID" : "232785A278974EF7A6D673071D429600",
+		"Claim" : "Judge Rules CNN is 'Fake News'",
+		"Rating" : "Misleading",
+		"Sources": [
+			{
+				"Organization" : "Snopes",
+				"URL" : "https://www.snopes.com/cnn-fake-news/",
+				"ClaimType" : "3",
+				"ClaimValue" : "5"
+			}
+		]
+	},
+	{
+		"ID" : "9DB0BFCA99C948DAB105405B4C888851",
+		"Claim" : "Taxypayers paid $4 million for President Obama to play golf with Tiger Woods",
+		"Rating" : "Misleading",
+		"Sources": [
+			{
+				"Organization" : "Snopes",
+				"URL" : "https://www.snopes.com/obama-golf-outing-with-tiger-woods/",
+				"ClaimType" : "3",
+				"ClaimValue" : "5"
+			}
+		]
 	}
 ]

@@ -54,6 +54,12 @@
 				"RefutedBy" : [
 					"922C915BA7114156AC80EBF191422363"
 				]
+			},
+			{
+				"Path" : "/sports/2016/10/28/good-king-obamas-golf-trip-tiger-woods-cost-taxpayers-3-6-million-dollars/",
+				"RefutedBy" : [
+					"9DB0BFCA99C948DAB105405B4C888851"
+				]
 			}
 			
 		]
@@ -65,6 +71,18 @@
 				"Path" : "/global-warming-is-a-myth-say-58-scientific-papers-in-2017/",
 				"RefutedBy" : [
 					"B989C423179E4636BAE17966F17DE1B0"
+				]
+			},
+			{
+				"Path" : "/cnn-accused-of-staging-hurricane-rescue-video/",
+				"RefutedBy" : [
+					"5D393284AAAA48D89D3DC6BD9B3065F7"
+				]
+			},
+			{
+				"Path" : "/court-rules-that-cnn-officially-puts-out-fake-news/",
+				"RefutedBy" : [
+					"232785A278974EF7A6D673071D429600"
 				]
 			}
 		]
@@ -158,6 +176,12 @@
 				"RefutedBy" : [
 					"CE0E9276CC804759828DAE7EBF9D0489"
 				]
+			},
+			{
+				"Path" : "/news/2017/11/06/donald-trump-dumps-entire-box-fish-food-koi-pond-japan-visit/",
+				"RefutedBy" : [
+					"3FDC28E4ADA14F00942E1007AABF27CD"
+				]
 			}
 		]
 	},
@@ -196,6 +220,12 @@
 				"Path" : "/news/science/jet-stream-crossing-equator-global-climate-emergency-dismissed-debunked-a7113241.html",
 				"RefutedBy" : [
 					"85301D55CD8C4B9A8B03C4F62B435663"
+				]
+			},
+			{
+				"Path" : "/news/world/asia/donald-trump-japan-fish-food-box-tokyo-palace-shinzo-abe-bonding-ritual-akasaka-melania-a8039531.html",
+				"RefutedBy" : [
+					"3FDC28E4ADA14F00942E1007AABF27CD"
 				]
 			}
 		]
@@ -262,6 +292,160 @@
 				"Path" : "/forum/t1229217/",
 				"RefutedBy" : [
 					"CCD1F87B065640778B3886C2820B62B4"
+				]
+			}
+		]
+	},
+	{
+		"Domain" : "puppetstringnews.com",
+		"Pages" : [
+			{
+				"Path" : "/blog/antifa-claims-responsibility-for-las-vegas-attack",
+				"RefutedBy" : [
+					"5A4D733E8CDB4AA394CC5F890D817353"
+				]
+			}
+		]
+	},
+	{
+		"Domain" : "dailymail.co.uk",
+		"Pages" : [
+			{
+				"Path" : "/news/article-4942668/Melbourne-Antifa-extremists-praises-Las-Vegas-shooter.html",
+				"RefutedBy" : [
+					"5A4D733E8CDB4AA394CC5F890D817353"
+				]
+			}
+		]
+	},
+	{
+		"Domain" : "newsuptoday.com",
+		"Pages" : [
+			{
+				"Path" : "/bombshell-internet-sleuths-just-found-smoking-gun-dems-planning-violence-charlottesville/",
+				"RefutedBy" : [
+					"0897CE46255A4C3394D3A1EBB1BB21B3"
+				]
+			}
+		]
+	},
+	{
+		"Domain" : "allnewspipeline.com",
+		"Pages" : [
+			{
+				"Path" : "/Virginia_Fallout_Was_Planned.php",
+				"RefutedBy" : [
+					"0897CE46255A4C3394D3A1EBB1BB21B3"
+				]
+			}
+		]
+	},
+	{
+		"Domain" : "reflectionofmind.org",
+		"Pages" : [
+			{
+				"Path" : "/nasa-confirms-earth-will-experience-15-days-darkness-november-2017/",
+				"RefutedBy" : [
+					"981E5832DB7E49D2AD4A21845624DE05"
+				]
+			}
+		]
+	},
+	{
+		"Domain" : "cnn.com",
+		"Pages" : [
+			{
+				"Path" : "/2017/11/06/politics/donald-trump-koi-pond-japan/index.html",
+				"RefutedBy" : [
+					"3FDC28E4ADA14F00942E1007AABF27CD"
+				]
+			}
+		]
+	},
+	{
+		"Domain" : "nydailynews.com",
+		"Pages" : [
+			{
+				"Path" : "/news/world/twitter-photo-trump-overfeeding-koi-article-1.3614327",
+				"RefutedBy" : [
+					"3FDC28E4ADA14F00942E1007AABF27CD"
+				]
+			}
+		]
+	},
+	{
+		"Domain" : "nydailynews.com",
+		"Pages" : [
+			{
+				"Path" : "/news/world/twitter-photo-trump-overfeeding-koi-article-1.3614327",
+				"RefutedBy" : [
+					"3FDC28E4ADA14F00942E1007AABF27CD"
+				]
+			}
+		]
+	},
+	{
+		"Domain" : "constitution.com",
+		"Pages" : [
+			{
+				"Path" : "/fake-news-cnn-caught-faking-harvey-rescue-video-pathetic-stunt/",
+				"RefutedBy" : [
+					"5D393284AAAA48D89D3DC6BD9B3065F7"
+				]
+			}
+		]
+	},
+	{
+		"Domain" : "americanthinker.com",
+		"Pages" : [
+			{
+				"Path" : "/blog/2017/08/in_houston_is_cnn_that_desperate.html",
+				"RefutedBy" : [
+					"5D393284AAAA48D89D3DC6BD9B3065F7"
+				]
+			}
+		]
+	},
+	{
+		"Domain" : "washingtontimes.com",
+		"Pages" : [
+			{
+				"Path" : "/news/2016/oct/26/obama-golf-weekend-tiger-woods-2013-more-36m/",
+				"RefutedBy" : [
+					"9DB0BFCA99C948DAB105405B4C888851"
+				]
+			}
+		]
+	},
+	{
+		"Domain" : "abcnews.go.com",
+		"Pages" : [
+			{
+				"Path" : "/Politics/president-obamas-golf-trip-tiger-woods-cost-taxpayers/story?id=43132865",
+				"RefutedBy" : [
+					"9DB0BFCA99C948DAB105405B4C888851"
+				]
+			}
+		]
+	},
+	{
+		"Domain" : "businessinsider.com",
+		"Pages" : [
+			{
+				"Path" : "/president-obama-tiger-woods-golf-trip-cost-taxpayers-a-lot-2016-10",
+				"RefutedBy" : [
+					"9DB0BFCA99C948DAB105405B4C888851"
+				]
+			}
+		]
+	},
+	{
+		"Domain" : "truthrevolt.org",
+		"Pages" : [
+			{
+				"Path" : "/news/taxpayers-sent-obama-golf-outing-tiger-woods-4-million",
+				"RefutedBy" : [
+					"9DB0BFCA99C948DAB105405B4C888851"
 				]
 			}
 		]
