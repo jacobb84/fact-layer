@@ -75,7 +75,7 @@ namespace FactLayer.Import
                 else
                 {
                     var site = new OrganizationSite();
-                    site.Name = HttpUtility.HtmlDecode(doc.QuerySelector("div.source-info-horizontal h1").InnerText);
+                    site.Name = HttpUtility.HtmlDecode(doc.QuerySelector("div.source-info-horizontal h2").InnerText);
                     site.Domain = ExtractDomainNameFromURL(siteInfo.Attributes["href"].Value);
                     site.OrganizationType = OrgType.NewsMedia;
 
@@ -136,7 +136,15 @@ namespace FactLayer.Import
         public static void Import(int currentPage)
         {
             var doc = new HtmlAgilityPack.HtmlDocument();
-            var request = WebRequest.Create(string.Format(ConfigurationManager.AppSettings["AllSidesURL"], currentPage));
+            WebRequest request = null;
+            if (currentPage == 0)
+            {
+                request = WebRequest.Create(ConfigurationManager.AppSettings["AllSidesURL"]);
+            } else
+            {
+                request = WebRequest.Create(ConfigurationManager.AppSettings["AllSidesURL"]+"&page="+currentPage);
+            }
+
             var response = (HttpWebResponse)request.GetResponse();
             string html;
             using (var sr = new StreamReader(response.GetResponseStream()))

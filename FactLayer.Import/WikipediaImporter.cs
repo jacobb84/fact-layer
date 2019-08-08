@@ -15,8 +15,15 @@ namespace FactLayer.Import
             {
                 if (!String.IsNullOrEmpty(site.Wikipedia))
                 {
-                    site.Description = GetWikipediaDescription(site.Wikipedia);
-                    Console.WriteLine("Adding " + site.Name + " description.");
+                    try
+                    {
+                        site.Description = GetWikipediaDescription(site.Wikipedia);
+                        Console.WriteLine("Adding " + site.Name + " description.");
+                    } catch (Exception ex)
+                    {
+                        Console.WriteLine(ex.Message);
+                    }
+
                 }
             }
 

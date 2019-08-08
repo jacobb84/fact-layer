@@ -1,65 +1,61 @@
-div.bias span.domain
+a.bias
 {
 	padding: 3px 5px;
-	color: #FFFFFF;
+	color: #FFFFFF !important;
 	border-radius: 5px;
-}
-
-div.bias p.title {
 	overflow:visible;
 	margin-bottom: 5px;
 }
 
-div.bias span.domain a {
-	color: #FFFFFF;
-}
-
-div.bias-extreme-left span.domain
+a.bias-extreme-left
 {
 	background-color:#0026FF;
 }
 
-div.bias-left span.domain
+a.bias-left
 {
 	background-color:#2E65A1;
 }
 
-div.bias-left-center span.domain
+a.bias-left-center
 {
 	background-color:#9DC8EB;
+	color: #111 !important;
 }
 
-div.bias-center span.domain
+a.bias-center
 {
 	background-color:#9766A0;
 }
 
-div.bias-right-center span.domain
+a.bias-right-center
 {
 	background-color:#CB9A98;
+	color: #111 !important;
 }
 
-div.bias-right span.domain
+a.bias-right
 {
 	background-color:#CB2127;
 }
 
-div.bias-extreme-right span.domain
+a.bias-extreme-right
 {
 	background-color:#FF0000;
 }
 
-div.bias-satire span.domain
+a.bias-satire
 {
 	background-color:#007F0E;
 }
 
-div.bias-fake span.domain
+a.bias-fake
 {
 	background-color:#000000;
 }
 
-div.bias-unknown span.domain
+a.bias-unknown
 {
 	background-color:#CCCCCC;
+	color: #111 !important;
 }

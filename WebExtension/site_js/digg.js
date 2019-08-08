@@ -14,8 +14,6 @@ function addInformationToNode(obj)
 		browser.runtime.sendMessage({command: "getWebsite", domain: domain}, function(response) {
 			if (response != null && response.websiteResult != null)
 			{
-				console.log(response.websiteResult);
-				console.log(response.overallBias);
 				$(sourceTag).removeClass("bias-extreme-left bias-left bias-left-center bias-center bias-right-center bias-right bias-extreme-right bias-satire bias-fake");
 				$(sourceTag).addClass(getCSS(response.overallBias, response.websiteResult.OrganizationType));
 				$(sourceTag).attr("title", response.websiteResult.Name + " | " + response.biasText);
@@ -39,7 +37,6 @@ if (browser)
 		  mutations.forEach(function(mutation) {
 
 			  mutation.addedNodes.forEach(function(node) {
-				console.log(node);
 				if ($(node).prop("tagName") == "ARTICLE")
 				{
 					addInformationToNode(node);
@@ -59,7 +56,6 @@ if (browser)
 	//monitor related news overlays
 	$("#js--story-sources__related").each(function (index, obj) {
 		var target = obj;
-		console.log(obj);
 		// create an observer instance
 		var observer = new MutationObserver(function(mutations) {
 		  mutations.forEach(function(mutation) {

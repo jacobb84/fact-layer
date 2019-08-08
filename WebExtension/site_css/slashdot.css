@@ -21,6 +21,7 @@ a.bias-left
 a.bias-left-center
 {
 	background-color:#9DC8EB;
+	color: #111 !important;
 }
 
 a.bias-center
@@ -31,6 +32,7 @@ a.bias-center
 a.bias-right-center
 {
 	background-color:#CB9A98;
+	color: #111 !important;
 }
 
 a.bias-right
@@ -56,4 +58,5 @@ a.bias-fake
 a.bias-unknown
 {
 	background-color:#CCCCCC;
+	color: #111 !important;
 }

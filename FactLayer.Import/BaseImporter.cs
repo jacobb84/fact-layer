@@ -87,7 +87,7 @@ namespace FactLayer.Import
             }
             doc.LoadHtml(html);
 
-            var firstParagraph = doc.QuerySelectorAll("div.mw-parser-output > p").Where(s => !s.InnerText.ToLower().StartsWith("coordinates")).FirstOrDefault().InnerText;
+            var firstParagraph = doc.QuerySelectorAll("div.mw-parser-output > p:not(.mw-empty-elt)").Where(s => !s.InnerText.ToLower().StartsWith("coordinates")).FirstOrDefault().InnerText;
             //Strip out links / citations
             firstParagraph = Regex.Replace(firstParagraph, @"\<[a|sup|/a|/sup].*\>", "");
             firstParagraph = Regex.Replace(firstParagraph, @"\[\d*\]", "");

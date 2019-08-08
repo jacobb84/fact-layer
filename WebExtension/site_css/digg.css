@@ -6,7 +6,7 @@ span.bias.digg-story__metadata-source, a.bias.digg-story__related-link__source-l
 }
 
 span.bias.digg-story__metadata-source a, a.bias.digg-story__related-link__source-link {
-	color: #FFFFFF;
+	color: #FFFFFF !important;
 }
 
 span.bias-extreme-left.digg-story__metadata-source, a.bias-extreme-left.digg-story__related-link__source-link
@@ -22,6 +22,7 @@ span.bias-left.digg-story__metadata-source, a.bias-left.digg-story__related-link
 span.bias-left-center.digg-story__metadata-source, a.bias-left-center.digg-story__related-link__source-link
 {
 	background-color:#9DC8EB;
+	color: #111 !important;
 }
 
 span.bias-center.digg-story__metadata-source, a.bias-center.digg-story__related-link__source-link
@@ -32,6 +33,7 @@ span.bias-center.digg-story__metadata-source, a.bias-center.digg-story__related-
 span.bias-right-center.digg-story__metadata-source, a.bias-right-center.digg-story__related-link__source-link
 {
 	background-color:#CB9A98;
+	color: #111 !important;
 }
 
 span.bias-right.digg-story__metadata-source, a.bias-right.digg-story__related-link__source-link
@@ -57,4 +59,5 @@ span.bias-fake.digg-story__metadata-source, a.bias-fake.digg-story__related-link
 span.bias-unknown.digg-story__metadata-source, a.bias-unknown.digg-story__related-link__source-link
 {
 	background-color:#CCCCCC;
+	color: #111 !important;
 }
