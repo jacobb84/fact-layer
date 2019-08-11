@@ -79,18 +79,18 @@ namespace FactLayer.Import
                         if (site.Sources.Any(s => s.Organization == SourceOrganization.MBFC && s.ClaimType == SourceClaimType.Bias))
                         {
                             var source = site.Sources.Where(s => s.Organization == SourceOrganization.MBFC && s.ClaimType == SourceClaimType.Bias).Single();
-                            source.ClaimValue = (int)GetBias(doc.QuerySelector("h1 img").Attributes["src"].Value);
+                            source.ClaimValue = (int)GetBias(doc);
                             Console.WriteLine("Updating Bias Source for " + site.Name);
                         }
                         else
                         {
-                            if (GetBias(doc.QuerySelector("h1 img").Attributes["src"].Value) != Bias.Unknown)
+                            if (GetBias(doc) != Bias.Unknown)
                             {
                                 var source = new Source();
                                 source.Organization = SourceOrganization.MBFC;
                                 source.URL = url;
                                 source.ClaimType = SourceClaimType.Bias;
-                                source.ClaimValue = (int)GetBias(doc.QuerySelector("h1 img").Attributes["src"].Value);
+                                source.ClaimValue = (int)GetBias(doc);
                                 site.Sources.Add(source);
                                 Console.WriteLine("Added Bias Source for " + site.Name);
                             }
@@ -114,13 +114,13 @@ namespace FactLayer.Import
                             }
                         }
 
-                        if (GetBias(doc.QuerySelector("h1 img").Attributes["src"].Value) != Bias.Unknown)
+                        if (GetBias(doc) != Bias.Unknown)
                         {
                             var source = new Source();
                             source.Organization = SourceOrganization.MBFC;
                             source.URL = url;
                             source.ClaimType = SourceClaimType.Bias;
-                            source.ClaimValue = (int)GetBias(doc.QuerySelector("h1 img").Attributes["src"].Value);
+                            source.ClaimValue = (int)GetBias(doc);
                             site.Sources.Add(source);
                         }
 
@@ -158,8 +158,15 @@ namespace FactLayer.Import
             }
         }
 
-        private static Bias GetBias(string bias)
+        private static Bias GetBias(HtmlDocument doc)
         {
+            var biasImage = doc.QuerySelector("h1 img");
+            if (biasImage == null)
+            {
+                biasImage = doc.QuerySelector("h2 img");
+            }
+            var bias = biasImage.Attributes["src"].Value;
+
             if (bias.Contains("leftcenter"))
             {
                 return Bias.LeftCenter;
@@ -206,8 +213,8 @@ namespace FactLayer.Import
                 html = sr.ReadToEnd();
             }
             doc.LoadHtml(html);
-            var rows = doc.DocumentNode.QuerySelectorAll("article p a");
-            foreach(var row in rows)
+            var rows = doc.DocumentNode.QuerySelectorAll("table.sort a");
+            foreach (var row in rows)
             {
                 var siteUrl = row.Attributes["href"].Value;
                 if (siteUrl != null)

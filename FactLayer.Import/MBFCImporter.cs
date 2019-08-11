@@ -57,11 +57,11 @@ namespace FactLayer.Import
                 }
                 doc.LoadHtml(html);
                 var siteName = HttpUtility.HtmlDecode(doc.QuerySelector("h1.page-title").InnerHtml);
-                var domainLink = doc.QuerySelectorAll("div.entry-content p a[target=_blank]").Where(s => s.Attributes["href"] != null && s.InnerHtml.Trim() == s.Attributes["href"].Value.Trim()).FirstOrDefault();
+                var domainLink = doc.QuerySelectorAll("div.entry p a[target=_blank]").Where(s => s.Attributes["href"] != null && s.InnerHtml.Trim() == s.Attributes["href"].Value.Trim()).FirstOrDefault();
                 if (domainLink == null)
                 {
-                    domainLink = doc.QuerySelectorAll("div.entry-content p a").Where(s => s.InnerHtml == siteName || (s.Attributes["href"] != null && s.InnerHtml.Trim() == s.Attributes["href"].Value.Trim())).FirstOrDefault();
-                    Console.WriteLine("Attempting match with secondary lookup");
+                    domainLink = doc.QuerySelectorAll("div.entry p a").Where(s => s.InnerHtml == siteName || (s.Attributes["href"] != null && s.InnerHtml.Trim() == s.Attributes["href"].Value.Trim())).FirstOrDefault();
+                    Console.WriteLine(siteName +": Domain not found, attempting match with secondary lookup");
                 }
                 if (domainLink != null)
                 {
@@ -76,7 +76,7 @@ namespace FactLayer.Import
                         if (site.Sources.Any(s => s.Organization == SourceOrganization.MBFC && s.ClaimType == SourceClaimType.Bias))
                         {
                             var source = site.Sources.Where(s => s.Organization == SourceOrganization.MBFC && s.ClaimType == SourceClaimType.Bias).Single();
-                            source.ClaimValue = (int)GetBias(doc.QuerySelector("h1 img").Attributes["src"].Value);
+                            source.ClaimValue = (int)GetBias(doc);
                             Console.WriteLine("Updating Source for " + site.Name);
                         } else
                         {
@@ -84,7 +84,7 @@ namespace FactLayer.Import
                             source.Organization = SourceOrganization.MBFC;
                             source.URL = url;
                             source.ClaimType = SourceClaimType.Bias;
-                            source.ClaimValue = (int)GetBias(doc.QuerySelector("h1 img").Attributes["src"].Value);
+                            source.ClaimValue = (int)GetBias(doc);
                             site.Sources.Add(source);
                             Console.WriteLine("Added Source for " + site.Name);
                         }
@@ -111,7 +111,7 @@ namespace FactLayer.Import
                         source.Organization = SourceOrganization.MBFC;
                         source.URL = url;
                         source.ClaimType = SourceClaimType.Bias;
-                        source.ClaimValue = (int)GetBias(doc.QuerySelector("h1 img").Attributes["src"].Value);
+                        source.ClaimValue = (int)GetBias(doc);
                         site.Sources.Add(source);
                         Console.WriteLine("Loaded " + site.Name);
                         return site;
@@ -128,8 +128,16 @@ namespace FactLayer.Import
             }
         }
 
-        private static Bias GetBias(string bias)
+        private static Bias GetBias(HtmlDocument doc)
         {
+            var biasImage = doc.QuerySelector("h1 img");
+            if (biasImage == null)
+            {
+                biasImage = doc.QuerySelector("h2 img");
+            }
+
+            var bias = biasImage.Attributes["src"].Value;
+
             if (bias.Contains("leftcenter"))
             {
                 return Bias.LeftCenter;
@@ -175,7 +183,7 @@ namespace FactLayer.Import
                 html = sr.ReadToEnd();
             }
             doc.LoadHtml(html);
-            var rows = doc.DocumentNode.QuerySelectorAll("article p a");
+            var rows = doc.DocumentNode.QuerySelectorAll("table.sort a");
             foreach(var row in rows)
             {
                 var siteUrl = row.Attributes["href"].Value;

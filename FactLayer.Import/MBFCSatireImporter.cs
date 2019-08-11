@@ -99,8 +99,8 @@ namespace FactLayer.Import
                 html = sr.ReadToEnd();
             }
             doc.LoadHtml(html);
-            var rows = doc.DocumentNode.QuerySelectorAll("article p a");
-            foreach(var row in rows)
+            var rows = doc.DocumentNode.QuerySelectorAll("table.sort a");
+            foreach (var row in rows)
             {
                 var siteUrl = row.Attributes["href"].Value;
                 if (siteUrl != null)
