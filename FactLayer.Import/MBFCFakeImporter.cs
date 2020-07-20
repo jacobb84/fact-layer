@@ -28,10 +28,10 @@ namespace FactLayer.Import
                 }
                 doc.LoadHtml(html);
                 var siteName = HttpUtility.HtmlDecode(doc.QuerySelector("h1.page-title").InnerHtml);
-                var domainLink = doc.QuerySelectorAll("div.entry-content p a[target=_blank]").Where(s => s.InnerHtml == s.Attributes["href"].Value).FirstOrDefault();
+                var domainLink = doc.QuerySelectorAll("div.entry p a[target=_blank]").Where(s => s.InnerHtml == s.Attributes["href"].Value).FirstOrDefault();
                 if (domainLink == null)
                 {
-                    domainLink = doc.QuerySelectorAll("div.entry-content p a").Where(s => s.InnerHtml == siteName || (s.Attributes["href"] != null && (s.InnerHtml.Trim() == s.Attributes["href"].Value.Trim().TrimEnd('#') || s.InnerHtml.Trim() == s.Attributes["href"].Value.Replace("http://","").Trim()))).FirstOrDefault();
+                    domainLink = doc.QuerySelectorAll("div.entry p a").Where(s => s.InnerHtml == siteName || (s.Attributes["href"] != null && (s.InnerHtml.Trim() == s.Attributes["href"].Value.Trim().TrimEnd('#') || s.InnerHtml.Trim() == s.Attributes["href"].Value.Replace("http://","").Trim()))).FirstOrDefault();
                     Console.WriteLine("Attempting match with secondary lookup");
                 }
                 if (domainLink != null)
@@ -41,26 +41,58 @@ namespace FactLayer.Import
                     {
                         return null;
                     }
-                    
-                    var biases = doc.QuerySelectorAll("div.entry-content p").Where(s => s.InnerText.Trim().ToLower().StartsWith("bias:")).FirstOrDefault();
-                    var orgType = OrgType.Fake;
+
+                    //Start by defaulting based on fact reporting
+                    OrgType orgType = OrgType.NewsMedia;
+                    var factRating = doc.QuerySelector("div.entry-content p img");
+                    if (factRating == null)
+                    {
+                        factRating = doc.QuerySelector("header.entry-header p img");
+                    }
+
+                    if (factRating != null)
+                    {
+                        if (factRating.Attributes["src"].Value .Contains("MBFCLow"))
+                        {
+                            orgType = OrgType.ExtremelyUnreliable;
+                        }
+                        else if (factRating.Attributes["src"].Value.Contains("MBFCVeryLow"))
+                        {
+                            orgType = OrgType.Fake;
+                        }
+                    }
+
+                    //Examine the reasoning, and adjust based on listed answers.
+                    var biases = doc.QuerySelectorAll("div.entry-content p").Where(s => s.InnerText.Trim().ToLower().StartsWith("reasoning:")).FirstOrDefault();
+
+                    if (biases != null && (biases.InnerText.ToLower().Contains("fake news")))
+                    {
+                        orgType = OrgType.Fake;
+                    }
+
+                    if (biases != null && (biases.InnerText.ToLower().Contains("some fake news")))
+                    {
+                        orgType = OrgType.ExtremelyUnreliable;
+                    }
 
                     if ((biases != null && (biases.InnerText.ToLower().Contains("hate group") || biases.InnerText.ToLower().Contains("anti-lgbt") || biases.InnerText.ToLower().Contains("anti-islam"))))
                     {
                         orgType = OrgType.HateGroup;
-                    }
+                    }                    
 
                     if (_sites.Any(s => s.Domain.Equals(domain)))
                     {
                         var site = _sites.Where(s => s.Domain.Equals(domain)).Single();
+                        site.Sources.RemoveAll(s => s.Organization == SourceOrganization.MBFC && s.ClaimType == SourceClaimType.Veracity);
                         site.OrganizationType = orgType;
-                        if (!site.Sources.Any(s => s.Organization == SourceOrganization.MBFC && s.ClaimType == SourceClaimType.Veracity) && orgType == OrgType.Fake)
+                        if (!site.Sources.Any(s => s.Organization == SourceOrganization.MBFC && s.ClaimType == SourceClaimType.Veracity) && (orgType == OrgType.Fake || orgType == OrgType.ExtremelyUnreliable))
                         {
+                            
                             var source = new Source();
                             source.Organization = SourceOrganization.MBFC;
                             source.URL = url;
                             source.ClaimType = SourceClaimType.Veracity;
-                            source.ClaimValue = (int)OrgType.Fake;
+                            source.ClaimValue = (int)orgType;
                             site.Sources.Add(source);
                             Console.WriteLine("Added Veracity Source for " + site.Name);
                         } 
@@ -125,13 +157,13 @@ namespace FactLayer.Import
                         }
 
 
-                        if (orgType == OrgType.Fake)
+                        if (orgType == OrgType.Fake || orgType == OrgType.ExtremelyUnreliable)
                         {
                             var source = new Source();
                             source.Organization = SourceOrganization.MBFC;
                             source.URL = url;
                             source.ClaimType = SourceClaimType.Veracity;
-                            source.ClaimValue = (int)OrgType.Fake;
+                            source.ClaimValue = (int)orgType;
                             site.Sources.Add(source);
                         }
                         else if (orgType == OrgType.HateGroup)

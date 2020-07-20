@@ -27,9 +27,12 @@ function getSourcesByType(type)
 	
 	$("#sourceTable tbody a").on("click", function(e)
 	{
+		browser.tabs.create({url: $(this).prop('href'), active: false});
 		setTimeout(function() {
 			window.close();
 		},1);
+		e.preventDefault();
+		return false;
 	});
 }
 
@@ -64,11 +67,14 @@ $("#btnFacts").on("click", function (e) {
 			});
 			
 			$("#factSourceTable tbody a").on("click", function(e)
-				{
-					setTimeout(function() {
-						window.close();
-					},1);
-				});
+			{
+				browser.tabs.create({url: $(this).prop('href'), active: false});
+				setTimeout(function() {
+					window.close();
+				},1);
+				e.preventDefault();
+				return false;
+			});
 
 			$("#factContainer").hide();
 			$("#factSourceContainer").show();
@@ -138,9 +144,12 @@ function updateActiveTab(tabs) {
 				$('#btnCharity').show();
 				$("#btnCharity").on("click", function(e)
 				{
+					browser.tabs.create({url: $(this).prop('href'), active: false});
 					setTimeout(function() {
 						window.open("https://www.charitynavigator.org/index.cfm?bay=search.summary&orgid="+src.URL, '_blank');
 					},1);
+					e.preventDefault();
+					return false;
 				});
 
 			  }
@@ -154,9 +163,12 @@ function updateActiveTab(tabs) {
 			
 			$("#DescWell a").on("click", function(e)
 			{
+				browser.tabs.create({url: $(this).prop('href'), active: false});
 				setTimeout(function() {
 					window.close();
 				},1);
+				e.preventDefault();
+				return false;
 			});
 
 		} else {

@@ -9,7 +9,6 @@ function addInformationToNode(obj)
 	{
 		var domain = $(obj).parents("a").attr('href').replace('http://','').replace('https://','');
 		domain = domain.substring(0, domain.indexOf("/", 0));
-		console.log(domain);
 		if (domain != 'i.redd.it' && domain != 'i.imgur.com') {
 			browser.runtime.sendMessage({command: "getWebsite", domain: domain}, function(response) {
 				if (response != null && response.websiteResult != null)

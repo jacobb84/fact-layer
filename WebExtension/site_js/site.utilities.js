@@ -1,3 +1,9 @@
+//Handle chrome
+if (typeof browser === 'undefined') {
+    browser = chrome;
+}
+
+
 function getCSS(bias, orgType)
 {
 	if (orgType == 4)
@@ -9,7 +15,6 @@ function getCSS(bias, orgType)
 		return "bias bias-fake";
 	} 
 
-	
 	if (bias == -3)
 	{
 		return "bias bias-extreme-left";
@@ -40,4 +45,16 @@ function getCSS(bias, orgType)
 	}
 	
 	return "bias bias-unknown";
+}
+
+if (browser)
+{
+	browser.runtime.sendMessage({command: "getBiasColors"}, function(response) {
+		if (response != null && response.biasColors != null)
+		{
+			response.biasColors.forEach(function(biasColor) {
+				document.documentElement.style.setProperty('--fl-' + biasColor.bias + '-color', biasColor.color);
+			});
+		}
+	});
 }

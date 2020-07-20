@@ -17,6 +17,8 @@ namespace FactLayer.Import.Models
         Fake = 5,
         NonProfit = 6,
         FactChecker = 7,
-        HateGroup = 8
+        HateGroup = 8,
+        ExtremelyUnreliable = 9,
+        ClickBait = 10
     }
 }

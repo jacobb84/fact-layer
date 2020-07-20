@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "Fact Layer",
-  "version": "1.6.0.0",
+  "version": "1.7.0.0",
   "description": "Fact checking resource to help navigate the internet.",
   "icons": {
     "48": "icons/fact-layer.png",
@@ -52,11 +52,6 @@
       "js": ["libs/jquery.min.js", "site_js/site.utilities.js", "site_js/slashdot.js"],
 	  "css": ["site_css/slashdot.css"]
     }
-  ],
-    "applications": {
-      "gecko": {
-    	"id": "{a1dd1fdc-b274-43bb-b13a-81fb8bb3b913}"
-      }
-    }
+  ]
 
 }

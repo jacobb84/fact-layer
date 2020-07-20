@@ -23,7 +23,7 @@ namespace FactLayer.Import
             }
 
             var doc = new HtmlAgilityPack.HtmlDocument();
-            var request = (HttpWebRequest)WebRequest.Create("https://www.allsides.com" +url);
+            var request = (HttpWebRequest)WebRequest.Create("https://www.allsides.com" + url);
 
             var response = (HttpWebResponse)request.GetResponse();
             string html;
@@ -33,7 +33,7 @@ namespace FactLayer.Import
             }
             doc.LoadHtml(html);
 
-            var siteInfo = doc.QuerySelectorAll("a.www").LastOrDefault();
+            var siteInfo = doc.QuerySelectorAll(".dynamic-grid > a").FirstOrDefault();
             if (siteInfo != null)
             {
                 var domain = "";
@@ -41,11 +41,12 @@ namespace FactLayer.Import
                 if (url == "/news-source/suspend-belief-podcast")
                 {
                     domain = "suspendbeliefpodcast.com";
-                } else
+                }
+                else
                 {
                     domain = ExtractDomainNameFromURL(siteInfo.Attributes["href"].Value);
                 }
-                
+
                 if (IgnoreUrl(domain))
                 {
                     return null;
@@ -56,15 +57,16 @@ namespace FactLayer.Import
                     if (site.Sources.Any(s => s.Organization == SourceOrganization.AllSides && s.ClaimType == SourceClaimType.Bias))
                     {
                         var source = site.Sources.Where(s => s.Organization == SourceOrganization.AllSides && s.ClaimType == SourceClaimType.Bias).Single();
-                        source.ClaimValue = (int)GetBias(doc.QuerySelector("span.bias-value").InnerHtml.ToLower());
-                    } else
+                        source.ClaimValue = (int)GetBias(doc.QuerySelector(".rating-area a").InnerHtml.ToLower());
+                    }
+                    else
                     {
 
                         var source = new Source();
                         source.Organization = SourceOrganization.AllSides;
                         source.URL = "https://www.allsides.com" + url;
                         source.ClaimType = SourceClaimType.Bias;
-                        source.ClaimValue = (int)GetBias(doc.QuerySelector("span.bias-value").InnerHtml.ToLower());
+                        source.ClaimValue = (int)GetBias(doc.QuerySelector(".rating-area a").InnerHtml.ToLower());
                         site.Sources.Add(source);
                     }
 
@@ -75,13 +77,21 @@ namespace FactLayer.Import
                 else
                 {
                     var site = new OrganizationSite();
-                    site.Name = HttpUtility.HtmlDecode(doc.QuerySelector("div.source-info-horizontal h2").InnerText);
+                    site.Name = HttpUtility.HtmlDecode(doc.QuerySelector(".latest_news_source h1").InnerText);
                     site.Domain = ExtractDomainNameFromURL(siteInfo.Attributes["href"].Value);
-                    site.OrganizationType = OrgType.NewsMedia;
-
-                    if (doc.QuerySelector("a.wikipedia") != null && doc.QuerySelector("a.wikipedia").Attributes["href"].Value.Contains("wikipedia"))
+                    if (doc.QuerySelector(".latest_news_source p").InnerText == "Think Tank / Policy Group")
                     {
-                        var wikiUrl = doc.QuerySelector("a.wikipedia").Attributes["href"].Value;
+                        site.OrganizationType = OrgType.ThinkTank;
+                    }
+                    else
+                    {
+                        site.OrganizationType = OrgType.NewsMedia;
+                    }
+
+
+                    if (doc.QuerySelector("a[title=Wikipedia]") != null && doc.QuerySelector("a[title=Wikipedia]").Attributes["href"].Value.Contains("wikipedia"))
+                    {
+                        var wikiUrl = doc.QuerySelector("a[title=Wikipedia]").Attributes["href"].Value;
                         site.Description = GetWikipediaDescription(wikiUrl);
                         site.Wikipedia = wikiUrl;
                     }
@@ -90,14 +100,15 @@ namespace FactLayer.Import
                     source.Organization = SourceOrganization.AllSides;
                     source.URL = "https://www.allsides.com" + url;
                     source.ClaimType = SourceClaimType.Bias;
-                    source.ClaimValue = (int)GetBias(doc.QuerySelector("span.bias-value").InnerHtml.ToLower());
+                    source.ClaimValue = (int)GetBias(doc.QuerySelector(".rating-area a").InnerHtml.ToLower());
                     site.Sources.Add(source);
 
 
                     Console.WriteLine("Loaded " + site.Name);
                     return site;
                 }
-            } else
+            }
+            else
             {
                 return null;
             }
@@ -153,7 +164,13 @@ namespace FactLayer.Import
             }
             doc.LoadHtml(html);
             var rows = doc.DocumentNode.QuerySelectorAll("table tr");
-            foreach(var row in rows)
+
+            if (doc.DocumentNode.QuerySelector("table tr > td").InnerText == "No Record(s) found.")
+            {
+                return;
+            }
+
+            foreach (var row in rows)
             {
                 var siteUrl = row.QuerySelector("td.source-title a");
                 if (siteUrl != null)
@@ -163,7 +180,7 @@ namespace FactLayer.Import
                     {
                         _sites.Add(site);
                     }
-                    
+
                 }
 
             }
@@ -180,7 +197,6 @@ namespace FactLayer.Import
             ServicePointManager.Expect100Continue = true;
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
             Import(0);
-            //LoadSite("/news-source/fox-news");
             return _sites;
         }
     }

@@ -17,7 +17,8 @@ namespace FactLayer.Import
             if (url == "facebook.com"
                 || url == "twitter.com"
                 || url == "itunes.apple.com"
-                || url == "yourcwtv.com")
+                || url == "yourcwtv.com"
+                || url == null)
             {
                 return true;
             }
@@ -63,7 +64,12 @@ namespace FactLayer.Import
 
         protected static string ExtractDomainNameFromURL(string Url)
         {
-            Url = Url.Replace(" ", "").Replace(",com",".com");
+            if (String.IsNullOrEmpty(Url))
+            {
+                return null;
+            }
+
+            Url = Url.Replace(" ", "").Replace(",com",".com").Replace("`","");
             if (!Url.Contains("://"))
                 Url = "http://" + Url;
 

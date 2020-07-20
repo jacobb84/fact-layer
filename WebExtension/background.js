@@ -3,7 +3,7 @@ if (typeof browser === 'undefined') {
     browser = chrome;
 }
 
-var orgSiteVersion = "1.2";
+var orgSiteVersion = "1.3";
 var aliasVersion = "1.0";
 var factMappingsVersion = "1.0";
 var factPacksVersion = "1.0";
@@ -14,14 +14,24 @@ var currentTabUrl = "";
 var currentWebsite = null;
 var currentArticle = null;
 
-var storage = function FactLayerStorage()
-{
-	this.websites =[];
-	this.regexWebsites =[];
-	this.aliases = [];
-	this.factMappings = [];
-	this.factPacks = [];
-	this.timestamps = {};
+var storage = {
+	websites: [],
+	regexWebsites: [],
+	aliases: [],
+	factMappings: [],
+	factPacks: [],
+	timestamps: {}
+}
+
+var settings = {
+	extremeLeftColor: "#0000FF",
+	leftColor: "#2E65A1",
+	leftCenterColor: "#9DC8EB",
+	centerColor: "#8D698D",
+	rightCenterColor: "#CDA59C",
+	rightColor: "#A52A2A",
+	extremeRightColor: "#FF0000",
+	satireColor: "#007F0E"
 }
 
 function getWebsite(domain)
@@ -93,7 +103,6 @@ function getJsonFile(url, storageProperty)
 
 function getTimestamps()
 {
-	console.log('fetching timestamps');
 	storage.timestamps = {};
 	var api = "http://factlayer.azurewebsites.net/timestamps.json?cachebust="+new Date().getTime();
 	$.ajax({
@@ -138,7 +147,7 @@ function getFactPacks()
  * Updates the browserAction icon to reflect the information of the current page.
  */
 function updateIcon(bias, orgType) {
-	var iconColor = FactLayerUtilities.getIconColor(bias, orgType);
+	var iconColor = FactLayerUtilities.getBiasColor(bias, orgType);
 	var iconImage = FactLayerUtilities.getIconImage(orgType);
 	
 	var img = new Image();
@@ -177,6 +186,12 @@ function getRegexWebsite(domain)
 		return isMatch;
 	});
 	return websiteResult;
+}
+
+function saveSettings() {
+	var browserStorage = {};
+	browserStorage["settings"] = settings;
+	browser.storage.local.set(browserStorage);
 }
 
 /*
@@ -255,12 +270,20 @@ function updateActiveTab(tabId, changeInfo, tabInfo) {
 }
 
 browser.storage.local.get(["regexWebsites","regexWebsitesUpdated", "websites","websitesUpdated", "installedVersion", "aliases", "aliasesUpdated", "factMappings", "factMappingsUpdated", "factPacks", "factPacksUpdated", "timestamps", "timestampsUpdated"], onGotItems);
-
+browser.storage.local.get(["settings"], onLoadSettings);
 // listen to tab URL changes
 browser.tabs.onUpdated.addListener(updateActiveTab);
 
 // listen to tab switching
 browser.tabs.onActivated.addListener(updateActiveTab);
+
+function onLoadSettings(item) {
+	if (item != null && !($.isEmptyObject(item) || item.length === 0))
+	{
+		settings = item.settings;
+	} 
+
+}
 
 function onGotItems(item) {
   if (item != null && $.isEmptyObject(item) || item.length === 0)
@@ -334,6 +357,21 @@ browser.runtime.onMessage.addListener(
 			  console.log(ex);
 		  }
 		  sendResponse({websiteResult: websiteResult, biasText: biasText, overallBias: overallBias});
+	  } 
+	  else if (request.command == "getBiasColors") 
+	  {
+		var biasColors = [];
+		biasColors.push({bias: 'extreme-left', color: FactLayerUtilities.getBiasColor(-3, 0)})
+		biasColors.push({bias: 'left', color: FactLayerUtilities.getBiasColor(-2, 0)})
+		biasColors.push({bias: 'left-center', color: FactLayerUtilities.getBiasColor(-1, 0)})
+		biasColors.push({bias: 'center', color: FactLayerUtilities.getBiasColor(0, 0)})
+		biasColors.push({bias: 'right-center', color: FactLayerUtilities.getBiasColor(1, 0)})
+		biasColors.push({bias: 'right', color: FactLayerUtilities.getBiasColor(2, 0)})
+		biasColors.push({bias: 'extreme-right', color: FactLayerUtilities.getBiasColor(3, 0)})
+		biasColors.push({bias: 'satire', color: FactLayerUtilities.getBiasColor(0, 4)})
+		biasColors.push({bias: 'fake', color: FactLayerUtilities.getBiasColor(0, 5)})
+		biasColors.push({bias: 'unknown', color: FactLayerUtilities.getBiasColor(-1, -1)})
+		sendResponse({biasColors: biasColors});
 	  }
 
   });

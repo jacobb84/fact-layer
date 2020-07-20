@@ -14,53 +14,53 @@ a.bias
 
 a.bias-extreme-left
 {
-	background-color:#0026FF;
+	background-color:var(--fl-extreme-left-color);
 }
 
 a.bias-left
 {
-	background-color:#2E65A1;
+	background-color:var(--fl-left-color);
 }
 
 a.bias-left-center
 {
-	background-color:#9DC8EB;
+	background-color:var(--fl-left-center-color);
 	color: #111 !important;
 }
 
 a.bias-center
 {
-	background-color:#9766A0;
+	background-color:var(--fl-center-color);
 }
 
 a.bias-right-center
 {
-	background-color:#CB9A98;
+	background-color:var(--fl-right-center-color);
 	color: #111 !important;
 }
 
 a.bias-right
 {
-	background-color:#CB2127;
+	background-color:var(--fl-right-color);
 }
 
 a.bias-extreme-right
 {
-	background-color:#FF0000;
+	background-color:var(--fl-extreme-right-color);
 }
 
 a.bias-satire
 {
-	background-color:#007F0E;
+	background-color:var(--fl-satire-color);
 }
 
 a.bias-fake
 {
-	background-color:#000000;
+	background-color:var(--fl-fake-color);
 }
 
 a.bias-unknown
 {
-	background-color:#CCCCCC;
+	background-color:var(--fl-unknown-color);
 	color: #111 !important;
 }

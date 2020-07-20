@@ -36,10 +36,18 @@ if (browser)
 		} else {
 			$("#FactPacksCount").html(0);
 		}
-		
+
+		$("#ExtremeLeftColor").val(bg.settings.extremeLeftColor);
+		$("#LeftColor").val(bg.settings.leftColor);
+		$("#LeftCenterColor").val(bg.settings.leftCenterColor);
+		$("#CenterColor").val(bg.settings.centerColor);
+		$("#RightCenterColor").val(bg.settings.rightCenterColor);
+		$("#RightColor").val(bg.settings.rightColor);
+		$("#ExtremeRightColor").val(bg.settings.extremeRightColor);
+		$("#SatireColor").val(bg.settings.satireColor);
+
 		browser.storage.local.get(["websitesUpdated", "aliasesUpdated", "factMappingsUpdated", "factPacksUpdated"], onGotItems);
 
-		
 		function onGotItems(item) {
 
 		  if (!$.isEmptyObject(item))
@@ -52,7 +60,7 @@ if (browser)
 
 		}		
 		
-		$("#btnRefreshDatabase").on("click", function() {;
+		$("#btnRefreshDatabase").on("click", function() {
 			bg.getTimestamps();
 			bg.getSitePages();
 			bg.getAliases();
@@ -85,6 +93,21 @@ if (browser)
 					clearInterval(backgroundCheck);
 				}
 			}, 1000);
+		});
+
+		$("#btnSaveSettings").on("click", function() {
+			var target = document.getElementsByTagName('body')[0];
+			var spinner = new Spinner().spin(target);
+			bg.settings.extremeLeftColor = $("#ExtremeLeftColor").val();
+			bg.settings.leftColor = $("#LeftColor").val();
+			bg.settings.leftCenterColor = $("#LeftCenterColor").val();
+			bg.settings.centerColor = $("#CenterColor").val();
+			bg.settings.rightCenterColor = $("#RightCenterColor").val();
+			bg.settings.rightColor = $("#RightColor").val();
+			bg.settings.extremeRightColor = $("#ExtremeRightColor").val();
+			bg.settings.satireColor = $("#SatireColor").val();
+			bg.saveSettings();
+			spinner.stop();
 		});
 	})
 	

@@ -11,53 +11,53 @@ span.bias.digg-story__metadata-source a, a.bias.digg-story__related-link__source
 
 span.bias-extreme-left.digg-story__metadata-source, a.bias-extreme-left.digg-story__related-link__source-link
 {
-	background-color:#0026FF;
+	background-color:var(--fl-extreme-left-color);
 }
 
 span.bias-left.digg-story__metadata-source, a.bias-left.digg-story__related-link__source-link
 {
-	background-color:#2E65A1;
+	background-color:var(--fl-left-color);
 }
 
 span.bias-left-center.digg-story__metadata-source, a.bias-left-center.digg-story__related-link__source-link
 {
-	background-color:#9DC8EB;
+	background-color:var(--fl-left-center-color);
 	color: #111 !important;
 }
 
 span.bias-center.digg-story__metadata-source, a.bias-center.digg-story__related-link__source-link
 {
-	background-color:#9766A0;
+	background-color:var(--fl-center-color);
 }
 
 span.bias-right-center.digg-story__metadata-source, a.bias-right-center.digg-story__related-link__source-link
 {
-	background-color:#CB9A98;
+	background-color:var(--fl-right-center-color);
 	color: #111 !important;
 }
 
 span.bias-right.digg-story__metadata-source, a.bias-right.digg-story__related-link__source-link
 {
-	background-color:#CB2127;
+	background-color:var(--fl-right-color);
 }
 
 span.bias-extreme-right.digg-story__metadata-source, a.bias-extreme-right.digg-story__related-link__source-link
 {
-	background-color:#FF0000;
+	background-color:var(--fl-extreme-right-color);
 }
 
 span.bias-satire.digg-story__metadata-source, a.bias-satire.digg-story__related-link__source-link
 {
-	background-color:#007F0E;
+	background-color:var(--fl-satire-color);
 }
 
 span.bias-fake.digg-story__metadata-source, a.bias-fake.digg-story__related-link__source-link
 {
-	background-color:#000000;
+	background-color:var(--fl-fake-color);
 }
 
 span.bias-unknown.digg-story__metadata-source, a.bias-unknown.digg-story__related-link__source-link
 {
-	background-color:#CCCCCC;
+	background-color:var(--fl-unknown-color);
 	color: #111 !important;
 }

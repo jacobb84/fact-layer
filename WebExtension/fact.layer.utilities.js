@@ -196,45 +196,44 @@ FactLayerUtilities.getIconImage = function(orgType)
 	}
 }
 
-FactLayerUtilities.getIconColor = function(bias, orgType)
+FactLayerUtilities.getBiasColor = function(bias, orgType)
 {
 	if (orgType == 4)
 	{
-		return "#007F0E"; //We want satire to stand out a bit and the bias doesn't matter
+		return settings.satireColor; //We want satire to stand out a bit and the bias doesn't matter
 	}
-	else if (orgType == 5 || orgType == 8 || orgType == 9)
+	else if (orgType == 5 || orgType == 8)
 	{
 		return "#000000"; //We want fake news / hate groups to stand out a bit and the bias doesn't matter
 	} 
 	
-	
 	if (bias == -3)
 	{
-		return "#0026FF";
+		return settings.extremeLeftColor;
 	}
 	else if (bias == -2)
 	{
-		return "#2E65A1";
+		return settings.leftColor;
 	}
 	else if (bias == -1)
 	{
-		return "#9DC8EB";
+		return settings.leftCenterColor;
 	}
 	else if (bias == 0)
 	{
-		return "#9766A0";
+		return settings.centerColor;
 	}
 	else if (bias == 1)
 	{
-		return "#CB9A98";
+		return settings.rightCenterColor;
 	}
 	else if (bias == 2)
 	{
-		return "#CB2127";
+		return settings.rightColor;
 	}
 	else if (bias == 3)
 	{
-		return "#FF0000";
+		return settings.extremeRightColor;
 	}
 	
 	return "#CCCCCC";
