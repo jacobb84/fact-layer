@@ -171,6 +171,41 @@ namespace FactLayer.Import
                 return Bias.Right;
             } else
             {
+                //We're still here, try to parse out of the summary text
+                var biases = doc.QuerySelectorAll("div.entry-content li strong").FirstOrDefault();
+                if (biases != null)
+                {
+                    if (biases.InnerText.ToLower().Contains("left center"))
+                    {
+                        return Bias.LeftCenter;
+                    }
+                    else if (biases.InnerText.ToLower().Contains("right center"))
+                    {
+                        return Bias.RightCenter;
+                    }
+                    else if (biases.InnerText.ToLower().Contains("least biased"))
+                    {
+                        return Bias.Center;
+                    }
+                    else if (biases.InnerText.ToLower().Contains("extreme right"))
+                    {
+                        return Bias.ExtremeRight;
+                    }
+                    else if (biases.InnerText.ToLower().Contains("extreme left"))
+                    {
+                        return Bias.ExtremeLeft;
+                    }
+                    else if (biases.InnerText.ToLower().Contains("right"))
+                    {
+                        return Bias.Right;
+                    }
+                    else if (biases.InnerText.ToLower().Contains("left"))
+                    {
+                        return Bias.Left;
+                    }
+                }
+
+
                 return Bias.Unknown;
             }
         }

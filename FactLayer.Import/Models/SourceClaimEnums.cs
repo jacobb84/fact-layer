@@ -25,6 +25,7 @@ namespace FactLayer.Import.Models
         CharityNavigator = 3,
         FakeNewsCodex = 4,
         DukeReportersLab = 5,
-        TVNewsCheck = 6
+        TVNewsCheck = 6,
+        OpenSources = 7
     }
 }

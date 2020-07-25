@@ -28,7 +28,7 @@ namespace FactLayer.Import
                 }
                 doc.LoadHtml(html);
                 var siteName = HttpUtility.HtmlDecode(doc.QuerySelector("h1.page-title").InnerHtml);
-                var domainLink = doc.QuerySelectorAll("div.entry p a[target=_blank]").Where(s => s.InnerHtml == s.Attributes["href"].Value).FirstOrDefault();
+                var domainLink = doc.QuerySelectorAll("div.entry p a[target=_blank]").Where(s => s.InnerHtml.Replace("https://","").Replace("http://","") == s.Attributes["href"].Value.Replace("https://", "").Replace("http://", "")).FirstOrDefault();
                 if (domainLink == null)
                 {
                     domainLink = doc.QuerySelectorAll("div.entry p a").Where(s => s.InnerHtml == siteName || (s.Attributes["href"] != null && (s.InnerHtml.Trim() == s.Attributes["href"].Value.Trim().TrimEnd('#') || s.InnerHtml.Trim() == s.Attributes["href"].Value.Replace("http://","").Trim()))).FirstOrDefault();
@@ -43,21 +43,18 @@ namespace FactLayer.Import
                     }
 
                     //Start by defaulting based on fact reporting
-                    OrgType orgType = OrgType.NewsMedia;
+                    OrgType orgType = OrgType.ExtremelyUnreliable;
                     var factRating = doc.QuerySelectorAll("div.entry-content p").Where(s => s.InnerText.Trim().ToLower().StartsWith("factual reporting:")).FirstOrDefault();
                     if (factRating == null)
                     {
                         factRating = doc.QuerySelectorAll("div.entry p").Where(s => s.InnerText.Trim().ToLower().StartsWith("factual reporting:")).FirstOrDefault();
                     }
+
                     if (factRating != null)
                     {
                         if (factRating.InnerText.ToLower().Contains("very low"))
                         {
                             orgType = OrgType.Fake;
-                        }
-                        else if (factRating.InnerText.ToLower().Contains("low"))
-                        {
-                            orgType = OrgType.ExtremelyUnreliable;
                         }
                     }
 
@@ -194,8 +191,13 @@ namespace FactLayer.Import
             var biasImage = doc.QuerySelector("h1 img");
             if (biasImage == null)
             {
+                biasImage = doc.QuerySelector("h2.entry-title img");
+            }
+            if (biasImage == null)
+            {
                 biasImage = doc.QuerySelector("h2 img");
             }
+
             var bias = biasImage.Attributes["src"].Value;
 
             if (bias.Contains("leftcenter"))
@@ -228,6 +230,34 @@ namespace FactLayer.Import
             }
             else
             {
+                //Can't give up yet, try to parse out of reasoning the text
+                var biases = doc.QuerySelectorAll("div.entry-content p").Where(s => s.InnerText.Trim().ToLower().StartsWith("reasoning:")).FirstOrDefault();
+                if (biases != null)
+                {
+                    if (biases.InnerText.ToLower().Contains("extreme right"))
+                    {
+                        return Bias.ExtremeRight;
+                    }
+                    else if (biases.InnerText.ToLower().Contains("extreme left"))
+                    {
+                        return Bias.ExtremeLeft;
+                    }
+                }
+
+                //We're still here, try to parse out of the summary text
+                biases = doc.QuerySelectorAll("div.entry-content li strong").FirstOrDefault();
+                if (biases != null)
+                {
+                    if (biases.InnerText.ToLower().Contains("extreme right"))
+                    {
+                        return Bias.ExtremeRight;
+                    }
+                    else if (biases.InnerText.ToLower().Contains("extreme left"))
+                    {
+                        return Bias.ExtremeLeft;
+                    }
+                }
+
                 return Bias.Unknown;
             }
         }

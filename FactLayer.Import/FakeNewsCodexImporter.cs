@@ -46,6 +46,10 @@ namespace FactLayer.Import
                         //Ignore if already fake, want fake to take precidence over satire in case there's conflicting opinions
                         site.OrganizationType = OrgType.Satire;
                     }
+                    else
+                    {
+                        site.OrganizationType = OrgType.ExtremelyUnreliable;
+                    }
 
                     if (site.Sources.Any(s => s.Organization == SourceOrganization.FakeNewsCodex && s.ClaimType == SourceClaimType.Veracity))
                     {
@@ -57,6 +61,10 @@ namespace FactLayer.Import
                         else if (row.Attributes["class"].Value.Contains("badge--satire"))
                         {
                             source.ClaimValue = (int)OrgType.Satire;
+                        }
+                        else
+                        {
+                            source.ClaimValue = (int)OrgType.ExtremelyUnreliable;
                         }
                         Console.WriteLine("Updating Source for " + site.Name);
                     }
@@ -81,9 +89,12 @@ namespace FactLayer.Import
                         else if (row.Attributes["class"].Value.Contains("badge--satire"))
                         {
                             source.ClaimValue = (int)OrgType.Satire;
+                        } else
+                        {
+                            source.ClaimValue = (int)OrgType.ExtremelyUnreliable;
                         }
-                        
-                        site.Sources.Add(source);
+
+                            site.Sources.Add(source);
                         Console.WriteLine("Adding Source for " + site.Name);
                     }
                 }
@@ -100,6 +111,11 @@ namespace FactLayer.Import
                     {
                         site.OrganizationType = OrgType.Satire;
                     }
+                    else
+                    {
+                        site.OrganizationType = OrgType.ExtremelyUnreliable;
+                    }
+
 
                     var source = new Source();
                     source.Organization = SourceOrganization.FakeNewsCodex;
@@ -120,6 +136,10 @@ namespace FactLayer.Import
                     else if (row.Attributes["class"].Value.Contains("badge--satire"))
                     {
                         source.ClaimValue = (int)OrgType.Satire;
+                    }
+                    else
+                    {
+                        source.ClaimValue = (int)OrgType.ExtremelyUnreliable;
                     }
                     site.Sources.Add(source);
 

@@ -57,6 +57,14 @@ namespace FactLayer.Import
             {
                 return "cnn.com";
             }
+            else if (url == "watchdog.org")
+            {
+                return "thecentersquare.com";
+            }
+            else if (url == "votesmart.org")
+            {
+                return "justfacts.votesmart.org";
+            }
             else
             {
                 return url;
@@ -107,6 +115,7 @@ namespace FactLayer.Import
             firstParagraph = Regex.Replace(firstParagraph, @"\[\d*\]", "");
             firstParagraph = firstParagraph.Replace("[citation needed]", "");
             firstParagraph = firstParagraph.Replace("[better source needed]", "");
+            firstParagraph = firstParagraph.Replace("\\n", "");
 
             return Ellipsis(firstParagraph, 400);
 

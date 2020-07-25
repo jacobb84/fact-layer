@@ -55,6 +55,7 @@
     <Compile Include="BaseImporter.cs" />
     <Compile Include="CharityNavigatorImporter.cs" />
     <Compile Include="FakeNewsCodexImporter.cs" />
+    <Compile Include="OpenSourcesImporter.cs" />
     <Compile Include="TVNewsCheckImporter.cs" />
     <Compile Include="MBFCScienceImporter.cs" />
     <Compile Include="RealOrSatireImporter.cs" />
