@@ -6,6 +6,7 @@ using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace FactLayer.Import
 {
@@ -101,11 +102,11 @@ namespace FactLayer.Import
             doc.LoadHtml(html);
 
             var firstParagraph = doc.QuerySelectorAll("div.mw-parser-output > p:not(.mw-empty-elt)").Where(s => !s.InnerText.ToLower().StartsWith("coordinates")).FirstOrDefault().InnerText;
+            firstParagraph = HttpUtility.HtmlDecode(firstParagraph);
             //Strip out links / citations
-            firstParagraph = Regex.Replace(firstParagraph, @"\<[a|sup|/a|/sup].*\>", "");
             firstParagraph = Regex.Replace(firstParagraph, @"\[\d*\]", "");
             firstParagraph = firstParagraph.Replace("[citation needed]", "");
-            firstParagraph = firstParagraph.Replace("[better&#160;source&#160;needed]", "");
+            firstParagraph = firstParagraph.Replace("[better source needed]", "");
 
             return Ellipsis(firstParagraph, 400);
 

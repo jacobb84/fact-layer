@@ -239,7 +239,7 @@ FactLayerUtilities.getBiasColor = function(bias, orgType)
 	return "#CCCCCC";
 }
 
-FactLayerUtilities.binarySearch = function(array, key) {
+FactLayerUtilities.binarySearchByDomain = function(array, key) {
 	var lo = 0,
 		hi = array.length - 1,
 		mid,
@@ -251,6 +251,26 @@ FactLayerUtilities.binarySearch = function(array, key) {
 		if (element.Domain.localeCompare(key) == -1) {
 			lo = mid + 1;
 		} else if (element.Domain.localeCompare(key) == 1) {
+			hi = mid - 1;
+		} else {
+			return element;
+		}
+	}
+	return null;
+}
+
+FactLayerUtilities.binarySearchByName = function(array, key) {
+	var lo = 0,
+		hi = array.length - 1,
+		mid,
+		element;
+	while (lo <= hi) {
+		mid = ((lo + hi) >> 1);
+		element = array[mid];
+
+		if (element.Name.localeCompare(key) == -1) {
+			lo = mid + 1;
+		} else if (element.Name.localeCompare(key) == 1) {
 			hi = mid - 1;
 		} else {
 			return element;

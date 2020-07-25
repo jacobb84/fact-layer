@@ -21,7 +21,7 @@ namespace FactLayer.Import
                         Console.WriteLine("Adding " + site.Name + " description.");
                     } catch (Exception ex)
                     {
-                        Console.WriteLine(ex.Message);
+                        Console.WriteLine(site.Wikipedia + " " + ex.Message);
                     }
 
                 }

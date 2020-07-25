@@ -133,6 +133,10 @@ namespace FactLayer.Import
             var biasImage = doc.QuerySelector("h1 img");
             if (biasImage == null)
             {
+                biasImage = doc.QuerySelector("h2.entry-title img");
+            }
+            if (biasImage == null)
+            {
                 biasImage = doc.QuerySelector("h2 img");
             }
 

@@ -26,17 +26,17 @@ namespace FactLayer.Import
             //sites = CharityNavigatorImporter.StartImport(sites);
             //sites = AllSidesImporter.StartImport(sites);
             //WriteFile(sites);
-            //sites = MBFCImporter.StartImport(sites);
+           // sites = MBFCImporter.StartImport(sites);
             //sites = MBFCScienceImporter.StartImport(sites);
             //WriteFile(sites);
-            //sites = MBFCFakeImporter.StartImport(sites);
+            sites = MBFCFakeImporter.StartImport(sites);
             //sites = MBFCSatireImporter.StartImport(sites);
             //WriteFile(sites);
             //sites = RealOrSatireImporter.StartImport(sites);
             //sites = FakeNewsCodexImporter.StartImport(sites);
             //sites = TVNewsCheckImporter.StartImport(sites);
-          //  WriteFile(sites);
-            sites = WikipediaImporter.StartImport(sites);
+            //WriteFile(sites);
+           // sites = WikipediaImporter.StartImport(sites);
             sites = sites.OrderBy(s => s.Domain, StringComparer.Ordinal).ToList();
             WriteFile(sites);
         }

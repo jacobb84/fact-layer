@@ -1,0 +1,61 @@
+.bias
+{
+	padding: 3px 5px;
+	color: #FFFFFF !important;
+	border-radius: 5px;
+	overflow:visible;
+	margin-bottom: 5px;
+}
+
+.bias-extreme-left
+{
+	background-color:var(--fl-extreme-left-color);
+}
+
+.bias-left
+{
+	background-color:var(--fl-left-color);
+}
+
+.bias-left-center
+{
+	background-color:var(--fl-left-center-color);
+	color: #111 !important;
+}
+
+.bias-center
+{
+	background-color:var(--fl-center-color);
+}
+
+.bias-right-center
+{
+	background-color:var(--fl-right-center-color);
+	color: #111 !important;
+}
+
+.bias-right
+{
+	background-color:var(--fl-right-color);
+}
+
+.bias-extreme-right
+{
+	background-color:var(--fl-extreme-right-color);
+}
+
+.bias-satire
+{
+	background-color:var(--fl-satire-color);
+}
+
+.bias-fake
+{
+	background-color:var(--fl-fake-color);
+}
+
+.bias-unknown
+{
+	background-color:var(--fl-unknown-color);
+	color: #111 !important;
+}

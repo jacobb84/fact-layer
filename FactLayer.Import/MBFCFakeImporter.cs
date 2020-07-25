@@ -44,21 +44,20 @@ namespace FactLayer.Import
 
                     //Start by defaulting based on fact reporting
                     OrgType orgType = OrgType.NewsMedia;
-                    var factRating = doc.QuerySelector("div.entry-content p img");
+                    var factRating = doc.QuerySelectorAll("div.entry-content p").Where(s => s.InnerText.Trim().ToLower().StartsWith("factual reporting:")).FirstOrDefault();
                     if (factRating == null)
                     {
-                        factRating = doc.QuerySelector("header.entry-header p img");
+                        factRating = doc.QuerySelectorAll("div.entry p").Where(s => s.InnerText.Trim().ToLower().StartsWith("factual reporting:")).FirstOrDefault();
                     }
-
                     if (factRating != null)
                     {
-                        if (factRating.Attributes["src"].Value .Contains("MBFCLow"))
-                        {
-                            orgType = OrgType.ExtremelyUnreliable;
-                        }
-                        else if (factRating.Attributes["src"].Value.Contains("MBFCVeryLow"))
+                        if (factRating.InnerText.ToLower().Contains("very low"))
                         {
                             orgType = OrgType.Fake;
+                        }
+                        else if (factRating.InnerText.ToLower().Contains("low"))
+                        {
+                            orgType = OrgType.ExtremelyUnreliable;
                         }
                     }
 
@@ -268,11 +267,7 @@ namespace FactLayer.Import
             _sites = sites;
             Import("https://mediabiasfactcheck.com/fake-news/");
             Import("https://mediabiasfactcheck.com/conspiracy/");
-            var site = LoadSite("https://mediabiasfactcheck.com/council-of-conservative-citizens/");
-            if (site != null && !_sites.Contains(site))
-            {
-                _sites.Add(site);
-            }
+
             return _sites;
         }
     }

@@ -16,6 +16,7 @@ var currentArticle = null;
 
 var storage = {
 	websites: [],
+	websitesNameIndex: [],
 	regexWebsites: [],
 	aliases: [],
 	factMappings: [],
@@ -34,7 +35,7 @@ var settings = {
 	satireColor: "#007F0E"
 }
 
-function getWebsite(domain)
+function getWebsiteByDomain(domain)
 {
 	domain = domain.replace(/^(www|amp|m|mobile)\./g, "");
 	//See if this is an alias
@@ -48,7 +49,19 @@ function getWebsite(domain)
 		domain = aliasDomain.host;
 	}
 	
-	return FactLayerUtilities.binarySearch(storage.websites, domain);
+	return FactLayerUtilities.binarySearchByDomain(storage.websites, domain);
+}
+
+function getWebsiteByName(name)
+{
+	var result = FactLayerUtilities.binarySearchByName(storage.websitesNameIndex, name);
+	if (result) {
+		var website = storage.websites[result.RowIndex];
+	
+		return website;
+	}
+
+	return null;
 }
 
 function updateTimestampsIfNeeded(browserStorage, storageUpdated)
@@ -218,7 +231,7 @@ function updateActiveTab(tabId, changeInfo, tabInfo) {
 		var managedUrl = new URL(currentTab.url);
 		var path = managedUrl.pathname + managedUrl.search;
 
-		var websiteResult = getWebsite(managedUrl.hostname);
+		var websiteResult = getWebsiteByDomain(managedUrl.hostname);
 		if (websiteResult == null)
 		{
 			websiteResult = getRegexWebsite(managedUrl.hostname)
@@ -319,8 +332,23 @@ function onGotItems(item) {
 		  installedVersion: manifest.version
 		});
 	  }
-	  
   }
+
+  
+	//Build a name index for searching on	  
+	var websiteNameIndex = storage.websites.map(function(obj, index) {
+	return {
+		RowIndex: index,
+		Name: obj.Name
+	} 
+	});
+
+	websiteNameIndex.sort(function(a, b){
+		return ('' + a.Name).localeCompare(b.Name);
+	});
+	
+	storage.websitesNameIndex = websiteNameIndex;
+	console.log(storage.websitesNameIndex[0]);
 
 }
 
@@ -328,7 +356,7 @@ updateActiveTab();
 
 browser.runtime.onMessage.addListener(
   function(request, sender, sendResponse) {
-	  if (request.command == "getWebsite")
+	  if (request.command == "getWebsiteByDomain")
 	  {
 		  var domain = request.domain;
 		  if (!request.domain.startsWith("http"))
@@ -344,7 +372,7 @@ browser.runtime.onMessage.addListener(
 		  {
 			  var managedUrl = new URL(domain);
 
-			  websiteResult = getWebsite(managedUrl.hostname);
+			  websiteResult = getWebsiteByDomain(managedUrl.hostname);
 			  biasText = "Unknown";
 			  overallBias = -2147483648;
 			  if (websiteResult != null)
@@ -358,6 +386,30 @@ browser.runtime.onMessage.addListener(
 		  }
 		  sendResponse({websiteResult: websiteResult, biasText: biasText, overallBias: overallBias});
 	  } 
+	  else if (request.command == "getWebsiteByName")
+	  {
+		var name = request.name;
+
+		var websiteResult = null;
+		var biasText = "Unknown";
+		var overallBias = -2147483648;
+		
+		try
+		{
+			websiteResult = getWebsiteByName(name);
+			biasText = "Unknown";
+			overallBias = -2147483648;
+			if (websiteResult != null)
+			{
+				overallBias = FactLayerUtilities.getOverallBias(websiteResult.Sources);
+				biasText = getIconText(overallBias, websiteResult.OrganizationType);
+			}
+		} catch(ex)
+		{
+			console.log(ex);
+		}
+		sendResponse({websiteResult: websiteResult, biasText: biasText, overallBias: overallBias});
+	  }
 	  else if (request.command == "getBiasColors") 
 	  {
 		var biasColors = [];

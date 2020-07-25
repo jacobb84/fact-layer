@@ -8,7 +8,7 @@ if (browser)
 	$("div.URLHover a.outbound_link").each(function(index, obj) {
 		var domain = $(obj).html();
 
-		browser.runtime.sendMessage({command: "getWebsite", domain: domain}, function(response) {
+		browser.runtime.sendMessage({command: "getWebsiteByDomain", domain: domain}, function(response) {
 			if (response != null && response.websiteResult != null)
 			{
 				$(obj).addClass(getCSS(response.overallBias, response.websiteResult.OrganizationType));

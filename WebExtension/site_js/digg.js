@@ -11,7 +11,7 @@ function addInformationToNode(obj)
 		var sourceTag = $(obj).find("span.digg-story__metadata-source, a.digg-story__related-link__source-link");
 		var domain = $(storyLink).attr("href");
 		
-		browser.runtime.sendMessage({command: "getWebsite", domain: domain}, function(response) {
+		browser.runtime.sendMessage({command: "getWebsiteByDomain", domain: domain}, function(response) {
 			if (response != null && response.websiteResult != null)
 			{
 				$(sourceTag).removeClass("bias-extreme-left bias-left bias-left-center bias-center bias-right-center bias-right bias-extreme-right bias-satire bias-fake");

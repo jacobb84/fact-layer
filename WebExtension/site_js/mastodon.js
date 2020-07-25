@@ -8,7 +8,7 @@ function decorateNode(node) {
     $links.each(function(ix, link){
         var $link = $(link),
             domain = $link.attr('href');
-        browser.runtime.sendMessage({command: "getWebsite", domain: domain}, function(response) {
+        browser.runtime.sendMessage({command: "getWebsiteByDomain", domain: domain}, function(response) {
             $link.addClass(getCSS(response.overallBias, response.websiteResult.OrganizationType));
             $link.attr("title", response.websiteResult.Name + " | " + response.biasText);
         });
