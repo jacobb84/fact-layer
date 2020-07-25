@@ -18,6 +18,7 @@ namespace FactLayer.Import
                 || url == "twitter.com"
                 || url == "itunes.apple.com"
                 || url == "yourcwtv.com"
+                || url == "youtube.com"
                 || url == null)
             {
                 return true;
