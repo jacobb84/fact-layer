@@ -70,5 +70,33 @@
 	}, {
 		"alias": "www.houstonchronicle.com",
 		"host": "chron.com"
+	}, {
+		"alias": "features.propublica.org",
+		"host": "propublica.org"
+	}, {
+		"alias": "plaindealer.com",
+		"host": "cleveland.com"
+	}, {
+		"alias": "typemediacenter.org",
+		"host": "nationinstitute.org"
+	}, {
+		"alias": "thehindu.com",
+		"host": "newsite.thehindu.com"
+	}, {
+		"alias": "hindutamil.in",
+		"host": "newsite.thehindu.com"
+	}, {
+		"alias": "republicanssuck.org",
+		"host": "republicanssucks.org"
+	}, {
+		"alias": "broadenimpact.com",
+		"host": "worldpolicy.org"
+	}, {
+		"alias": "www.nhk.or.jp",
+		"host": "www2.nhk.or.jp"
+	}, {
+		"alias": ".mercola.com",
+		"host": "mercola.com"
 	}
+	
 ]

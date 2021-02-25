@@ -20,6 +20,9 @@ namespace FactLayer.Import
                 || url == "itunes.apple.com"
                 || url == "yourcwtv.com"
                 || url == "youtube.com"
+                || url == "theaware.net" //no longer online
+                || url == "mediabiasfactcheck.com"
+                || url == "theearthchild.co.za" //Offline
                 || url == null)
             {
                 return true;
@@ -64,6 +67,18 @@ namespace FactLayer.Import
             else if (url == "votesmart.org")
             {
                 return "justfacts.votesmart.org";
+            }
+            else if (url == "qu.edu")
+            {
+                return "poll.qu.edu";
+            }
+            else if (url == "worldpoliticsus.com")
+            {
+                return "worldpoliticus.com";
+            }
+            else if (url == "addictinginfo.com")
+            {
+                return "addictinginfo.org";
             }
             else
             {

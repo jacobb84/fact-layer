@@ -236,7 +236,7 @@ FactLayerUtilities.getBiasColor = function(bias, orgType)
 		return settings.extremeRightColor;
 	}
 	
-	return "#CCCCCC";
+	return "#7e7e7e";
 }
 
 FactLayerUtilities.binarySearchByDomain = function(array, key) {
