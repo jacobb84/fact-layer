@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Text.RegularExpressions;
 using System.Web;
 
 namespace FactLayer.Import
@@ -57,11 +58,10 @@ namespace FactLayer.Import
                 }
                 doc.LoadHtml(html);
                 var siteName = HttpUtility.HtmlDecode(doc.QuerySelector("h1.page-title").InnerHtml);
-                var domainLink = doc.QuerySelectorAll("div.entry p a[target=_blank]").Where(s => s.Attributes["href"] != null && s.InnerHtml.Trim() == s.Attributes["href"].Value.Trim()).FirstOrDefault();
+                var domainLink = doc.QuerySelectorAll("div.entry-content p a[target=_blank]").Where(s => s.Attributes["href"] != null && NormalizeLink(s.InnerHtml) == NormalizeLink(s.Attributes["href"].Value)).FirstOrDefault();
                 if (domainLink == null)
                 {
-                    domainLink = doc.QuerySelectorAll("div.entry p a").Where(s => s.InnerHtml == siteName || (s.Attributes["href"] != null && s.InnerHtml.Trim() == s.Attributes["href"].Value.Trim())).FirstOrDefault();
-                    Console.WriteLine(siteName +": Domain not found, attempting match with secondary lookup");
+                    domainLink = doc.QuerySelectorAll("div.entry-content p a").Where(s => s.InnerHtml == siteName || (s.Attributes["href"] != null && NormalizeLink(s.InnerHtml) == NormalizeLink(s.Attributes["href"].Value))).FirstOrDefault();
                 }
                 if (domainLink != null)
                 {
@@ -119,6 +119,7 @@ namespace FactLayer.Import
                 }
                 else
                 {
+                    Console.WriteLine(siteName + ": Domain not found.");
                     return null;
                 }
             } catch (Exception ex)
@@ -126,6 +127,12 @@ namespace FactLayer.Import
                 Console.WriteLine(ex.Message);
                 return null;
             }
+        }
+
+        public static string NormalizeLink(string htmlString)
+        {
+            string pattern = @"<(.|\n)*?>";
+            return Regex.Replace(htmlString, pattern, string.Empty).Replace("https://", "").Replace("http://", "").ToLower().Trim();
         }
 
         private static Bias GetBias(HtmlDocument doc)
@@ -138,6 +145,14 @@ namespace FactLayer.Import
             if (biasImage == null)
             {
                 biasImage = doc.QuerySelector("h2 img");
+            }
+            if (biasImage == null)
+            {
+                biasImage = doc.QuerySelector("div.entry-content > p > img.aligncenter");
+            }
+            if (biasImage == null)
+            {
+                biasImage = doc.QuerySelector("div.entry-content > header > img.aligncenter");
             }
 
             var bias = biasImage.Attributes["src"].Value;
@@ -228,6 +243,16 @@ namespace FactLayer.Import
                 var siteUrl = row.Attributes["href"].Value;
                 if (siteUrl != null)
                 {
+                    if (!siteUrl.StartsWith("http"))
+                    {
+                        siteUrl = "https://mediabiasfactcheck.com" + siteUrl;
+                    }
+
+                    //Bad link on the table
+                    if (siteUrl == "https://lawandcrime.com/")
+                    {
+                        siteUrl = "https://mediabiasfactcheck.com/law-newz/";
+                    }
                     var site = LoadSite(siteUrl);
                     if (site != null && !_sites.Contains(site))
                     {

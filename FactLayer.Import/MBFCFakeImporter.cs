@@ -197,6 +197,14 @@ namespace FactLayer.Import
             {
                 biasImage = doc.QuerySelector("h2 img");
             }
+            if (biasImage == null)
+            {
+                biasImage = doc.QuerySelector("div.entry-content > p > img.aligncenter");
+            }
+            if (biasImage == null)
+            {
+                biasImage = doc.QuerySelector("div.entry-content > header > img.aligncenter");
+            }
 
             var bias = biasImage.Attributes["src"].Value;
 
@@ -280,6 +288,11 @@ namespace FactLayer.Import
                 var siteUrl = row.Attributes["href"].Value;
                 if (siteUrl != null)
                 {
+                    //Bad link on the table
+                    if (siteUrl == "http://newsservis.com/")
+                    {
+                        siteUrl = "https://mediabiasfactcheck.com/newsservis-com/";
+                    }
                     var site = LoadSite(siteUrl);
                     if (site != null && !_sites.Contains(site))
                     {
