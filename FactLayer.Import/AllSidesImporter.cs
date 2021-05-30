@@ -17,7 +17,7 @@ namespace FactLayer.Import
     {
         private static OrganizationSite LoadSite(string url)
         {
-            if (url == "/news-source/test-source")
+            if (url == "/news-source/test-source" || url == "/news-source/yahoo-360-media-bias")
             {
                 return null;
             }

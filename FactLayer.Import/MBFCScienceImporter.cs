@@ -12,7 +12,7 @@ using System.Web;
 
 namespace FactLayer.Import
 {
-    public class MBFCScienceImporter : BaseImporter
+    public class MBFCScienceImporter : MBFCBaseImporter
     {
         private static OrganizationSite LoadSite(string url)
         {
@@ -27,7 +27,8 @@ namespace FactLayer.Import
                     html = sr.ReadToEnd();
                 }
                 doc.LoadHtml(html);
-                var domainLink = doc.QuerySelectorAll("div.entry-content p a[target=_blank]").Where(s => s.InnerHtml == s.Attributes["href"].Value).FirstOrDefault();
+                var siteName = HttpUtility.HtmlDecode(doc.QuerySelector("h1.page-title").InnerHtml);
+                var domainLink = getDomain(doc, siteName);
                 if (domainLink != null)
                 {
                     var domain = ExtractDomainNameFromURL(domainLink.Attributes["href"].Value);
@@ -54,7 +55,7 @@ namespace FactLayer.Import
                     else
                     {
                         var site = new OrganizationSite();
-                        site.Name = HttpUtility.HtmlDecode(doc.QuerySelector("h1.page-title").InnerHtml);
+                        site.Name = siteName;
                         site.Domain = domain;
                         var factualReporting = doc.QuerySelectorAll("div.entry-content p").Where(s => s.InnerText.Trim().ToLower().StartsWith("factual reporting:"));
                         site.OrganizationType = OrgType.NewsMedia;
@@ -91,12 +92,17 @@ namespace FactLayer.Import
                         return site;
                     } 
                 }
-            } catch (Exception)
+                else
+                {
+                    Console.WriteLine(siteName + ": Domain not found.");
+                    return null;
+                }
+            }
+            catch (Exception ex)
             {
+                Console.WriteLine(ex.Message);
                 return null;
             }
-
-            return null;
         }
 
         private static List<OrganizationSite> _sites;
@@ -117,6 +123,12 @@ namespace FactLayer.Import
                 var siteUrl = row.Attributes["href"].Value;
                 if (siteUrl != null)
                 {
+                    if (!siteUrl.StartsWith("http"))
+                    {
+                        siteUrl = "https://mediabiasfactcheck.com" + siteUrl;
+                    }
+
+                    siteUrl = NormalizeSiteUrl(siteUrl);
                     var site = LoadSite(siteUrl);
                     if (site != null && !_sites.Contains(site))
                     {

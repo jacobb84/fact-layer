@@ -40,10 +40,6 @@ namespace FactLayer.Import
             {
                 return "cbsnews.com";
             }
-            else if (url == "en.search.farsnews.com")
-            {
-                return "farsnews.com";
-            }
             else if (url == "eng.majalla.com")
             {
                 return "majalla.com";
@@ -79,6 +75,70 @@ namespace FactLayer.Import
             else if (url == "addictinginfo.com")
             {
                 return "addictinginfo.org";
+            }
+            else if (url == "chicksontheright.com")
+            {
+                return "chicksonright.com";
+            }
+            else if (url == "alternativemediasyndicate.com")
+            {
+                return "alternativemediasyndicate.net";
+            }
+            else if (url == "mystatesman.com")
+            {
+                return "statesman.com";
+            }
+            else if (url == "bluelivesmatter.blue")
+            {
+                return "policetribune.com";
+            }
+            else if (url == "dailystormer.com" || url == "dailystormer.name")
+            {
+                return "dailystormer.su";
+            }
+            else if (url == "dailyworldupdate.com")
+            {
+                return "dailystormer.su";
+            }
+            else if (url == "en.search.farsnews.com" || url == "farsnews.com" || url == "en.farsnews.com")
+            {
+                return "en.farsnews.ir";
+            }
+            else if (url == "business.financialpost.com")
+            {
+                return "financialpost.com";
+            }
+            else if (url == "ijr.org")
+            {
+                return "ijr.com";
+            }
+            else if (url == "kfbb.com")
+            {
+                return "montanarightnow.com";
+            }
+            else if (url == "neon-nettle.com")
+            {
+                return "neonnettle.com";
+            }
+            else if (url == "philly.com")
+            {
+                return "inquirer.com";
+            }
+            else if (url == "photographyisnotacrime.com")
+            {
+                return "pinacnews.com";
+            }
+            else if (url == "turningpoint.news")
+            {
+                return "tpusa.com";
+            }
+            else if (url == "myfoxnepa.com")
+            {
+                return "fox56.com";
+            }
+            else if (url == "yahoo.com")
+            {
+                return "news.yahoo.com";
             }
             else
             {
@@ -124,13 +184,13 @@ namespace FactLayer.Import
             }
             doc.LoadHtml(html);
 
-            var firstParagraph = doc.QuerySelectorAll("div.mw-parser-output > p:not(.mw-empty-elt)").Where(s => !s.InnerText.ToLower().StartsWith("coordinates")).FirstOrDefault().InnerText;
+            var firstParagraph = doc.QuerySelectorAll("div.mw-parser-output > p:not(.mw-empty-elt)").Where(s => !s.InnerText.Trim().ToLower().StartsWith("coordinates")).FirstOrDefault().InnerText;
             firstParagraph = HttpUtility.HtmlDecode(firstParagraph);
             //Strip out links / citations
-            firstParagraph = Regex.Replace(firstParagraph, @"\[\d*\]", "");
+            firstParagraph = Regex.Replace(firstParagraph, @"\[(\d*|\w?)\]", "");
             firstParagraph = firstParagraph.Replace("[citation needed]", "");
             firstParagraph = firstParagraph.Replace("[better source needed]", "");
-            firstParagraph = firstParagraph.Replace("\\n", "");
+            firstParagraph = firstParagraph.Replace("\n", "");
 
             return Ellipsis(firstParagraph, 400);
 

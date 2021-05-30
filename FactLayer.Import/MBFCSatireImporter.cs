@@ -12,7 +12,7 @@ using System.Web;
 
 namespace FactLayer.Import
 {
-    public class MBFCSatireImporter : BaseImporter
+    public class MBFCSatireImporter : MBFCBaseImporter
     {
         private static OrganizationSite LoadSite(string url)
         {
@@ -27,7 +27,9 @@ namespace FactLayer.Import
                     html = sr.ReadToEnd();
                 }
                 doc.LoadHtml(html);
-                var domainLink = doc.QuerySelectorAll("div.entry-content p a[target=_blank]").Where(s => s.InnerHtml == s.Attributes["href"].Value).FirstOrDefault();
+                var siteName = HttpUtility.HtmlDecode(doc.QuerySelector("h1.page-title").InnerHtml);
+                var domainLink = getDomain(doc, siteName);
+
                 if (domainLink != null)
                 {
                     var domain = ExtractDomainNameFromURL(domainLink.Attributes["href"].Value);
@@ -79,10 +81,13 @@ namespace FactLayer.Import
                 }
                 else
                 {
+                    Console.WriteLine(siteName + ": Domain not found.");
                     return null;
                 }
-            } catch (Exception)
+            }
+            catch (Exception ex)
             {
+                Console.WriteLine(ex.Message);
                 return null;
             }
         }
@@ -105,6 +110,7 @@ namespace FactLayer.Import
                 var siteUrl = row.Attributes["href"].Value;
                 if (siteUrl != null)
                 {
+                    siteUrl = NormalizeSiteUrl(siteUrl);
                     var site = LoadSite(siteUrl);
                     if (site != null && !_sites.Contains(site))
                     {

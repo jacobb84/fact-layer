@@ -12,7 +12,7 @@ using System.Web;
 
 namespace FactLayer.Import
 {
-    public class MBFCFakeImporter : BaseImporter
+    public class MBFCFakeImporter : MBFCBaseImporter
     {
         private static OrganizationSite LoadSite(string url)
         {
@@ -28,12 +28,8 @@ namespace FactLayer.Import
                 }
                 doc.LoadHtml(html);
                 var siteName = HttpUtility.HtmlDecode(doc.QuerySelector("h1.page-title").InnerHtml);
-                var domainLink = doc.QuerySelectorAll("div.entry p a[target=_blank]").Where(s => s.InnerHtml.Replace("https://","").Replace("http://","") == s.Attributes["href"].Value.Replace("https://", "").Replace("http://", "")).FirstOrDefault();
-                if (domainLink == null)
-                {
-                    domainLink = doc.QuerySelectorAll("div.entry p a").Where(s => s.InnerHtml == siteName || (s.Attributes["href"] != null && (s.InnerHtml.Trim() == s.Attributes["href"].Value.Trim().TrimEnd('#') || s.InnerHtml.Trim() == s.Attributes["href"].Value.Replace("http://","").Trim()))).FirstOrDefault();
-                    Console.WriteLine("Attempting match with secondary lookup");
-                }
+                var domainLink = getDomain(doc, siteName);
+
                 if (domainLink != null)
                 {
                     var domain = ExtractDomainNameFromURL(domainLink.Attributes["href"].Value);
@@ -178,95 +174,13 @@ namespace FactLayer.Import
                 }
                 else
                 {
+                    Console.WriteLine(siteName + ": Domain not found.");
                     return null;
                 }
-            } catch (Exception)
+            } catch (Exception ex)
             {
+                Console.WriteLine(ex.Message);
                 return null;
-            }
-        }
-
-        private static Bias GetBias(HtmlDocument doc)
-        {
-            var biasImage = doc.QuerySelector("h1 img");
-            if (biasImage == null)
-            {
-                biasImage = doc.QuerySelector("h2.entry-title img");
-            }
-            if (biasImage == null)
-            {
-                biasImage = doc.QuerySelector("h2 img");
-            }
-            if (biasImage == null)
-            {
-                biasImage = doc.QuerySelector("div.entry-content > p > img.aligncenter");
-            }
-            if (biasImage == null)
-            {
-                biasImage = doc.QuerySelector("div.entry-content > header > img.aligncenter");
-            }
-
-            var bias = biasImage.Attributes["src"].Value;
-
-            if (bias.Contains("leftcenter"))
-            {
-                return Bias.LeftCenter;
-            }
-            else if (bias.Contains("rightcenter"))
-            {
-                return Bias.RightCenter;
-            }
-            else if (bias.Contains("leastbiased"))
-            {
-                return Bias.Center;
-            }
-            else if (bias.Contains("extremeright") || bias.Contains("right11.png") || bias.Contains("right02.png") || bias.Contains("right03.png") || bias.Contains("right01.png") || bias.Contains("right011.png"))
-            {
-                return Bias.ExtremeRight;
-            }
-            else if (bias.Contains("extremeleft") || bias.Contains("left1.png") || bias.Contains("left2.png") || bias.Contains("left3.png"))
-            {
-                return Bias.ExtremeLeft;
-            }
-            else if (bias.Contains("left"))
-            {
-                return Bias.Left;
-            }
-            else if (bias.Contains("right"))
-            {
-                return Bias.Right;
-            }
-            else
-            {
-                //Can't give up yet, try to parse out of reasoning the text
-                var biases = doc.QuerySelectorAll("div.entry-content p").Where(s => s.InnerText.Trim().ToLower().StartsWith("reasoning:")).FirstOrDefault();
-                if (biases != null)
-                {
-                    if (biases.InnerText.ToLower().Contains("extreme right"))
-                    {
-                        return Bias.ExtremeRight;
-                    }
-                    else if (biases.InnerText.ToLower().Contains("extreme left"))
-                    {
-                        return Bias.ExtremeLeft;
-                    }
-                }
-
-                //We're still here, try to parse out of the summary text
-                biases = doc.QuerySelectorAll("div.entry-content li strong").FirstOrDefault();
-                if (biases != null)
-                {
-                    if (biases.InnerText.ToLower().Contains("extreme right"))
-                    {
-                        return Bias.ExtremeRight;
-                    }
-                    else if (biases.InnerText.ToLower().Contains("extreme left"))
-                    {
-                        return Bias.ExtremeLeft;
-                    }
-                }
-
-                return Bias.Unknown;
             }
         }
 
@@ -288,11 +202,7 @@ namespace FactLayer.Import
                 var siteUrl = row.Attributes["href"].Value;
                 if (siteUrl != null)
                 {
-                    //Bad link on the table
-                    if (siteUrl == "http://newsservis.com/")
-                    {
-                        siteUrl = "https://mediabiasfactcheck.com/newsservis-com/";
-                    }
+                    siteUrl = NormalizeSiteUrl(siteUrl);
                     var site = LoadSite(siteUrl);
                     if (site != null && !_sites.Contains(site))
                     {
