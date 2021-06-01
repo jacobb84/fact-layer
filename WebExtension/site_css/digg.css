@@ -1,63 +1,51 @@
-span.bias.digg-story__metadata-source, a.bias.digg-story__related-link__source-link
-{
-	padding: 3px 5px;
-	color: #FFFFFF;
-	border-radius: 5px;
+.leading-6 a.bias {
+    padding: 3px 5px;
+    border-radius: 5px;
 }
 
-span.bias.digg-story__metadata-source a, a.bias.digg-story__related-link__source-link {
-	color: #FFFFFF !important;
+a.bias {
+    color: #FFF !important;
 }
 
-span.bias-extreme-left.digg-story__metadata-source, a.bias-extreme-left.digg-story__related-link__source-link
-{
-	background-color:var(--fl-extreme-left-color);
+a.bias-extreme-left {
+    background-color: var(--fl-extreme-left-color) !important;
 }
 
-span.bias-left.digg-story__metadata-source, a.bias-left.digg-story__related-link__source-link
-{
-	background-color:var(--fl-left-color);
+a.bias-left {
+    background-color: var(--fl-left-color) !important;
 }
 
-span.bias-left-center.digg-story__metadata-source, a.bias-left-center.digg-story__related-link__source-link
-{
-	background-color:var(--fl-left-center-color);
-	color: #111 !important;
+a.bias-left-center {
+    background-color: var(--fl-left-center-color) !important;
+    color: #111 !important;
 }
 
-span.bias-center.digg-story__metadata-source, a.bias-center.digg-story__related-link__source-link
-{
-	background-color:var(--fl-center-color);
+a.bias-center {
+    background-color: var(--fl-center-color) !important;
 }
 
-span.bias-right-center.digg-story__metadata-source, a.bias-right-center.digg-story__related-link__source-link
-{
-	background-color:var(--fl-right-center-color);
-	color: #111 !important;
+a.bias-right-center {
+    background-color: var(--fl-right-center-color) !important;
+    color: #111 !important;
 }
 
-span.bias-right.digg-story__metadata-source, a.bias-right.digg-story__related-link__source-link
-{
-	background-color:var(--fl-right-color);
+a.bias-right {
+    background-color: var(--fl-right-color) !important;
 }
 
-span.bias-extreme-right.digg-story__metadata-source, a.bias-extreme-right.digg-story__related-link__source-link
-{
-	background-color:var(--fl-extreme-right-color);
+a.bias-extreme-right {
+    background-color: var(--fl-extreme-right-color) !important;
 }
 
-span.bias-satire.digg-story__metadata-source, a.bias-satire.digg-story__related-link__source-link
-{
-	background-color:var(--fl-satire-color);
+a.bias-satire {
+    background-color: var(--fl-satire-color) !important;
 }
 
-span.bias-fake.digg-story__metadata-source, a.bias-fake.digg-story__related-link__source-link
-{
-	background-color:var(--fl-fake-color);
+a.bias-fake {
+    background-color: var(--fl-fake-color) !important;
 }
 
-span.bias-unknown.digg-story__metadata-source, a.bias-unknown.digg-story__related-link__source-link
-{
-	background-color:var(--fl-unknown-color);
-	color: #111 !important;
+a.bias-unknown {
+    background-color: var(--fl-unknown-color) !important;
+    color: #FFF !important;
 }

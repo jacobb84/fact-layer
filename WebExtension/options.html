@@ -1,86 +1,109 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Bootstrap Example</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="popup/css/bootstrap.min.css">
-  <script src="libs/jquery.min.js"></script>
-  <script src="libs/spin.min.js"></script>
+    <title>Options</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="popup/css/bootstrap.min.css">
+    <script src="libs/jquery.min.js"></script>
+    <script src="libs/spin.min.js"></script>
+    <style type="text/css">
+        body {
+            padding: 0 8px;
+        }
+
+        button {
+            width: 100%;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            body {
+                background-color: #202023;
+                color: rgb(249, 249, 250);
+            }
+
+            button, input, optgroup, select, textarea {
+                color: black;
+            }
+        }
+    </style>
 </head>
 <body>
 <h3>Databases</h3>
+<p><strong>Last Checked:</strong> <span id="LastChecked"></span></p>
 <table class="table table-condensed" style="width:300px;">
-<thead>
-	<tr>
-	<th>Database</th>
-	<th>Entries</th>
-	<th>Updated</th>
-	</tr>
-</thead>
-<tbody>
-	<tr>
-		<td><strong>Aliases</strong></td>
-		<td id="AliasesCount"></td>
-		<td id="AliasesUpdated"></td>
-	</tr>
-	<tr>
-		<td><strong>Fact Mappings</strong></td>
-		<td id="FactMappingsCount"></td>
-		<td id="FactMappingsUpdated"></td>
-	</tr>
-	<tr>
-		<td><strong>Fact Packs</strong></td>
-		<td id="FactPacksCount"></td>
-		<td id="FactPacksUpdated"></td>
-	</tr>
-	<tr>
-		<td><strong>Websites</strong></td>
-		<td id="WebsiteCount"></td>
-		<td id="WebsiteUpdated"></td>
-	</tr>
-</tbody>
+    <thead>
+    <tr>
+        <th>Database</th>
+        <th>Entries</th>
+        <th>Updated</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td><strong>Aliases</strong></td>
+        <td id="AliasesCount"></td>
+        <td id="AliasesUpdated"></td>
+    </tr>
+    <tr>
+        <td><strong>Fact Mappings</strong></td>
+        <td id="FactMappingsCount"></td>
+        <td id="FactMappingsUpdated"></td>
+    </tr>
+    <tr>
+        <td><strong>Fact Packs</strong></td>
+        <td id="FactPacksCount"></td>
+        <td id="FactPacksUpdated"></td>
+    </tr>
+    <tr>
+        <td><strong>Websites</strong></td>
+        <td id="WebsiteCount"></td>
+        <td id="WebsiteUpdated"></td>
+    </tr>
+    </tbody>
 </table>
-<button class="btn btn-flat btn-default" id="btnRefreshDatabase">Update Databases</button><br /><br />
+<button class="btn btn-flat btn-default" id="btnRefreshDatabase">Update Databases</button>
+<br/><br/>
 <div style="margin-top:10px;">
-<h3>Settings</h3>
-<p><strong>Political Color Scheme</strong></p>
-<table class="table table-condensed" style="width:600px;">
-<tbody>
-	<tr>
-		<td><label for="ExtremeLeftColor">Extreme Left:</label></td>
-		<td><input type="text" id="ExtremeLeftColor" /></td>
-		<td><label for="ExtremeRightColor">Extreme Right:</label></td>
-		<td><input type="text" id="ExtremeRightColor" /></td>
-	</tr>
-	<tr>
-		<td><label for="LeftColor">Left:</label></td>
-		<td><input type="text" id="LeftColor" /></td>
-		<td><label for="RightColor">Right:</label></td>
-		<td><input type="text" id="RightColor" /></td>
-	</tr>
-	<tr>
-		<td><label for="LeftCenterColor">Left Center:</label></td>
-		<td><input type="text" id="LeftCenterColor" /></td>
-		<td><label for="RightCenterColor">Right Center:</label></td>
-		<td><input type="text" id="RightCenterColor" /></td>
-	</tr>
-	<tr>
-		<td><label for="CenterColor">Center:</label></td>
-		<td><input type="text" id="CenterColor" /></td>
-		<td><label for="SatireColor">Satire:</label></td>
-		<td><input type="text" id="SatireColor" /></td>
-	</tr>
-</tbody>
-</table>
+    <h3>Settings</h3>
+    <p><strong>Political Color Scheme</strong></p>
+    <table class="table table-condensed" style="width:600px;">
+        <tbody>
+        <tr>
+            <td><label for="ExtremeLeftColor">Extreme Left:</label></td>
+            <td><input type="text" id="ExtremeLeftColor"/></td>
+            <td><label for="ExtremeRightColor">Extreme Right:</label></td>
+            <td><input type="text" id="ExtremeRightColor"/></td>
+        </tr>
+        <tr>
+            <td><label for="LeftColor">Left:</label></td>
+            <td><input type="text" id="LeftColor"/></td>
+            <td><label for="RightColor">Right:</label></td>
+            <td><input type="text" id="RightColor"/></td>
+        </tr>
+        <tr>
+            <td><label for="LeftCenterColor">Left Center:</label></td>
+            <td><input type="text" id="LeftCenterColor"/></td>
+            <td><label for="RightCenterColor">Right Center:</label></td>
+            <td><input type="text" id="RightCenterColor"/></td>
+        </tr>
+        <tr>
+            <td><label for="CenterColor">Center:</label></td>
+            <td><input type="text" id="CenterColor"/></td>
+            <td><label for="SatireColor">Satire:</label></td>
+            <td><input type="text" id="SatireColor"/></td>
+        </tr>
+        </tbody>
+    </table>
 </div>
-<button class="btn btn-flat btn-default" id="btnSaveSettings">Save Settings</button><br /><br />
+<button class="btn btn-flat btn-default" id="btnSaveSettings">Save Settings</button>
+<br/><br/>
 <p style="margin-top:10px;">
-Used with permission from <a href="http://allSides.com" target="_blank">AllSides</a>. All rights not expressly granted herein are hereby reserved.<br /><br />
-CHARITY NAVIGATOR and the CHARITY NAVIGATOR logo are registered trademarks of Charity Navigator. All rights reserved. Used with permission. Attribution of Charity Navigator’s ownership of its trademarks within the credits notice section of your product, product documentation, or other product communication is required.<br /><br />
-Other sources include <a href="http://mediabiasfactcheck.com" target="_blank">Media Bias / Fact Check</a>, <a href="http://realorsatire.com/" target="_blank">Real or Satire</a>, <a href="http://www.fakenewscodex.com/" target="_blank">The Fake News Codex</a><br />
-Descriptions provided by <a href="https://www.wikipedia.org/" target="_blank" />Wikipedia</a><br />
-Icons by <a href="http://www.flaticon.com/authors/freepik">Freepik</a> from <a href="http://www.flaticon.com/">Flaticon</a> is licensed under <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0">CC BY 3.0</a>. Logo made with <a href="http://logomakr.com" title="Logo Maker">Logo Maker</a>
+  Used with permission from <a href="http://allSides.com" target="_blank">AllSides</a>. All rights not expressly granted herein are hereby reserved.<br /><br />
+  CHARITY NAVIGATOR and the CHARITY NAVIGATOR logo are registered trademarks of Charity Navigator. All rights reserved. Used with permission. Attribution of Charity Navigator’s ownership of its trademarks within the credits notice section of your product, product documentation, or other product communication is required.<br /><br />
+  Other sources include <a href="http://mediabiasfactcheck.com" target="_blank">Media Bias / Fact Check</a>, <a href="http://realorsatire.com/" target="_blank">Real or Satire</a>, <a href="http://www.fakenewscodex.com/" target="_blank">The Fake News Codex</a><br />
+  Descriptions provided by <a href="https://www.wikipedia.org/" target="_blank" />Wikipedia</a><br />
+  Icons by <a href="http://www.flaticon.com/authors/freepik">Freepik</a> from <a href="http://www.flaticon.com/">Flaticon</a> is licensed under <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0">CC BY 3.0</a>. Logo made with <a href="http://logomakr.com" title="Logo Maker">Logo Maker</a>
 </p>
 <script src="options.js"></script>
 </body>

@@ -1,62 +1,51 @@
-a.bias
-{
-	padding: 3px 5px;
-	border-radius: 5px;
-	overflow:visible;
-	margin-bottom: 5px;
-	color: #FFFFFF !important;
-	font-weight: bold !important;
+a.bias {
+    padding: 3px 5px;
+    border-radius: 5px;
+    overflow: visible;
+    margin-bottom: 5px;
+    color: #FFFFFF !important;
+    font-weight: bold !important;
 }
 
-a.bias-extreme-left
-{
-	background-color:var(--fl-extreme-left-color);
+a.bias-extreme-left {
+    background-color: var(--fl-extreme-left-color);
 }
 
-a.bias-left
-{
-	background-color:var(--fl-left-color);
+a.bias-left {
+    background-color: var(--fl-left-color);
 }
 
-a.bias-left-center
-{
-	background-color:var(--fl-left-center-color);
-	color: #111 !important;
+a.bias-left-center {
+    background-color: var(--fl-left-center-color);
+    color: #111 !important;
 }
 
-a.bias-center
-{
-	background-color:var(--fl-center-color);
+a.bias-center {
+    background-color: var(--fl-center-color);
 }
 
-a.bias-right-center
-{
-	background-color:var(--fl-right-center-color);
-	color: #111 !important;
+a.bias-right-center {
+    background-color: var(--fl-right-center-color);
+    color: #111 !important;
 }
 
-a.bias-right
-{
-	background-color:var(--fl-right-color);
+a.bias-right {
+    background-color: var(--fl-right-color);
 }
 
-a.bias-extreme-right
-{
-	background-color:var(--fl-extreme-right-color);
+a.bias-extreme-right {
+    background-color: var(--fl-extreme-right-color);
 }
 
-a.bias-satire
-{
-	background-color:var(--fl-satire-color);
+a.bias-satire {
+    background-color: var(--fl-satire-color);
 }
 
-a.bias-fake
-{
-	background-color:var(--fl-fake-color);
+a.bias-fake {
+    background-color: var(--fl-fake-color);
 }
 
-a.bias-unknown
-{
-	background-color:var(--fl-unknown-color);
-	color: #111 !important;
+a.bias-unknown {
+    background-color: var(--fl-unknown-color);
+    color: #111 !important;
 }
