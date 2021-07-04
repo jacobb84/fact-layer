@@ -14,10 +14,22 @@ if (browser) {
             $("#WebsiteCount").html(0);
         }
 
+        if (bg.storage.websitesUpdated != null) {
+            $("#WebsiteUpdated").html(getFormattedDate(bg.storage.websitesUpdated));
+        } else {
+            $("#WebsiteUpdated").html("Never");
+        }
+
         if (bg.storage.aliases != null) {
             $("#AliasesCount").html(bg.storage.aliases.length);
         } else {
             $("#AliasesCount").html(0);
+        }
+
+        if (bg.storage.aliasesUpdated != null) {
+            $("#AliasesUpdated").html(getFormattedDate(bg.storage.aliasesUpdated));
+        } else {
+            $("#AliasesUpdated").html("Never");
         }
 
         if (bg.storage.factMappings != null) {
@@ -26,16 +38,28 @@ if (browser) {
             $("#FactMappingsCount").html(0);
         }
 
+        if (bg.storage.factMappingsUpdated != null) {
+            $("#FactMappingsUpdated").html(getFormattedDate(bg.storage.factMappingsUpdated));
+        } else {
+            $("#FactMappingsUpdated").html("Never");
+        }
+
         if (bg.storage.factPacks != null) {
             $("#FactPacksCount").html(bg.storage.factPacks.length);
         } else {
             $("#FactPacksCount").html(0);
         }
 
+        if (bg.storage.factPacksUpdated != null) {
+            $("#FactPacksUpdated").html(getFormattedDate(bg.storage.factPacksUpdated));
+        } else {
+            $("#FactPacksUpdated").html("Never");
+        }
+
         if (bg.storage.timestampsUpdated != null) {
             $("#LastChecked").html(getFormattedDate(bg.storage.timestampsUpdated));
         } else {
-            $("#LastChecked").html(0);
+            $("#LastChecked").html("Never");
         }
 
         $("#ExtremeLeftColor").val(bg.settings.extremeLeftColor);
@@ -46,19 +70,6 @@ if (browser) {
         $("#RightColor").val(bg.settings.rightColor);
         $("#ExtremeRightColor").val(bg.settings.extremeRightColor);
         $("#SatireColor").val(bg.settings.satireColor);
-
-        browser.storage.local.get(["websitesUpdated", "aliasesUpdated", "factMappingsUpdated", "factPacksUpdated"], onGotItems);
-
-        function onGotItems(item) {
-
-            if (!$.isEmptyObject(item)) {
-                $("#WebsiteUpdated").html(getFormattedDate(item.websitesUpdated));
-                $("#AliasesUpdated").html(getFormattedDate(item.aliasesUpdated));
-                $("#FactMappingsUpdated").html(getFormattedDate(item.factMappingsUpdated));
-                $("#FactPacksUpdated").html(getFormattedDate(item.factPacksUpdated));
-            }
-
-        }
 
         $("#btnRefreshDatabase").on("click", function () {
             bg.getTimestamps();
@@ -89,7 +100,7 @@ if (browser) {
                     $("#FactMappingsUpdated").html(getFormattedDate(bg.storage.timestamps.factMappings));
                     $("#FactPacksCount").html(bg.storage.factPacks.length);
                     $("#FactPacksUpdated").html(getFormattedDate(bg.storage.timestamps.factPacks));
-                    $("#LastChecked").html(getFormattedDate(bg.storage.timestamps.timestampsUpdated));
+                    $("#LastChecked").html(getFormattedDate(bg.storage.timestampsUpdated));
                     spinner.stop();
                     clearInterval(backgroundCheck);
                 }

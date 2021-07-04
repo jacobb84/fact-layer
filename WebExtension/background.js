@@ -82,7 +82,7 @@ function updateTimestampsIfNeeded(browserStorage, storageUpdated) {
 
 
 function getTimestamps() {
-    storage.timestamps = {};
+    storage.timestamps = [];
     storage.timestampsUpdated = {};
     var api = "http://factlayer.azurewebsites.net/timestamps.json?cachebust=" + new Date().getTime();
     $.ajax({
@@ -108,6 +108,7 @@ function updateStorageIfNeeded(browserStorage, storageUpdated, storageProperty, 
             globalUpdateFunction();
         } else {
             storage[storageProperty] = browserStorage;
+            storage[storageProperty + "Updated"] = storageUpdated;
         }
 
     } else {
@@ -116,7 +117,7 @@ function updateStorageIfNeeded(browserStorage, storageUpdated, storageProperty, 
 }
 
 function getJsonFile(url, storageProperty) {
-    storage[storageProperty] = {};
+    storage[storageProperty] = [];
     storage[storageProperty + "Updated"] = {};
     var api = url + "?cachebust=" + new Date().getTime();
     $.ajax({
