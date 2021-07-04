@@ -62,12 +62,15 @@ function getWebsiteByName(name) {
 }
 
 function updateTimestampsIfNeeded(browserStorage, storageUpdated) {
-    if (browserStorage != null && storageUpdated != null) {
-        var tomorrow = new Date(storageUpdated);
-        tomorrow.setDate(tomorrow.getDate() + 1);
-
-        if (storageUpdated < tomorrow) {
+    if (browserStorage != null && $.isEmptyObject(browserStorage) == false && storageUpdated != null && $.isEmptyObject(storageUpdated) == false) {
+        //Set date to compare to yesterday
+        var yesterday = new Date();
+        yesterday.setDate(yesterday.getDate() - 1);
+        var lastCheckedDate = new Date(storageUpdated);
+        //If the last update time is greater then 24 hours ago, load from storage. Otherwise get a fresh copy.
+        if (lastCheckedDate > yesterday) {
             storage.timestamps = browserStorage;
+            storage.timestampsUpdated = storageUpdated;
         } else {
             getTimestamps();
         }
@@ -77,9 +80,31 @@ function updateTimestampsIfNeeded(browserStorage, storageUpdated) {
     }
 }
 
+
+function getTimestamps() {
+    storage.timestamps = {};
+    storage.timestampsUpdated = {};
+    var api = "http://factlayer.azurewebsites.net/timestamps.json?cachebust=" + new Date().getTime();
+    $.ajax({
+        url: api,
+        type: 'GET',
+        success: function (returndata) {
+            var browserStorage = {};
+            storage.timestamps = returndata;
+            storage.timestampsUpdated = new Date().toISOString();
+            browserStorage["timestamps"] = storage.timestamps;
+            browserStorage["timestampsUpdated"] = storage.timestampsUpdated;
+            browser.storage.local.set(browserStorage);
+        }
+    });
+}
+
+
 function updateStorageIfNeeded(browserStorage, storageUpdated, storageProperty, globalUpdateFunction) {
     if (browserStorage != null && storageUpdated != null) {
-        if (storageUpdated < storage.timestamps[storageProperty]) {
+        var lastCheckedDate = new Date(storageUpdated);
+        var lastestTimestamp = new Date(storage.timestamps[storageProperty]);
+        if (lastCheckedDate < lastestTimestamp) {
             globalUpdateFunction();
         } else {
             storage[storageProperty] = browserStorage;
@@ -91,32 +116,18 @@ function updateStorageIfNeeded(browserStorage, storageUpdated, storageProperty, 
 }
 
 function getJsonFile(url, storageProperty) {
-    storage[storageProperty] = [];
+    storage[storageProperty] = {};
+    storage[storageProperty + "Updated"] = {};
     var api = url + "?cachebust=" + new Date().getTime();
     $.ajax({
         url: api,
         type: 'GET',
         success: function (returndata) {
+            var browserStorage = {};
             storage[storageProperty] = returndata;
-            var browserStorage = {};
-            browserStorage[storageProperty] = returndata;
-            browserStorage[storageProperty + "Updated"] = storage.timestamps[storageProperty];
-            browser.storage.local.set(browserStorage);
-        }
-    });
-}
-
-function getTimestamps() {
-    storage.timestamps = {};
-    var api = "http://factlayer.azurewebsites.net/timestamps.json?cachebust=" + new Date().getTime();
-    $.ajax({
-        url: api,
-        type: 'GET',
-        success: function (returndata) {
-            storage.timestamps = returndata;
-            var browserStorage = {};
-            browserStorage["timestamps"] = returndata;
-            browserStorage["timestampsUpdated"] = new Date();
+            storage[storageProperty + "Updated"] = storage.timestamps[storageProperty];
+            browserStorage[storageProperty] = storage[storageProperty];
+            browserStorage[storageProperty + "Updated"] = storage[storageProperty + "Updated"];
             browser.storage.local.set(browserStorage);
         }
     });
@@ -197,7 +208,10 @@ function saveSettings() {
 function updateActiveTab(tabId, changeInfo, tabInfo) {
 
     function updateTab(tabs) {
-        if (tabs[0]) {
+        if (browser.runtime.lastError) {
+            window.setTimeout(() => updateActiveTab(), 100);
+        }
+        if (tabs && tabs[0]) {
             currentTab = tabs[0];
             if (currentTab.url != null && (currentTab.url != currentTabUrl || (typeof (changeInfo) != "undefined" && changeInfo.status == "loading"))) {
                 currentTabUrl = currentTab.url;
@@ -211,6 +225,9 @@ function updateActiveTab(tabId, changeInfo, tabInfo) {
                 updateIcon();
                 browser.browserAction.disable(currentTab.id);
 
+                if (currentTab.url.startsWith("chrome://") || currentTab.url.startsWith("moz-extension://")) {
+                    return;
+                }
                 var managedUrl = new URL(currentTab.url);
                 var path = managedUrl.pathname + managedUrl.search;
 
@@ -259,14 +276,6 @@ function updateActiveTab(tabId, changeInfo, tabInfo) {
 
     browser.tabs.query({active: true, currentWindow: true}, updateTab);
 }
-
-browser.storage.local.get(["regexWebsites", "regexWebsitesUpdated", "websites", "websitesUpdated", "installedVersion", "aliases", "aliasesUpdated", "factMappings", "factMappingsUpdated", "factPacks", "factPacksUpdated", "timestamps", "timestampsUpdated"], onGotItems);
-browser.storage.local.get(["settings"], onLoadSettings);
-// listen to tab URL changes
-browser.tabs.onUpdated.addListener(updateActiveTab);
-
-// listen to tab switching
-browser.tabs.onActivated.addListener(updateActiveTab);
 
 function onLoadSettings(item) {
     if (item != null && !($.isEmptyObject(item) || item.length === 0)) {
@@ -326,68 +335,77 @@ function onGotItems(item) {
 
 }
 
-updateActiveTab();
-
-browser.runtime.onMessage.addListener(
-    function (request, sender, sendResponse) {
-        if (request.command == "getWebsiteByDomain") {
-            var domain = request.domain;
-            if (!request.domain.startsWith("http")) {
-                domain = "http://" + request.domain;
-            }
-
-            var websiteResult = null;
-            var biasText = "Unknown";
-            var overallBias = -2147483648;
-
-            try {
-                var managedUrl = new URL(domain);
-
-                websiteResult = getWebsiteByDomain(managedUrl.hostname);
-                biasText = "Unknown";
-                overallBias = -2147483648;
-                if (websiteResult != null) {
-                    overallBias = FactLayerUtilities.getOverallBias(websiteResult.Sources);
-                    biasText = getIconText(overallBias, websiteResult.OrganizationType);
-                }
-            } catch (ex) {
-                console.log(ex);
-            }
-            sendResponse({websiteResult: websiteResult, biasText: biasText, overallBias: overallBias});
-        } else if (request.command == "getWebsiteByName") {
-            var name = request.name;
-
-            var websiteResult = null;
-            var biasText = "Unknown";
-            var overallBias = -2147483648;
-
-            try {
-                websiteResult = getWebsiteByName(name);
-                biasText = "Unknown";
-                overallBias = -2147483648;
-                if (websiteResult != null) {
-                    overallBias = FactLayerUtilities.getOverallBias(websiteResult.Sources);
-                    biasText = getIconText(overallBias, websiteResult.OrganizationType);
-                }
-            } catch (ex) {
-                console.log(ex);
-            }
-            sendResponse({websiteResult: websiteResult, biasText: biasText, overallBias: overallBias});
-        } else if (request.command == "getBiasColors") {
-            var biasColors = [];
-            biasColors.push({bias: 'extreme-left', color: FactLayerUtilities.getBiasColor(-3, 0)})
-            biasColors.push({bias: 'left', color: FactLayerUtilities.getBiasColor(-2, 0)})
-            biasColors.push({bias: 'left-center', color: FactLayerUtilities.getBiasColor(-1, 0)})
-            biasColors.push({bias: 'center', color: FactLayerUtilities.getBiasColor(0, 0)})
-            biasColors.push({bias: 'right-center', color: FactLayerUtilities.getBiasColor(1, 0)})
-            biasColors.push({bias: 'right', color: FactLayerUtilities.getBiasColor(2, 0)})
-            biasColors.push({bias: 'extreme-right', color: FactLayerUtilities.getBiasColor(3, 0)})
-            biasColors.push({bias: 'satire', color: FactLayerUtilities.getBiasColor(0, 4)})
-            biasColors.push({bias: 'fake', color: FactLayerUtilities.getBiasColor(0, 5)})
-            biasColors.push({bias: 'unknown', color: FactLayerUtilities.getBiasColor()})
-            sendResponse({biasColors: biasColors});
+function handleMessage(request, sender, sendResponse) {
+    if (request.command == "getWebsiteByDomain") {
+        var domain = request.domain;
+        if (!request.domain.startsWith("http")) {
+            domain = "http://" + request.domain;
         }
 
-    });
+        var websiteResult = null;
+        var biasText = "Unknown";
+        var overallBias = -2147483648;
 
+        try {
+            var managedUrl = new URL(domain);
 
+            websiteResult = getWebsiteByDomain(managedUrl.hostname);
+            biasText = "Unknown";
+            overallBias = -2147483648;
+            if (websiteResult != null) {
+                overallBias = FactLayerUtilities.getOverallBias(websiteResult.Sources);
+                biasText = getIconText(overallBias, websiteResult.OrganizationType);
+            }
+        } catch (ex) {
+            console.log(ex);
+        }
+        sendResponse({websiteResult: websiteResult, biasText: biasText, overallBias: overallBias});
+    } else if (request.command == "getWebsiteByName") {
+        var name = request.name;
+
+        var websiteResult = null;
+        var biasText = "Unknown";
+        var overallBias = -2147483648;
+
+        try {
+            websiteResult = getWebsiteByName(name);
+            biasText = "Unknown";
+            overallBias = -2147483648;
+            if (websiteResult != null) {
+                overallBias = FactLayerUtilities.getOverallBias(websiteResult.Sources);
+                biasText = getIconText(overallBias, websiteResult.OrganizationType);
+            }
+        } catch (ex) {
+            console.log(ex);
+        }
+        sendResponse({websiteResult: websiteResult, biasText: biasText, overallBias: overallBias});
+    } else if (request.command == "getBiasColors") {
+        var biasColors = [];
+        biasColors.push({bias: 'extreme-left', color: FactLayerUtilities.getBiasColor(-3, 0)})
+        biasColors.push({bias: 'left', color: FactLayerUtilities.getBiasColor(-2, 0)})
+        biasColors.push({bias: 'left-center', color: FactLayerUtilities.getBiasColor(-1, 0)})
+        biasColors.push({bias: 'center', color: FactLayerUtilities.getBiasColor(0, 0)})
+        biasColors.push({bias: 'right-center', color: FactLayerUtilities.getBiasColor(1, 0)})
+        biasColors.push({bias: 'right', color: FactLayerUtilities.getBiasColor(2, 0)})
+        biasColors.push({bias: 'extreme-right', color: FactLayerUtilities.getBiasColor(3, 0)})
+        biasColors.push({bias: 'satire', color: FactLayerUtilities.getBiasColor(0, 4)})
+        biasColors.push({bias: 'fake', color: FactLayerUtilities.getBiasColor(0, 5)})
+        biasColors.push({bias: 'unknown', color: FactLayerUtilities.getBiasColor()})
+        sendResponse({biasColors: biasColors});
+    }
+
+}
+
+//Load local storage into memory and check for updates.
+browser.storage.local.get(["regexWebsites", "regexWebsitesUpdated", "websites", "websitesUpdated", "installedVersion", "aliases", "aliasesUpdated", "factMappings", "factMappingsUpdated", "factPacks", "factPacksUpdated", "timestamps", "timestampsUpdated"], onGotItems);
+browser.storage.local.get(["settings"], onLoadSettings);
+
+// listen to tab URL changes
+browser.tabs.onUpdated.addListener(updateActiveTab);
+
+// listen to tab switching
+browser.tabs.onActivated.addListener(updateActiveTab);
+
+//Get messages from content scripts
+browser.runtime.onMessage.addListener(handleMessage);
+updateActiveTab();

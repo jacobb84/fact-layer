@@ -1,41 +1,66 @@
 html {
-  font-size: 10px;
-  background: rgb(240,240,240);
-  height: 450px;
-  margin: 0;
+    font-size: 10px;
+    background: rgb(240, 240, 240);
+    height: 450px;
+    margin: 0;
 }
 
 body {
-  width: 450px;
-  background: rgb(240,240,240);
-  height: inherit;
+    width: 450px;
+    background: rgb(240, 240, 240);
+    height: inherit;
 }
 
 div.container {
-  overflow: auto;
-  width: 100%;
-  height: 445px;
-  background: rgb(240,240,240);
+    overflow: auto;
+    width: 100%;
+    height: 445px;
+    background: rgb(240, 240, 240);
 }
 
 /* form control styling */
 
 input, textarea {
-  border: 1px solid rgb(218,218,218);
-  padding: 4px;
-  background: white;
-  border-radius: 3px;
+    border: 1px solid rgb(218, 218, 218);
+    padding: 4px;
+    background: white;
+    border-radius: 3px;
 }
 
 .btn {
-	text-align:left;
-	font-size:16px;
-	border-radius:0px;
+    text-align: left;
+    font-size: 16px;
+    border-radius: 0px;
+    margin-bottom: 10px;
 }
 
 div.fact-row {
-	padding:5px;
-	margin-bottom:5px;
-	background-color:#DDDDDD;
+    padding: 5px;
+    margin-bottom: 5px;
+    background-color: #DDDDDD;
+}
+
+@media (prefers-color-scheme: dark) {
+    body, div.container, .well, .btnBack {
+        background-color: #202023;
+        color: rgb(249, 249, 250);
+    }
+
+    .btnBack, #sourceRow .btn {
+        border-color: #202023;
+    }
+
+    .btnBack:hover, #sourceRow .btn {
+        color: rgb(249, 249, 250);
+        background-color: #303033;
+        border-color: #303033;
+    }
+
+    .btnBack:focus, .btnBack:active, .btnBack:active:hover {
+        color: rgb(249, 249, 250);
+        background-color: #404043;
+        border-color: #404043;
+    }
+
 }
 

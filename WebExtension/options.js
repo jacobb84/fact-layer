@@ -32,6 +32,12 @@ if (browser) {
             $("#FactPacksCount").html(0);
         }
 
+        if (bg.storage.timestampsUpdated != null) {
+            $("#LastChecked").html(getFormattedDate(bg.storage.timestampsUpdated));
+        } else {
+            $("#LastChecked").html(0);
+        }
+
         $("#ExtremeLeftColor").val(bg.settings.extremeLeftColor);
         $("#LeftColor").val(bg.settings.leftColor);
         $("#LeftCenterColor").val(bg.settings.leftCenterColor);
@@ -41,7 +47,7 @@ if (browser) {
         $("#ExtremeRightColor").val(bg.settings.extremeRightColor);
         $("#SatireColor").val(bg.settings.satireColor);
 
-        browser.storage.local.get(["websitesUpdated", "aliasesUpdated", "factMappingsUpdated", "factPacksUpdated", "timestampsUpdated"], onGotItems);
+        browser.storage.local.get(["websitesUpdated", "aliasesUpdated", "factMappingsUpdated", "factPacksUpdated"], onGotItems);
 
         function onGotItems(item) {
 
@@ -50,7 +56,6 @@ if (browser) {
                 $("#AliasesUpdated").html(getFormattedDate(item.aliasesUpdated));
                 $("#FactMappingsUpdated").html(getFormattedDate(item.factMappingsUpdated));
                 $("#FactPacksUpdated").html(getFormattedDate(item.factPacksUpdated));
-                $("#LastChecked").html(getFormattedDate(item.timestampsUpdated));
             }
 
         }

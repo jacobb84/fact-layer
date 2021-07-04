@@ -1,7 +1,7 @@
 {
 	"manifest_version": 2,
 	"name": "Fact Layer",
-	"version": "1.7.0.0",
+	"version": "1.8.0.0",
 	"description": "Fact checking resource to help navigate the internet.",
 	"icons": {
 		"48": "icons/fact-layer.png",
