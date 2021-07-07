@@ -184,12 +184,26 @@ namespace FactLayer.Import
             }
             doc.LoadHtml(html);
 
-            var firstParagraph = doc.QuerySelectorAll("div.mw-parser-output > p:not(.mw-empty-elt)").Where(s => !s.InnerText.Trim().ToLower().StartsWith("coordinates")).FirstOrDefault().InnerText;
+            var firstParagraph = "";
+            if (url.Contains("#"))
+            {
+                var fragment = url.Split('#')[1];
+                var anchorNode = doc.GetElementbyId(fragment);
+                if (anchorNode != null)
+                {
+                    firstParagraph = anchorNode.ParentNode.NextSiblingElement().InnerText;
+                }
+            } else
+            {
+                firstParagraph = doc.QuerySelectorAll("div.mw-parser-output > p:not(.mw-empty-elt)").Where(s => !s.InnerText.Trim().ToLower().StartsWith("coordinates")).FirstOrDefault().InnerText;
+            }
+            
             firstParagraph = HttpUtility.HtmlDecode(firstParagraph);
             //Strip out links / citations
             firstParagraph = Regex.Replace(firstParagraph, @"\[(\d*|\w?)\]", "");
             firstParagraph = firstParagraph.Replace("[citation needed]", "");
             firstParagraph = firstParagraph.Replace("[better source needed]", "");
+            firstParagraph = firstParagraph.Replace("[update]", "");
             firstParagraph = firstParagraph.Replace("\n", "");
 
             return Ellipsis(firstParagraph, 400);

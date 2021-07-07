@@ -27,7 +27,7 @@ namespace FactLayer.Import
                     html = sr.ReadToEnd();
                 }
                 doc.LoadHtml(html);
-                var siteName = HttpUtility.HtmlDecode(doc.QuerySelector("h1.page-title").InnerHtml);
+                var siteName = HttpUtility.HtmlDecode(doc.QuerySelector("h1.page-title").InnerHtml).Trim();
                 var domainLink = getDomain(doc, siteName);
 
                 if (domainLink != null)

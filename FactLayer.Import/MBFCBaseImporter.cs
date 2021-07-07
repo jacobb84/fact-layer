@@ -71,7 +71,17 @@ namespace FactLayer.Import
                 else if (siteName == "CBS Los Angeles (KCBS)")
                 {
                     domainLink = doc.QuerySelectorAll("div.entry-content p a").Where(s => s.Attributes["href"].Value.StartsWith("https://losangeles.cbslocal.com")).LastOrDefault();
-                } 
+                }
+                else if (siteName == "Alt-Right TV")
+                {
+                    //Make a fake link node since they don't direct link to site
+                    domainLink = doc.QuerySelectorAll("div.entry-content a").LastOrDefault();
+                    domainLink.Attributes["href"].Value = "https://altrighttv.com/";
+                }
+                else if (siteName == "America Max News")
+                {
+                    domainLink = doc.QuerySelectorAll("div.entry-content div a").Where(s => s.Attributes["href"].Value.StartsWith("https://www.americamaxnews.com")).LastOrDefault();
+                }
             }
 
 
@@ -211,7 +221,14 @@ namespace FactLayer.Import
             {
                 siteUrl = "https://mediabiasfactcheck.com/law-newz/";
             }
-
+            else if (siteUrl == "https://alohastatenews.com/")
+            {
+                siteUrl = "https://mediabiasfactcheck.com/aloha-state-news/";
+            }
+            else if (siteUrl == "https://swgeorgianews.com/")
+            {
+                siteUrl = "https://mediabiasfactcheck.com/sw-georgia-news/";
+            }
             return siteUrl;
         }
 
