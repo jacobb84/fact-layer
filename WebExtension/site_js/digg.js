@@ -4,12 +4,12 @@ if (typeof browser === 'undefined') {
 }
 
 if (browser) {
-    $(".leading-6 a:not(.author), .metadata a").each(function (index, obj) {
-        var domain = $(obj).html();
+    document.querySelectorAll(".leading-6 a:not(.author), .metadata a").forEach(function (obj, index) {
+        let domain = obj.textContent.trim();
         browser.runtime.sendMessage({command: "getWebsiteByDomain", domain: domain}, function (response) {
             if (response != null && response.websiteResult != null) {
-                $(obj).addClass(getCSS(response.overallBias, response.websiteResult.OrganizationType));
-                $(obj).attr("title", response.websiteResult.Name + " | " + response.biasText);
+                obj.className = obj.className + " " + getCSS(response.overallBias, response.websiteResult.OrganizationType);
+                obj.title = response.websiteResult.Name + " | " + response.biasText;
             }
         });
     });

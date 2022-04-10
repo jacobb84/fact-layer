@@ -4,13 +4,12 @@ if (typeof browser === 'undefined') {
 }
 
 function addInformationToNode(obj) {
-    if (obj != null && $(obj).length > 0) {
-        var domain = $(obj).html();
-
+    if (obj != null) {
+        let domain = obj.textContent.trim();
         browser.runtime.sendMessage({command: "getWebsiteByDomain", domain: domain}, function (response) {
             if (response != null && response.websiteResult != null) {
-                $(obj).addClass(getCSS(response.overallBias, response.websiteResult.OrganizationType));
-                $(obj).attr("title", response.websiteResult.Name + " | " + response.biasText);
+                obj.className = obj.className + " " + getCSS(response.overallBias, response.websiteResult.OrganizationType);
+                obj.title = response.websiteResult.Name + " | " + response.biasText;
             }
         });
     }
@@ -18,19 +17,27 @@ function addInformationToNode(obj) {
 
 if (browser) {
     //Style initial posts
-    $("div.URLHover").each(function (index, obj) {
-        addInformationToNode($(obj).find("a.outbound_link").last());
+    document.querySelectorAll("div.URLHover").forEach(function (obj, index) {
+        let nodes = obj.querySelectorAll("a.outbound_link");
+        if (nodes.length > 0) {
+            let last = nodes[nodes.length - 1];
+            addInformationToNode(last);
+        }
     });
 
     //Monitor for infinite scroll
-    var target = $("#headline_container");
+    let target = document.querySelector("#headline_container");
     // create an observer instance
-    var observer = new MutationObserver(function (mutations) {
+    let observer = new MutationObserver(function (mutations) {
         mutations.forEach(function (mutation) {
             mutation.addedNodes.forEach(function (node) {
                 if (node.tagName == 'TABLE') {
-                    $("div.URLHover", node).each(function (index, obj) {
-                        addInformationToNode($(obj).find("a.outbound_link").last());
+                    node.querySelectorAll("div.URLHover").forEach(function (obj, index) {
+                        let nodes = obj.querySelectorAll("a.outbound_link");
+                        if (nodes.length > 0) {
+                            let last = nodes[nodes.length - 1];
+                            addInformationToNode(last);
+                        }
                     });
                 }
             });
@@ -38,7 +45,7 @@ if (browser) {
     });
 
     // configuration of the observer:
-    var config = {childList: true};
+    let config = {childList: true};
 
     // pass in the target node, as well as the observer options
     observer.observe(target[0], config);

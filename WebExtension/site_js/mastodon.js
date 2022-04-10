@@ -2,29 +2,27 @@
 const config = {childList: true, subtree: true, attributes: true, attributeFilter: ['class']};
 
 function decorateNode(node) {
-    var $node = $(node),
-        $links = $node.find('a.status-link, a.status-card')
-    $links.each(function (ix, link) {
-        var $link = $(link),
-            domain = $link.attr('href');
+    let links = node.querySelectorAll('a.status-link, a.status-card');
+    links.forEach(function (link, ix) {
+        let domain = link.href;
         browser.runtime.sendMessage({command: "getWebsiteByDomain", domain: domain}, function (response) {
-            $link.addClass(getCSS(response.overallBias, response.websiteResult.OrganizationType));
-            $link.attr("title", response.websiteResult.Name + " | " + response.biasText);
+            link.className = link.className + " " + getCSS(response.overallBias, response.websiteResult.OrganizationType);
+            link.title = response.websiteResult.Name + " | " + response.biasText;
         });
     });
 }
 
 function watchColumn(column) {
-    var target = column;
+    let target = column;
     // create an observer instance
-    var observer = new MutationObserver(function (mutations) {
+    let observer = new MutationObserver(function (mutations) {
         mutations.forEach(function (mutation) {
             mutation.addedNodes.forEach(function (node) {
                 if (node.tagName == 'ARTICLE') {
                     decorateNode(node);
                 }
             });
-            $(mutation.target).find('.status__wrapper, .detailed-status__wrapper').each(function (ix, node) {
+            mutation.target.querySelectorAll('.status__wrapper, .detailed-status__wrapper').forEach(function (node, ix) {
                 decorateNode(node);
             });
         });
@@ -40,13 +38,12 @@ if (typeof browser === 'undefined') {
 
 if (browser) {
 
-
-    $("div.column").each(function (index, obj) {
+    document.querySelectorAll("div.column").forEach(function (obj, index) {
         watchColumn(obj);
     });
 
     // and when new columns are created
-    var colObserver = new MutationObserver(function (mutations) {
+    let colObserver = new MutationObserver(function (mutations) {
         mutations.forEach(function (mutation) {
             mutation.addedNodes.forEach(function (node) {
                 if (node.tagName == 'DIV' && node.classList.contains('column')) {

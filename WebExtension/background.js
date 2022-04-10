@@ -3,18 +3,18 @@ if (typeof browser === 'undefined') {
     browser = chrome;
 }
 
-var orgSiteVersion = "1.3";
-var aliasVersion = "1.0";
-var factMappingsVersion = "1.0";
-var factPacksVersion = "1.0";
-var regOrgSiteVersion = "1.0";
-var currentTab;
-var manifest = browser.runtime.getManifest();
-var currentTabUrl = "";
-var currentWebsite = null;
-var currentArticle = null;
+let orgSiteVersion = "1.3";
+let aliasVersion = "1.0";
+let factMappingsVersion = "1.0";
+let factPacksVersion = "1.0";
+let regOrgSiteVersion = "1.0";
+let currentTab;
+let manifest = browser.runtime.getManifest();
+let currentTabUrl = "";
+let currentWebsite = null;
+let currentArticle = null;
 
-var storage = {
+let storage = {
     websites: [],
     websitesNameIndex: [],
     regexWebsites: [],
@@ -24,7 +24,7 @@ var storage = {
     timestamps: {}
 }
 
-var settings = {
+let settings = {
     extremeLeftColor: "#0000FF",
     leftColor: "#2E65A1",
     leftCenterColor: "#9DC8EB",
@@ -35,10 +35,48 @@ var settings = {
     satireColor: "#007F0E"
 }
 
+function getCurrentArticle() {
+    return currentArticle;
+}
+
+function getCurrentWebsite()
+{
+    return currentWebsite;
+}
+
+function getStorage() {
+    return storage;
+}
+
+function getPreferences() {
+    return settings;
+}
+
+function setPreferences(newSettings) {
+    settings = Object.assign({}, newSettings);
+    let browserStorage = {};
+    browserStorage["settings"] = newSettings;
+    browser.storage.local.set(browserStorage);
+}
+
+function getResponse(response) { 
+    return response.json();
+}
+
+function isEmpty(obj) {
+  for(let prop in obj) {
+    if(Object.prototype.hasOwnProperty.call(obj, prop)) {
+      return false;
+    }
+  }
+
+  return JSON.stringify(obj) === JSON.stringify({});
+}
+
 function getWebsiteByDomain(domain) {
     domain = domain.replace(/^(www|amp|m|mobile)\./g, "");
     //See if this is an alias
-    var aliasDomain = storage.aliases.find(function (newsSource) {
+    let aliasDomain = storage.aliases.find(function (newsSource) {
         return domain.endsWith(newsSource.alias);
     });
 
@@ -51,9 +89,9 @@ function getWebsiteByDomain(domain) {
 }
 
 function getWebsiteByName(name) {
-    var result = FactLayerUtilities.binarySearchByName(storage.websitesNameIndex, name);
+    let result = FactLayerUtilities.binarySearchByName(storage.websitesNameIndex, name);
     if (result) {
-        var website = storage.websites[result.RowIndex];
+        let website = storage.websites[result.RowIndex];
 
         return website;
     }
@@ -62,11 +100,11 @@ function getWebsiteByName(name) {
 }
 
 function updateTimestampsIfNeeded(browserStorage, storageUpdated) {
-    if (browserStorage != null && $.isEmptyObject(browserStorage) == false && storageUpdated != null && $.isEmptyObject(storageUpdated) == false) {
+    if (browserStorage != null && isEmpty(browserStorage) == false && storageUpdated != null && isEmpty(storageUpdated) == false) {
         //Set date to compare to yesterday
-        var yesterday = new Date();
+        let yesterday = new Date();
         yesterday.setDate(yesterday.getDate() - 1);
-        var lastCheckedDate = new Date(storageUpdated);
+        let lastCheckedDate = new Date(storageUpdated);
         //If the last update time is greater then 24 hours ago, load from storage. Otherwise get a fresh copy.
         if (lastCheckedDate > yesterday) {
             storage.timestamps = browserStorage;
@@ -80,30 +118,25 @@ function updateTimestampsIfNeeded(browserStorage, storageUpdated) {
     }
 }
 
-
 function getTimestamps() {
     storage.timestamps = [];
     storage.timestampsUpdated = {};
-    var api = "http://factlayer.azurewebsites.net/timestamps.json?cachebust=" + new Date().getTime();
-    $.ajax({
-        url: api,
-        type: 'GET',
-        success: function (returndata) {
-            var browserStorage = {};
-            storage.timestamps = returndata;
-            storage.timestampsUpdated = new Date().toISOString();
-            browserStorage["timestamps"] = storage.timestamps;
-            browserStorage["timestampsUpdated"] = storage.timestampsUpdated;
-            browser.storage.local.set(browserStorage);
-        }
+    let api = "http://factlayer.azurewebsites.net/timestamps.json?cachebust=" + new Date().getTime();
+    fetch(api).then(getResponse).then(function (returndata) {
+        let browserStorage = {};
+        storage.timestamps = returndata;
+        storage.timestampsUpdated = new Date().toISOString();
+        browserStorage["timestamps"] = storage.timestamps;
+        browserStorage["timestampsUpdated"] = storage.timestampsUpdated;
+        browser.storage.local.set(browserStorage);
     });
 }
 
 
 function updateStorageIfNeeded(browserStorage, storageUpdated, storageProperty, globalUpdateFunction) {
     if (browserStorage != null && storageUpdated != null) {
-        var lastCheckedDate = new Date(storageUpdated);
-        var lastestTimestamp = new Date(storage.timestamps[storageProperty]);
+        let lastCheckedDate = new Date(storageUpdated);
+        let lastestTimestamp = new Date(storage.timestamps[storageProperty]);
         if (lastCheckedDate < lastestTimestamp) {
             globalUpdateFunction();
         } else {
@@ -119,18 +152,14 @@ function updateStorageIfNeeded(browserStorage, storageUpdated, storageProperty, 
 function getJsonFile(url, storageProperty) {
     storage[storageProperty] = [];
     storage[storageProperty + "Updated"] = {};
-    var api = url + "?cachebust=" + new Date().getTime();
-    $.ajax({
-        url: api,
-        type: 'GET',
-        success: function (returndata) {
-            var browserStorage = {};
+    let api = url + "?cachebust=" + new Date().getTime();
+    fetch(api).then(getResponse).then(function (returndata) {
+            let browserStorage = {};
             storage[storageProperty] = returndata;
             storage[storageProperty + "Updated"] = storage.timestamps[storageProperty];
             browserStorage[storageProperty] = storage[storageProperty];
             browserStorage[storageProperty + "Updated"] = storage[storageProperty + "Updated"];
             browser.storage.local.set(browserStorage);
-        }
     });
 }
 
@@ -158,12 +187,12 @@ function getFactPacks() {
  * Updates the browserAction icon to reflect the information of the current page.
  */
 function updateIcon(bias, orgType) {
-    var iconColor = FactLayerUtilities.getBiasColor(bias, orgType);
-    var iconImage = FactLayerUtilities.getIconImage(orgType);
+    let iconColor = FactLayerUtilities.getBiasColor(bias, orgType);
+    let iconImage = FactLayerUtilities.getIconImage(orgType);
 
-    var img = new Image();
-    var canvas = document.createElement("canvas");
-    var ctx = canvas.getContext("2d", {alpha: false});
+    let img = new Image();
+    let canvas = document.createElement("canvas");
+    let ctx = canvas.getContext("2d", {alpha: false});
     img.src = 'icons/' + iconImage + '.png';
     img.onload = function () {
         ctx.clearRect(0, 0, 72, 72);
@@ -189,18 +218,12 @@ function getIconText(bias, orgType) {
 
 function getRegexWebsite(domain) {
     domain = domain.replace(/^(www|amp|m|mobile)\./g, "");
-    var websiteResult = storage.regexWebsites.find(function (site) {
-        var regex = new RegExp(site.Domain, 'gi');
-        var isMatch = regex.test(domain);
+    let websiteResult = storage.regexWebsites.find(function (site) {
+        let regex = new RegExp(site.Domain, 'gi');
+        let isMatch = regex.test(domain);
         return isMatch;
     });
     return websiteResult;
-}
-
-function saveSettings() {
-    var browserStorage = {};
-    browserStorage["settings"] = settings;
-    browser.storage.local.set(browserStorage);
 }
 
 /*
@@ -229,16 +252,16 @@ function updateActiveTab(tabId, changeInfo, tabInfo) {
                 if (currentTab.url.startsWith("chrome://") || currentTab.url.startsWith("moz-extension://")) {
                     return;
                 }
-                var managedUrl = new URL(currentTab.url);
-                var path = managedUrl.pathname + managedUrl.search;
+                let managedUrl = new URL(currentTab.url);
+                let path = managedUrl.pathname + managedUrl.search;
 
-                var websiteResult = getWebsiteByDomain(managedUrl.hostname);
+                let websiteResult = getWebsiteByDomain(managedUrl.hostname);
                 if (websiteResult == null) {
                     websiteResult = getRegexWebsite(managedUrl.hostname)
                 }
                 if (websiteResult != null) {
                     currentWebsite = websiteResult;
-                    var totalBias = FactLayerUtilities.getOverallBias(websiteResult.Sources);
+                    let totalBias = FactLayerUtilities.getOverallBias(websiteResult.Sources);
                     browser.browserAction.setTitle({
                         title: getIconText(totalBias, websiteResult.OrganizationType),
                         tabId: currentTab.id
@@ -246,12 +269,12 @@ function updateActiveTab(tabId, changeInfo, tabInfo) {
                     updateIcon(totalBias, websiteResult.OrganizationType);
                     browser.browserAction.enable(currentTab.id);
 
-                    var factResultDomain = storage.factMappings.find(function (mapping) {
+                    let factResultDomain = storage.factMappings.find(function (mapping) {
                         return mapping.Domain == websiteResult.Domain;
                     });
 
                     if (factResultDomain != null) {
-                        var factResultPage = factResultDomain.Pages.find(function (page) {
+                        let factResultPage = factResultDomain.Pages.find(function (page) {
                             return page.Path == path;
                         });
 
@@ -279,14 +302,14 @@ function updateActiveTab(tabId, changeInfo, tabInfo) {
 }
 
 function onLoadSettings(item) {
-    if (item != null && !($.isEmptyObject(item) || item.length === 0)) {
+    if (item != null && !(isEmpty(item) || item.length === 0)) {
         settings = item.settings;
     }
 
 }
 
 function onGotItems(item) {
-    if (item != null && $.isEmptyObject(item) || item.length === 0) {
+    if (item != null && isEmpty(item) || item.length === 0) {
         getTimestamps();
         getSitePages();
         getAliases();
@@ -321,7 +344,7 @@ function onGotItems(item) {
 
 
     //Build a name index for searching on
-    var websiteNameIndex = storage.websites.map(function (obj, index) {
+    let websiteNameIndex = storage.websites.map(function (obj, index) {
         return {
             RowIndex: index,
             Name: obj.Name
@@ -338,17 +361,17 @@ function onGotItems(item) {
 
 function handleMessage(request, sender, sendResponse) {
     if (request.command == "getWebsiteByDomain") {
-        var domain = request.domain;
+        let domain = request.domain;
         if (!request.domain.startsWith("http")) {
             domain = "http://" + request.domain;
         }
 
-        var websiteResult = null;
-        var biasText = "Unknown";
-        var overallBias = -2147483648;
+        let websiteResult = null;
+        let biasText = "Unknown";
+        let overallBias = -2147483648;
 
         try {
-            var managedUrl = new URL(domain);
+            let managedUrl = new URL(domain);
 
             websiteResult = getWebsiteByDomain(managedUrl.hostname);
             biasText = "Unknown";
@@ -362,11 +385,11 @@ function handleMessage(request, sender, sendResponse) {
         }
         sendResponse({websiteResult: websiteResult, biasText: biasText, overallBias: overallBias});
     } else if (request.command == "getWebsiteByName") {
-        var name = request.name;
+        let name = request.name;
 
-        var websiteResult = null;
-        var biasText = "Unknown";
-        var overallBias = -2147483648;
+        let websiteResult = null;
+        let biasText = "Unknown";
+        let overallBias = -2147483648;
 
         try {
             websiteResult = getWebsiteByName(name);
@@ -381,7 +404,7 @@ function handleMessage(request, sender, sendResponse) {
         }
         sendResponse({websiteResult: websiteResult, biasText: biasText, overallBias: overallBias});
     } else if (request.command == "getBiasColors") {
-        var biasColors = [];
+        let biasColors = [];
         biasColors.push({bias: 'extreme-left', color: FactLayerUtilities.getBiasColor(-3, 0)})
         biasColors.push({bias: 'left', color: FactLayerUtilities.getBiasColor(-2, 0)})
         biasColors.push({bias: 'left-center', color: FactLayerUtilities.getBiasColor(-1, 0)})

@@ -3,8 +3,12 @@
     border-radius: 5px;
 }
 
-a.bias {
+a.bias, a.bias > span {
     color: #FFF !important;
+}
+
+a.bias-left-center, a.bias-left-center > span, a.bias-right-center, a.bias-right-center > span {
+    color: #111 !important;
 }
 
 a.bias-extreme-left {
@@ -17,7 +21,6 @@ a.bias-left {
 
 a.bias-left-center {
     background-color: var(--fl-left-center-color) !important;
-    color: #111 !important;
 }
 
 a.bias-center {
@@ -26,7 +29,6 @@ a.bias-center {
 
 a.bias-right-center {
     background-color: var(--fl-right-center-color) !important;
-    color: #111 !important;
 }
 
 a.bias-right {
@@ -47,5 +49,4 @@ a.bias-fake {
 
 a.bias-unknown {
     background-color: var(--fl-unknown-color) !important;
-    color: #FFF !important;
 }

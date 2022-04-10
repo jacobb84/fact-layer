@@ -72,14 +72,14 @@ FactLayerUtilities.getSourceOrgName = function (sourceOrgId) {
 
 FactLayerUtilities.getOverallBias = function (sources) {
     if (sources.length > 0) {
-        var biasSources = sources.filter(function (src) {
+        let biasSources = sources.filter(function (src) {
             return src.ClaimType == 0;
         });
         //Get the average
-        var totalBias = 0;
-        var len = biasSources.length;
-        for (var i = 0; i < len; i++) {
-            var source = biasSources[i];
+        let totalBias = 0;
+        let len = biasSources.length;
+        for (let i = 0; i < len; i++) {
+            let source = biasSources[i];
             totalBias += source.ClaimValue;
         }
 
@@ -145,7 +145,7 @@ FactLayerUtilities.getBiasColor = function (bias, orgType) {
 }
 
 FactLayerUtilities.binarySearchByDomain = function (array, key) {
-    var lo = 0,
+    let lo = 0,
         hi = array.length - 1,
         mid,
         element;
@@ -165,7 +165,7 @@ FactLayerUtilities.binarySearchByDomain = function (array, key) {
 }
 
 FactLayerUtilities.binarySearchByName = function (array, key) {
-    var lo = 0,
+    let lo = 0,
         hi = array.length - 1,
         mid,
         element;
