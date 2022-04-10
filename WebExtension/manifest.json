@@ -1,66 +1,58 @@
 {
-	"manifest_version": 2,
-	"name": "Fact Layer",
-	"version": "2.0.0.0",
-	"description": "Fact checking resource to help navigate the internet.",
-	"icons": {
-		"48": "icons/fact-layer.png",
-		"96": "icons/fact-layer-2x.png"
-	},
-	"permissions": [
-		"tabs",
-		"storage",
-		"*://factlayer.azurewebsites.net/*",
-		"webRequest"
-
-	],
-
-	"browser_action": {
-		"default_icon": "icons/unknown_default.png",
-		"default_title": "Fact Layer",
-		"default_popup": "popup/popup.html"
-	},
-	"options_ui": {
-		"page": "options.html"
-	},
-	"background": {
-		"scripts": ["fact.layer.utilities.js", "background.js"]
-	},
-	"content_scripts": [{
-			"matches": ["*://*.reddit.com/*"],
-			"js": ["site_js/site.utilities.js", "site_js/reddit.js"],
-			"css": ["site_css/reddit.css"]
+    "manifest_version": 2,
+    "name": "Fact Layer",
+    "version": "2.0.0.0",
+    "description": "Fact checking resource to help navigate the internet.",
+    "icons": {
+        "48": "icons/fact-layer.png",
+        "96": "icons/fact-layer-2x.png"
     },
-    {
-			"matches": ["*://digg.com/*"],
-			"js": ["site_js/site.utilities.js", "site_js/digg.js"],
-			"css": ["site_css/digg.css"]
+    "permissions": [
+        "tabs",
+        "storage",
+        "*://factlayer.azurewebsites.net/*"
+    ],
+    "browser_action": {
+        "default_icon": "icons/unknown_default.png",
+        "default_title": "Fact Layer",
+        "default_popup": "popup/popup.html"
     },
-    {
-			"matches": ["*://*.fark.com/*"],
-			"js": ["site_js/site.utilities.js", "site_js/fark.js"],
-			"css": ["site_css/fark.css"]
+    "options_ui": {
+        "page": "options.html"
     },
-    {
-			"matches": ["https://*.counter.social/*"],
-			"js": ["site_js/site.utilities.js", "site_js/mastodon.js"],
-			"css": ["site_css/mastodon.css"]
+    "background": {
+        "scripts": ["fact.layer.utilities.js", "background.js"]
     },
-    {
-			"matches": ["*://*.slashdot.org/*", "*://slashdot.org/*"],
-			"js": ["site_js/site.utilities.js", "site_js/slashdot.js"],
-			"css": ["site_css/slashdot.css"]
-		},
-    {
-			"matches": ["*://getpocket.com/*"],
-			"js": ["site_js/site.utilities.js", "site_js/getpocket.js"],
-			"css": ["site_css/getpocket.css"]
-		}
-	],
+    "content_scripts": [{
+            "matches": ["*://*.reddit.com/*"],
+            "js": ["site_js/site.utilities.js", "site_js/reddit.js"],
+            "css": ["site_css/reddit.css"]
+        }, {
+            "matches": ["*://digg.com/*"],
+            "js": ["site_js/site.utilities.js", "site_js/digg.js"],
+            "css": ["site_css/digg.css"]
+        }, {
+            "matches": ["*://*.fark.com/*"],
+            "js": ["site_js/site.utilities.js", "site_js/fark.js"],
+            "css": ["site_css/fark.css"]
+        }, {
+            "matches": ["https://*.counter.social/*"],
+            "js": ["site_js/site.utilities.js", "site_js/mastodon.js"],
+            "css": ["site_css/mastodon.css"]
+        }, {
+            "matches": ["*://*.slashdot.org/*", "*://slashdot.org/*"],
+            "js": ["site_js/site.utilities.js", "site_js/slashdot.js"],
+            "css": ["site_css/slashdot.css"]
+        }, {
+            "matches": ["*://getpocket.com/*"],
+            "js": ["site_js/site.utilities.js", "site_js/getpocket.js"],
+            "css": ["site_css/getpocket.css"]
+        }
+    ],
     "applications": {
-      "gecko": {
-    	"id": "{a1dd1fdc-b274-43bb-b13a-81fb8bb3b913}"
-      }
+        "gecko": {
+            "id": "{a1dd1fdc-b274-43bb-b13a-81fb8bb3b913}"
+        }
     }
 
 }

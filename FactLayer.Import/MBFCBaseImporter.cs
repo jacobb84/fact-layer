@@ -72,6 +72,10 @@ namespace FactLayer.Import
                 {
                     domainLink = doc.QuerySelectorAll("div.entry-content p a").Where(s => s.Attributes["href"].Value.StartsWith("https://losangeles.cbslocal.com")).LastOrDefault();
                 }
+                else if (siteName == "NC Policy Watch")
+                {
+                    domainLink = doc.QuerySelectorAll("div.entry-content p a").Where(s => s.Attributes["href"].Value.StartsWith("http://www.ncpolicywatch.com")).LastOrDefault();
+                }
                 else if (siteName == "Alt-Right TV")
                 {
                     //Make a fake link node since they don't direct link to site
@@ -213,21 +217,25 @@ namespace FactLayer.Import
             }
 
             //Bad link on the table
-            if (siteUrl == "http://newsservis.com/")
+            if (siteUrl.StartsWith("http://newsservis.com/"))
             {
                 siteUrl = "https://mediabiasfactcheck.com/newsservis-com/";
             } 
-            else if (siteUrl == "https://lawandcrime.com/") 
+            else if (siteUrl.StartsWith("https://lawandcrime.com/"))
             {
                 siteUrl = "https://mediabiasfactcheck.com/law-newz/";
             }
-            else if (siteUrl == "https://alohastatenews.com/")
+            else if (siteUrl.StartsWith("https://alohastatenews.com/"))
             {
                 siteUrl = "https://mediabiasfactcheck.com/aloha-state-news/";
             }
-            else if (siteUrl == "https://swgeorgianews.com/")
+            else if (siteUrl.StartsWith("https://swgeorgianews.com/"))
             {
                 siteUrl = "https://mediabiasfactcheck.com/sw-georgia-news/";
+            }
+            else if (siteUrl.StartsWith("https://www.knoe.com/"))
+            {
+                siteUrl = "https://mediabiasfactcheck.com/knoe-monroe-news-bias/";
             }
             return siteUrl;
         }
